@@ -1585,11 +1585,26 @@ dependencies = [
  "rustix 0.38.44",
  "serde",
  "serde_json",
- "syntropd-contextd-core",
+ "syntrop-contextd-core",
  "thiserror 1.0.69",
  "tokio",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "syntrop-contextd-core"
+version = "0.2.0"
+dependencies = [
+ "anyhow",
+ "libc",
+ "rustix 0.38.44",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "thiserror 1.0.69",
+ "toml",
+ "tracing",
 ]
 
 [[package]]
@@ -1606,13 +1621,28 @@ dependencies = [
  "rustix 0.38.44",
  "serde",
  "serde_json",
- "syntropd-inferenced-core",
+ "syntrop-inferenced-core",
  "thiserror 2.0.21",
  "tokio",
  "tokio-stream",
  "toml",
  "tracing",
  "tracing-subscriber",
+ "uuid",
+]
+
+[[package]]
+name = "syntrop-inferenced-core"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "libc",
+ "rustix 0.38.44",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
  "uuid",
 ]
 
@@ -1625,11 +1655,27 @@ dependencies = [
  "rustix 0.38.44",
  "serde",
  "serde_json",
- "syntropd-modeld-core",
+ "syntrop-modeld-core",
  "thiserror 1.0.69",
  "tokio",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "syntrop-modeld-core"
+version = "0.2.0"
+dependencies = [
+ "anyhow",
+ "libc",
+ "rustix 0.38.44",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tempfile",
+ "thiserror 1.0.69",
+ "toml",
+ "tracing",
 ]
 
 [[package]]
@@ -1641,11 +1687,27 @@ dependencies = [
  "rustix 0.38.44",
  "serde",
  "serde_json",
- "syntropd-runtimed-core",
+ "syntrop-runtimed-core",
  "thiserror 1.0.69",
  "tokio",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "syntrop-runtimed-core"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "libc",
+ "rustix 0.38.44",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "thiserror 1.0.69",
+ "tokio",
+ "toml",
+ "tracing",
 ]
 
 [[package]]
@@ -1657,16 +1719,89 @@ dependencies = [
  "rustix 0.38.44",
  "serde",
  "serde_json",
- "syntropd-sentry-core",
- "syntropd-sentry-diagnostic",
- "syntropd-sentry-driver",
- "syntropd-sentry-mcp",
- "syntropd-sentry-safety",
+ "syntrop-sentry-core",
+ "syntrop-sentry-diagnostic",
+ "syntrop-sentry-driver",
+ "syntrop-sentry-mcp",
+ "syntrop-sentry-safety",
  "thiserror 2.0.21",
  "tokio",
  "toml",
  "tracing",
  "zbus",
+]
+
+[[package]]
+name = "syntrop-sentry-core"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "uuid",
+]
+
+[[package]]
+name = "syntrop-sentry-diagnostic"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "syntrop-sentry-core",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+ "uuid",
+]
+
+[[package]]
+name = "syntrop-sentry-driver"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "futures-lite",
+ "lz4_flex",
+ "rustix 0.38.44",
+ "ruzstd",
+ "serde",
+ "serde_json",
+ "syntrop-sentry-core",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+ "uuid",
+ "zbus",
+]
+
+[[package]]
+name = "syntrop-sentry-mcp"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "serde",
+ "serde_json",
+ "syntrop-sentry-core",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+ "uuid",
+]
+
+[[package]]
+name = "syntrop-sentry-safety"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "serde",
+ "serde_json",
+ "syntrop-sentry-core",
+ "thiserror 2.0.21",
+ "toml",
+ "tracing",
 ]
 
 [[package]]
@@ -1678,11 +1813,27 @@ dependencies = [
  "rustix 0.38.44",
  "serde",
  "serde_json",
- "syntropd-toold-core",
+ "syntrop-toold-core",
  "thiserror 1.0.69",
  "tokio",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "syntrop-toold-core"
+version = "0.2.0"
+dependencies = [
+ "anyhow",
+ "libc",
+ "rustix 0.38.44",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "thiserror 1.0.69",
+ "tokio",
+ "toml",
+ "tracing",
 ]
 
 [[package]]
@@ -1731,157 +1882,6 @@ dependencies = [
  "tokio",
  "tracing",
  "tracing-subscriber",
-]
-
-[[package]]
-name = "syntropd-contextd-core"
-version = "0.2.0"
-dependencies = [
- "anyhow",
- "libc",
- "rustix 0.38.44",
- "serde",
- "serde_json",
- "tempfile",
- "thiserror 1.0.69",
- "toml",
- "tracing",
-]
-
-[[package]]
-name = "syntropd-inferenced-core"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "libc",
- "rustix 0.38.44",
- "serde",
- "serde_json",
- "thiserror 2.0.21",
- "tokio",
- "tracing",
- "uuid",
-]
-
-[[package]]
-name = "syntropd-modeld-core"
-version = "0.2.0"
-dependencies = [
- "anyhow",
- "libc",
- "rustix 0.38.44",
- "serde",
- "serde_json",
- "sha2",
- "tempfile",
- "thiserror 1.0.69",
- "toml",
- "tracing",
-]
-
-[[package]]
-name = "syntropd-runtimed-core"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "libc",
- "rustix 0.38.44",
- "serde",
- "serde_json",
- "tempfile",
- "thiserror 1.0.69",
- "tokio",
- "toml",
- "tracing",
-]
-
-[[package]]
-name = "syntropd-sentry-core"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "serde",
- "serde_json",
- "thiserror 2.0.21",
- "uuid",
-]
-
-[[package]]
-name = "syntropd-sentry-diagnostic"
-version = "0.1.0"
-dependencies = [
- "async-trait",
- "chrono",
- "reqwest",
- "serde",
- "serde_json",
- "syntropd-sentry-core",
- "thiserror 2.0.21",
- "tokio",
- "tracing",
- "uuid",
-]
-
-[[package]]
-name = "syntropd-sentry-driver"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "futures-lite",
- "lz4_flex",
- "rustix 0.38.44",
- "ruzstd",
- "serde",
- "serde_json",
- "syntropd-sentry-core",
- "thiserror 2.0.21",
- "tokio",
- "tracing",
- "uuid",
- "zbus",
-]
-
-[[package]]
-name = "syntropd-sentry-mcp"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "serde",
- "serde_json",
- "syntropd-sentry-core",
- "thiserror 2.0.21",
- "tokio",
- "tracing",
- "uuid",
-]
-
-[[package]]
-name = "syntropd-sentry-safety"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "serde",
- "serde_json",
- "syntropd-sentry-core",
- "thiserror 2.0.21",
- "toml",
- "tracing",
-]
-
-[[package]]
-name = "syntropd-toold-core"
-version = "0.2.0"
-dependencies = [
- "anyhow",
- "libc",
- "rustix 0.38.44",
- "serde",
- "serde_json",
- "tempfile",
- "thiserror 1.0.69",
- "tokio",
- "toml",
- "tracing",
 ]
 
 [[package]]
