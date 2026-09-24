@@ -1,0 +1,3 @@
+target/release/syntropd usr/bin/
+units/syntrop-sockets.target lib/systemd/system/
+units/syntrop-triage@.service lib/systemd/system/

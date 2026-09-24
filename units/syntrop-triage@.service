@@ -1,0 +1,10 @@
+[Unit]
+Description=syntropd Autonomous Triage for Failed Unit %I
+Documentation=https://syntropd.github.io/manual.html
+After=syntrop-sockets.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/syntropctl explain %I
+StandardOutput=journal
+StandardError=journal

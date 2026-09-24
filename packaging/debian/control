@@ -1,0 +1,15 @@
+Source: syntropd
+Section: admin
+Priority: optional
+Maintainer: Syntropd Team <syntropd@users.noreply.github.com>
+Build-Depends: debhelper-compat (= 13), cargo (>= 1.80), rustc (>= 1.80), dh-cargo
+Standards-Version: 4.6.2
+Homepage: https://syntropd.github.io
+Rules-Requires-Root: no
+
+Package: syntropd
+Architecture: amd64 arm64
+Depends: ${shlibs:Depends}, ${misc:Depends}, systemd (>= 252)
+Description: Native AI Subsystem for systemd
+ syntropd brings autonomous AI acceleration, memory throttling, and failure
+ triage directly into systemd as native OS primitives, keeping PID 1 inviolable.

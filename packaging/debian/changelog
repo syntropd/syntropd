@@ -1,0 +1,5 @@
+syntropd (0.1.0-1) unstable; urgency=medium
+
+  * Initial release for Debian and Ubuntu.
+
+ -- Syntropd Team <syntropd@users.noreply.github.com>  Wed, 24 Sep 2026 20:40:00 +0000

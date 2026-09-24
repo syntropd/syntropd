@@ -1,0 +1,33 @@
+# Maintainer: Syntropd Team <syntropd@users.noreply.github.com>
+pkgname=syntropd
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Native AI Subsystem for systemd — Umbrella Meta-Package"
+arch=('x86_64' 'aarch64')
+url="https://syntropd.github.io"
+license=('Apache-2.0')
+depends=('systemd' 'glibc')
+makedepends=('cargo' 'git')
+backup=('etc/syntrop/config.toml')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/syntropd/syntropd/archive/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+    cd "$pkgname-$pkgver"
+    cargo build --release --locked
+}
+
+check() {
+    cd "$pkgname-$pkgver"
+    cargo test --release --locked
+}
+
+package() {
+    cd "$pkgname-$pkgver"
+    install -Dm755 target/release/syntropd "$pkgdir/usr/bin/syntropd"
+    install -Dm644 units/syntrop-sockets.target "$pkgdir/usr/lib/systemd/system/syntrop-sockets.target"
+    install -Dm644 units/syntrop-triage@.service "$pkgdir/usr/lib/systemd/system/syntrop-triage@.service"
+    install -d -m0755 "$pkgdir/etc/syntrop"
+    install -d -m0775 "$pkgdir/var/lib/models"
+    install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+}

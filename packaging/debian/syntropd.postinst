@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "configure" ]; then
+    if ! getent group syntrop >/dev/null 2>&1; then
+        groupadd -r syntrop
+    fi
+    mkdir -p /run/syntrop /var/lib/models /etc/syntrop
+    chown root:syntrop /var/lib/models
+    chmod 0775 /var/lib/models
+    systemctl --system daemon-reload >/dev/null || true
+fi
+
+#DEBHELPER#
+exit 0
