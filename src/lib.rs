@@ -8,6 +8,7 @@
 //! - `syntrop-toold` (Sandboxed diagnostic execution, automated rollback)
 //! - `syntrop-runtimed` (Headless model execution, tensor generation)
 //! - `syntrop-sentry` (Autonomous zero-trust systemd supervisor)
+//! - `syntrop-routerd` (Multi-provider LLM reverse proxy & telemetry router)
 //! - `syntropctl` (Unified operator CLI)
 
 pub mod sockets;
@@ -51,8 +52,8 @@ mod tests {
     #[test]
     fn test_inspect_subsystem() {
         let status = inspect_subsystem();
-        assert_eq!(status.version, "0.1.0");
-        assert_eq!(status.components.len(), 7);
+        assert_eq!(status.version, "0.3.0");
+        assert_eq!(status.components.len(), 8);
         assert!(!status.sockets.is_empty());
         assert!(!status.units.is_empty());
     }

@@ -29,6 +29,7 @@ all = [
     "toold",
     "runtimed",
     "sentry",
+    "routerd",
     "syntropctl",
 ]
 inferenced = ["dep:syntrop-inferenced"]
@@ -37,6 +38,7 @@ contextd = ["dep:syntrop-contextd"]
 toold = ["dep:syntrop-toold"]
 runtimed = ["dep:syntrop-runtimed"]
 sentry = ["dep:syntrop-sentry"]
+routerd = ["dep:syntrop-routerd"]
 syntropctl = ["dep:syntropctl"]
 
 [dependencies]
@@ -47,6 +49,7 @@ syntrop-inferenced = { version = "0.3.0", path = "../inferenced/crates/inference
 syntrop-contextd = { version = "0.3.0", path = "../contextd/crates/contextd-daemon", optional = true }
 syntrop-modeld = { version = "0.3.0", path = "../modeld/crates/modeld-daemon", optional = true }
 syntrop-sentry = { version = "0.3.0", path = "../sentry/crates/sentry-daemon", optional = true }
+syntrop-routerd = { version = "0.3.0", path = "../routerd/crates/routerd-daemon", optional = true }
 syntropctl = { version = "0.3.0", path = "../syntropctl/crates/syntropctl-cli", optional = true }
 
 # Pure Rust system dependencies (zero C dynamic libs outside libc)

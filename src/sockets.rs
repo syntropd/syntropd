@@ -86,6 +86,20 @@ pub const ALL_SOCKETS: &[SocketDefinition] = &[
         mode: 0o660,
         group: "sentry",
     },
+    SocketDefinition {
+        daemon: "routerd",
+        address: "/run/syntrop/io.syntrop.Router1",
+        is_varlink: true,
+        mode: 0o660,
+        group: "syntrop",
+    },
+    SocketDefinition {
+        daemon: "routerd",
+        address: "/run/syntrop/router.sock",
+        is_varlink: false,
+        mode: 0o660,
+        group: "syntrop",
+    },
 ];
 
 /// Observed state of an IPC socket.
@@ -159,7 +173,7 @@ mod tests {
 
     #[test]
     fn test_all_sockets_definition() {
-        assert_eq!(ALL_SOCKETS.len(), 9);
+        assert_eq!(ALL_SOCKETS.len(), 11);
         for s in ALL_SOCKETS {
             assert!(s.address.starts_with("/run/"));
         }

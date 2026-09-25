@@ -86,6 +86,16 @@ pub const SUITE_COMPONENTS: &[SuiteComponent] = &[
         socket_unit: Some("systemd-sentry.socket"),
     },
     SuiteComponent {
+        name: "routerd",
+        package: "syntrop-routerd",
+        version: "0.3.0",
+        binaries: &["routerd", "routerctl"],
+        role: "Multi-provider LLM reverse proxy, dynamic router & telemetry offload gateway",
+        primary_socket: Some("/run/syntrop/io.syntrop.Router1"),
+        service_unit: "routerd.service",
+        socket_unit: Some("routerd.socket"),
+    },
+    SuiteComponent {
         name: "syntropctl",
         package: "syntropctl",
         version: "0.1.0",
@@ -117,7 +127,7 @@ mod tests {
 
     #[test]
     fn test_suite_components_count() {
-        assert_eq!(SUITE_COMPONENTS.len(), 7);
+        assert_eq!(SUITE_COMPONENTS.len(), 8);
     }
 
     #[test]
@@ -125,6 +135,8 @@ mod tests {
         assert!(find_component("inferenced").is_some());
         assert!(find_component("syntrop-toold").is_some());
         assert!(find_component("systemd-sentry").is_some());
+        assert!(find_component("routerd").is_some());
+        assert!(find_component("routerctl").is_some());
         assert!(find_component("syntropctl").is_some());
         assert!(find_component("nonexistent").is_none());
     }

@@ -114,6 +114,20 @@ pub const ALL_UNITS: &[SystemdUnitDescriptor] = &[
         documentation: "https://github.com/syntropd/sentry",
         is_umbrella: false,
     },
+    SystemdUnitDescriptor {
+        name: "routerd.socket",
+        unit_type: "socket",
+        description: "routerd Varlink socket",
+        documentation: "https://github.com/syntropd/routerd",
+        is_umbrella: false,
+    },
+    SystemdUnitDescriptor {
+        name: "routerd.service",
+        unit_type: "service",
+        description: "routerd model router and gateway daemon",
+        documentation: "https://github.com/syntropd/routerd",
+        is_umbrella: false,
+    },
 ];
 
 /// Status of a systemd unit.
@@ -198,7 +212,7 @@ mod tests {
 
     #[test]
     fn test_all_units_count() {
-        assert_eq!(ALL_UNITS.len(), 14);
+        assert_eq!(ALL_UNITS.len(), 16);
     }
 
     #[test]

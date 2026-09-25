@@ -1,7 +1,7 @@
 [Unit]
 Description=syntropd Unified Socket Activation Umbrella
 Documentation=https://syntropd.github.io/architecture.html#socket
-Wants=inferenced.socket modeld.socket contextd.socket toold.socket runtimed.socket systemd-sentry.socket
+Wants=inferenced.socket modeld.socket contextd.socket toold.socket runtimed.socket systemd-sentry.socket routerd.socket
 After=network.target
 
 [Install]
