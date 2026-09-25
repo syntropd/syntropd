@@ -1,5 +1,5 @@
 Name:           syntropd
-Version:        0.3.4
+Version:        0.3.5
 Release:        1%{?dist}
 Summary:        Native AI Subsystem for systemd
 
@@ -60,6 +60,8 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/models
 %dir %{_sharedstatedir}/models
 
 %changelog
+* Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.5-1
+- Setup verifies every provider live before enabling; dead entries switch off.
 * Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.4-1
 - Installer ships per-daemon ctl tools alongside the daemons.
 * Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.3-1
