@@ -33,8 +33,6 @@ RestrictSUIDSGID=yes
 LockPersonality=yes
 
 # Directories & Credentials
-RuntimeDirectory=syntrop
-RuntimeDirectoryMode=0755
 ConfigurationDirectory=syntrop
 StateDirectory=routerd
 LogsDirectory=routerd
