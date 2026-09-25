@@ -309,6 +309,8 @@ install_binaries() {
         "${root}/target/debug/${bin}" \
         "${root}/${bin}/target/release/${bin}" \
         "${root}/${bin}/target/debug/${bin}" \
+        "${root}"/*/target/release/"${bin}" \
+        "${root}"/*/target/debug/"${bin}" \
         "${root}/crates/*-daemon/target/release/${bin}" \
         "${root}/crates/*-cli/target/release/${bin}"; do
         if [[ -f "${candidate}" && -x "${candidate}" ]]; then
