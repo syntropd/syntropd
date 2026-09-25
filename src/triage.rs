@@ -162,7 +162,7 @@ pub fn categorize_failure(
     (
         FaultCategory::UnknownFailure,
         format!("Unit {} is in non-active state.", unit),
-        "Run `journalctl -u {} -e` for full journal chronology or `syntropctl explain {}`.".to_string(),
+        format!("Run `journalctl -u {unit} -e` for full journal chronology or `syntropctl explain {unit}`."),
     )
 }
 
@@ -201,5 +201,22 @@ mod tests {
         ];
         let (cat, _summary, _rec) = categorize_failure("demo.service", "failed", &logs);
         assert_eq!(cat, FaultCategory::MissingExecutableOrPath);
+    }
+
+    #[test]
+    fn test_unknown_failure_recommendation_names_unit() {
+        let logs = vec!["some unrecognized failure line".to_string()];
+        let (cat, _summary, rec) = categorize_failure("demo.service", "failed", &logs);
+        assert_eq!(cat, FaultCategory::UnknownFailure);
+        assert!(
+            rec.contains("demo.service"),
+            "recommendation should name the unit: {}",
+            rec
+        );
+        assert!(
+            !rec.contains("{}"),
+            "recommendation must not contain unfilled placeholder: {}",
+            rec
+        );
     }
 }
