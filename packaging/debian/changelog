@@ -1,3 +1,9 @@
+syntropd (0.3.1-1) unstable; urgency=medium
+
+  * Installer compiles missing binaries from local source; triage names the failed unit.
+
+ -- Syntropd Team <syntropd@users.noreply.github.com>  Fri, 25 Sep 2026 15:23:30 +0000
+
 syntropd (0.3.0-1) unstable; urgency=medium
 
   * Update umbrella release for routerd integration and tmpfiles.d runtime configuration.

@@ -1,5 +1,5 @@
 Name:           syntropd
-Version:        0.3.0
+Version:        0.3.1
 Release:        1%{?dist}
 Summary:        Native AI Subsystem for systemd
 
@@ -60,6 +60,9 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/models
 %dir %{_sharedstatedir}/models
 
 %changelog
+* Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.1-1
+- Installer compiles missing binaries from local source checkouts.
+- Triage names the failed unit in unknown-failure recommendations.
 * Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.0-1
 - Update umbrella release for routerd integration and tmpfiles.d runtime configuration.
 * Wed Sep 24 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.1.0-1

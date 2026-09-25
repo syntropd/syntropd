@@ -99,6 +99,10 @@ To run pre-flight compatibility checks without modifying your system:
 curl -fsSL https://syntropd.github.io/install.sh | bash -s -- --dry-run
 ```
 
+If a binary is missing from both local builds and the release bundle, the
+installer compiles it from a matching source checkout instead of failing.
+Builds run offline first, as your user, so your cargo cache is reused.
+
 ### 4.2 Single-Command Cargo Installation
 Install the umbrella CLI directly from crates.io:
 
