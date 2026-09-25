@@ -1,3 +1,9 @@
+syntropd (0.3.4-1) unstable; urgency=medium
+
+  * Installer ships per-daemon ctl tools alongside the daemons.
+
+ -- Syntropd Team <syntropd@users.noreply.github.com>  Fri, 25 Sep 2026 19:13:34 +0000
+
 syntropd (0.3.3-1) unstable; urgency=medium
 
   * Installer finishes non-interactively and points at routerctl setup next step.

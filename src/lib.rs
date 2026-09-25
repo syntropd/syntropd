@@ -52,7 +52,7 @@ mod tests {
     #[test]
     fn test_inspect_subsystem() {
         let status = inspect_subsystem();
-        assert_eq!(status.version, "0.3.3");
+        assert_eq!(status.version, "0.3.4");
         assert_eq!(status.components.len(), 8);
         assert!(!status.sockets.is_empty());
         assert!(!status.units.is_empty());
