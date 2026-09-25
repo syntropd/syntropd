@@ -1578,7 +1578,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-contextd"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "libc",
@@ -1594,7 +1594,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-contextd-core"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "libc",
@@ -1609,7 +1609,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-inferenced"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "axum",
@@ -1633,7 +1633,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-inferenced-core"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "chrono",
  "libc",
@@ -1648,7 +1648,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-modeld"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "libc",
@@ -1664,7 +1664,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-modeld-core"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "libc",
@@ -1680,7 +1680,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-runtimed"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "libc",
@@ -1696,7 +1696,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-runtimed-core"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "libc",
@@ -1712,7 +1712,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "chrono",
  "reqwest",
@@ -1733,7 +1733,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry-core"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "chrono",
  "serde",
@@ -1744,7 +1744,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry-diagnostic"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "async-trait",
  "chrono",
@@ -1760,7 +1760,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry-driver"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "chrono",
  "futures-lite",
@@ -1779,7 +1779,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry-mcp"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "chrono",
  "serde",
@@ -1793,7 +1793,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry-safety"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "chrono",
  "serde",
@@ -1806,7 +1806,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-toold"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "libc",
@@ -1822,7 +1822,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-toold-core"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "libc",
@@ -1838,7 +1838,7 @@ dependencies = [
 
 [[package]]
 name = "syntropctl"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -1853,7 +1853,7 @@ dependencies = [
 
 [[package]]
 name = "syntropctl-core"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "serde",
  "serde_json",
@@ -1864,7 +1864,7 @@ dependencies = [
 
 [[package]]
 name = "syntropd"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "clap",

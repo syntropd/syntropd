@@ -1,6 +1,6 @@
 [package]
 name = "syntropd"
-version = "0.1.0"
+version = "0.3.0"
 edition = "2021"
 rust-version = "1.80.0"
 description = "Native AI Subsystem for systemd — Umbrella Meta-Package & Supervisor"
@@ -41,13 +41,13 @@ syntropctl = ["dep:syntropctl"]
 
 [dependencies]
 # Standardized syntrop-* suite dependencies
-syntrop-toold = { version = "0.2.0", path = "../toold/crates/toold-daemon", optional = true }
-syntrop-runtimed = { version = "0.1.0", path = "../runtimed/crates/runtimed-daemon", optional = true }
-syntrop-inferenced = { version = "0.1.0", path = "../inferenced/crates/inferenced-daemon", optional = true }
-syntrop-contextd = { version = "0.2.0", path = "../contextd/crates/contextd-daemon", optional = true }
-syntrop-modeld = { version = "0.2.0", path = "../modeld/crates/modeld-daemon", optional = true }
-syntrop-sentry = { version = "0.1.0", path = "../sentry/crates/sentry-daemon", optional = true }
-syntropctl = { version = "0.1.0", path = "../syntropctl/crates/syntropctl-cli", optional = true }
+syntrop-toold = { version = "0.3.0", path = "../toold/crates/toold-daemon", optional = true }
+syntrop-runtimed = { version = "0.3.0", path = "../runtimed/crates/runtimed-daemon", optional = true }
+syntrop-inferenced = { version = "0.3.0", path = "../inferenced/crates/inferenced-daemon", optional = true }
+syntrop-contextd = { version = "0.3.0", path = "../contextd/crates/contextd-daemon", optional = true }
+syntrop-modeld = { version = "0.3.0", path = "../modeld/crates/modeld-daemon", optional = true }
+syntrop-sentry = { version = "0.3.0", path = "../sentry/crates/sentry-daemon", optional = true }
+syntropctl = { version = "0.3.0", path = "../syntropctl/crates/syntropctl-cli", optional = true }
 
 # Pure Rust system dependencies (zero C dynamic libs outside libc)
 anyhow = "1.0.86"
