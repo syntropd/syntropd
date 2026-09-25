@@ -1,5 +1,5 @@
 Name:           syntropd
-Version:        0.1.0
+Version:        0.3.0
 Release:        1%{?dist}
 Summary:        Native AI Subsystem for systemd
 
@@ -32,6 +32,7 @@ cargo build --release --locked
 install -D -p -m 0755 target/release/syntropd %{buildroot}%{_bindir}/syntropd
 install -D -p -m 0644 units/syntrop-sockets.target %{buildroot}%{_unitdir}/syntrop-sockets.target
 install -D -p -m 0644 units/syntrop-triage@.service %{buildroot}%{_unitdir}/syntrop-triage@.service
+install -D -p -m 0644 tmpfiles.d/syntrop.conf %{buildroot}%{_tmpfilesdir}/syntrop.conf
 
 install -d -m 0755 %{buildroot}%{_sysconfdir}/syntrop
 install -d -m 0750 %{buildroot}%{_sharedstatedir}/syntrop
@@ -39,6 +40,7 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/models
 
 %post
 %systemd_post syntrop-sockets.target
+%tmpfiles_create_package syntropd %{_tmpfilesdir}/syntrop.conf
 
 %preun
 %systemd_preun syntrop-sockets.target
@@ -52,10 +54,13 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/models
 %{_bindir}/syntropd
 %{_unitdir}/syntrop-sockets.target
 %{_unitdir}/syntrop-triage@.service
+%{_tmpfilesdir}/syntrop.conf
 %dir %{_sysconfdir}/syntrop
 %dir %{_sharedstatedir}/syntrop
 %dir %{_sharedstatedir}/models
 
 %changelog
+* Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.0-1
+- Update umbrella release for routerd integration and tmpfiles.d runtime configuration.
 * Wed Sep 24 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.1.0-1
 - Initial umbrella release for Fedora and RHEL.

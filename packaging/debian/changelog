@@ -1,5 +1,12 @@
+syntropd (0.3.0-1) unstable; urgency=medium
+
+  * Update umbrella release for routerd integration and tmpfiles.d runtime configuration.
+
+ -- Syntropd Team <syntropd@users.noreply.github.com>  Fri, 25 Sep 2026 10:10:00 +0000
+
 syntropd (0.1.0-1) unstable; urgency=medium
 
   * Initial release for Debian and Ubuntu.
 
  -- Syntropd Team <syntropd@users.noreply.github.com>  Wed, 24 Sep 2026 20:40:00 +0000
+

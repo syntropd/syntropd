@@ -1,6 +1,6 @@
 # Maintainer: Syntropd Team <syntropd@users.noreply.github.com>
 pkgname=syntropd
-pkgver=0.1.0
+pkgver=0.3.0
 pkgrel=1
 pkgdesc="Native AI Subsystem for systemd — Umbrella Meta-Package"
 arch=('x86_64' 'aarch64')
@@ -27,6 +27,7 @@ package() {
     install -Dm755 target/release/syntropd "$pkgdir/usr/bin/syntropd"
     install -Dm644 units/syntrop-sockets.target "$pkgdir/usr/lib/systemd/system/syntrop-sockets.target"
     install -Dm644 units/syntrop-triage@.service "$pkgdir/usr/lib/systemd/system/syntrop-triage@.service"
+    install -Dm644 tmpfiles.d/syntrop.conf "$pkgdir/usr/lib/tmpfiles.d/syntrop.conf"
     install -d -m0755 "$pkgdir/etc/syntrop"
     install -d -m0775 "$pkgdir/var/lib/models"
     install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
