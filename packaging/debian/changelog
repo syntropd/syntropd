@@ -1,3 +1,9 @@
+syntropd (0.3.3-1) unstable; urgency=medium
+
+  * Installer finishes non-interactively and points at routerctl setup next step.
+
+ -- Syntropd Team <syntropd@users.noreply.github.com>  Fri, 25 Sep 2026 19:06:43 +0000
+
 syntropd (0.3.2-1) unstable; urgency=medium
 
   * Release builds use thin link-time optimization with stripped symbols.

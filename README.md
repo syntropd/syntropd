@@ -151,6 +151,9 @@ cargo build --release
 Verify subsystem readiness and hardware plane detection:
 
 ```bash
+# First-time LLM setup (required before use)
+sudo routerctl setup
+
 # Verify umbrella system status
 syntropd status
 

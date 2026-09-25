@@ -1,5 +1,5 @@
 Name:           syntropd
-Version:        0.3.2
+Version:        0.3.3
 Release:        1%{?dist}
 Summary:        Native AI Subsystem for systemd
 
@@ -60,6 +60,8 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/models
 %dir %{_sharedstatedir}/models
 
 %changelog
+* Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.3-1
+- Installer finishes non-interactively and points at routerctl setup as the required next step.
 * Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.2-1
 - Release builds use thin link-time optimization with stripped symbols.
 * Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.1-1
