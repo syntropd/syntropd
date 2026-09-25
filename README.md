@@ -32,16 +32,16 @@ curl -fsSL https://syntropd.github.io/install.sh | sudo bash
 |                        PID 1: systemd (v252+)                           |
 |       (syntrop-sockets.target, OnFailure=syntrop-triage@%n.service)     |
 +-------------------------------------------------------------------------+
-         |               |              |              |             |
-         v               v              v              v             v
-+----------------+ +------------+ +-----------+ +-----------+ +------------+
-|   inferenced   | |   modeld   | | contextd  | |   toold   | | runtimed   |
-| (HW Arbiter)   | | (Model CAS)| | (Drift/CG)| | (Sandboxed| | (Tensor/   |
-|  Demand Paging | | Zero-Copy  | | Causality | |  Rollback)| |  Inference)|
-+----------------+ +------------+ +-----------+ +-----------+ +------------+
-         ^                                                           ^
-         |                    Varlink IPC / AF_UNIX                  |
-         +-----------------------------------------------------------+
+         |               |              |              |             |              |
+         v               v              v              v             v              v
++----------------+ +------------+ +-----------+ +-----------+ +------------+ +---------------+
+|   inferenced   | |   modeld   | | contextd  | |   toold   | | runtimed   | |    routerd    |
+| (HW Arbiter)   | | (Model CAS)| | (Drift/CG)| | (Sandboxed| | (Tensor/   | | (LLM Proxy/   |
+|  Demand Paging | | Zero-Copy  | | Causality | |  Rollback)| |  Inference)| |  Dyn Routing) |
++----------------+ +------------+ +-----------+ +-----------+ +------------+ +---------------+
+         ^                                                                          ^
+         |                    Varlink IPC / AF_UNIX                                 |
+         +--------------------------------------------------------------------------+
                                     |
                  +--------------------------------------+
                  |  sentry / systemd-sentry Supervisor  |
@@ -67,6 +67,7 @@ All daemons communicate over standard UNIX domain sockets using [Varlink](https:
 | **toold** | `syntrop-toold` | `toold` | `/run/syntrop/io.syntrop.Tool1` | Sandboxed diagnostic & remediation execution with automated rollback |
 | **runtimed** | `syntrop-runtimed` | `runtimed` | `/run/syntrop/io.syntrop.Runtime1` | Headless model execution, tensor generation, GPU/NPU acceleration |
 | **sentry** | `syntrop-sentry` | `sentry`, `systemd-sentry` | `/run/systemd-sentry/sentry.sock` | Autonomous supervisor daemon, systemd crash triage watchdog |
+| **routerd** | `syntrop-routerd` | `routerd`, `routerctl` | `/run/syntrop/io.syntrop.Router1` | Multi-provider LLM reverse proxy, dynamic router & telemetry offload gateway |
 | **syntropctl** | `syntropctl` | `syntropctl` | *(CLI Operator)* | Operator CLI for inspection, drift, models, and failure triage |
 | **syntropd** | `syntropd` | `syntropd` | *(Umbrella CLI)* | Unified umbrella CLI, status monitoring, and distribution packaging |
 
@@ -107,7 +108,7 @@ cargo install syntropd
 
 To install the individual daemons:
 ```bash
-cargo install syntropctl syntrop-toold syntrop-runtimed syntrop-inferenced syntrop-contextd syntrop-modeld syntrop-sentry
+cargo install syntropctl syntrop-toold syntrop-runtimed syntrop-inferenced syntrop-contextd syntrop-modeld syntrop-sentry syntrop-routerd
 ```
 
 ### 4.3 Distribution Packages
