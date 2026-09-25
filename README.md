@@ -7,6 +7,14 @@
 [![Rust](https://img.shields.io/badge/rust-1.80.0%2B-orange.svg)](https://www.rust-lang.org)
 [![systemd](https://img.shields.io/badge/systemd-v252%2B-red.svg)](https://systemd.io)
 [![Documentation](https://img.shields.io/badge/docs-syntropd.github.io-green.svg)](https://syntropd.github.io)
+[![crates.io](https://img.shields.io/crates/v/syntropd.svg)](https://crates.io/crates/syntropd)
+
+```bash
+# Install the complete native AI subsystem across any Linux distribution
+curl -fsSL https://syntropd.github.io/install.sh | sudo bash
+```
+
+> **Single-command cargo alternative:** `cargo install syntropd`
 
 ---
 
