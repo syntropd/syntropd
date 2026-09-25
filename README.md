@@ -61,11 +61,11 @@ All daemons communicate over standard UNIX domain sockets using [Varlink](https:
 
 | Component | Crates.io Package | Binaries | Primary Socket / Address | Functional Role |
 | :--- | :--- | :--- | :--- | :--- |
-| **inferenced** | `syntrop-inferenced` | `inferenced` | `/run/syntrop/io.syntrop.Inference1` | Hardware arbiter, demand paging, memory leases, Ollama/OpenAI gateway (`/run/syntrop/gateway.sock`) |
-| **modeld** | `syntrop-modeld` | `modeld` | `/run/syntrop/io.syntrop.Model1` | Content-addressable model cache, zero-copy shm distribution |
-| **contextd** | `syntrop-contextd` | `contextd` | `/run/syntrop/io.syntrop.Context1` | Causal event graphs, configuration diffs, system chronology |
-| **toold** | `syntrop-toold` | `toold` | `/run/syntrop/io.syntrop.Tool1` | Sandboxed diagnostic & remediation execution with automated rollback |
-| **runtimed** | `syntrop-runtimed` | `runtimed` | `/run/syntrop/io.syntrop.Runtime1` | Headless model execution, tensor generation, GPU/NPU acceleration |
+| **inferenced** | `syntrop-inferenced` | `inferenced`, `inferenctl` | `/run/syntrop/io.syntrop.Inference1` | Hardware arbiter, demand paging, memory leases, Ollama/OpenAI gateway (`/run/syntrop/gateway.sock`) |
+| **modeld** | `syntrop-modeld` | `modeld`, `modelctl` | `/run/syntrop/io.syntrop.Model1` | Content-addressable model cache, zero-copy shm distribution |
+| **contextd** | `syntrop-contextd` | `contextd`, `contextctl` | `/run/syntrop/io.syntrop.Context1` | Causal event graphs, configuration diffs, system chronology |
+| **toold** | `syntrop-toold` | `toold`, `toolctl` | `/run/syntrop/io.syntrop.Tool1` | Sandboxed diagnostic & remediation execution with automated rollback |
+| **runtimed** | `syntrop-runtimed` | `runtimed`, `runtimectl` | `/run/syntrop/io.syntrop.Runtime1` | Headless model execution, tensor generation, GPU/NPU acceleration |
 | **sentry** | `syntrop-sentry` | `sentry`, `systemd-sentry` | `/run/systemd-sentry/sentry.sock` | Autonomous supervisor daemon, systemd crash triage watchdog |
 | **routerd** | `syntrop-routerd` | `routerd`, `routerctl` | `/run/syntrop/io.syntrop.Router1` | Multi-provider LLM reverse proxy, dynamic router & telemetry offload gateway |
 | **syntropctl** | `syntropctl` | `syntropctl` | *(CLI Operator)* | Operator CLI for inspection, drift, models, and failure triage |
