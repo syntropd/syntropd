@@ -1,3 +1,9 @@
+syntropd (0.3.2-1) unstable; urgency=medium
+
+  * Release builds use thin link-time optimization with stripped symbols.
+
+ -- Syntropd Team <syntropd@users.noreply.github.com>  Fri, 25 Sep 2026 15:37:51 +0000
+
 syntropd (0.3.1-1) unstable; urgency=medium
 
   * Installer compiles missing binaries from local source; triage names the failed unit.

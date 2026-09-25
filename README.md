@@ -136,6 +136,14 @@ sudo apt-get install syntropd
 sudo systemctl enable --now syntrop-sockets.target
 ```
 
+### 4.4 Building from source
+Release builds use thin link-time optimization with stripped symbols
+(portable x86-64, no chip-specific instructions):
+
+```bash
+cargo build --release
+```
+
 ---
 
 ## 5. Verification & Operator Usage
