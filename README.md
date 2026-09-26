@@ -148,32 +148,38 @@ cargo build --release
 
 ## 5. Verification & Operator Usage
 
+One front door reaches every tool: `syn <namespace> <command>`, e.g.
+`syn router models`, `syn fleet status`, `syn system units`. The full
+name `syntrop` works identically; per-repo CLIs (`routerctl`, …) are
+unchanged underneath. Namespaces: `router`, `runtime`, `store`,
+`hardware`, `context`, `tools`, `fleet`, `system`.
+
 Verify subsystem readiness and hardware plane detection:
 
 ```bash
 # First-time LLM setup (required before use)
-sudo routerctl setup
+sudo syn router setup
 
 # List connected models (routing aliases hidden)
-routerctl models
+syn router models
 
 # Show or pin the default model (pinning needs sudo)
-routerctl default
-sudo routerctl default MiniMax-M3
+syn router default
+sudo syn router default MiniMax-M3
 
 # Verify umbrella system status
-syntropd status
+syn system status
 
 # List active systemd sockets
 systemctl list-sockets "syntrop*"
 
 # Check operator status
-syntropctl status
+syn fleet status
 
 # Autonomous triage of any failed service (e.g. nginx or postgresql)
-syntropctl explain nginx.service
+syn fleet explain nginx.service
 # or
-syntropd triage nginx.service
+syn system triage nginx.service
 ```
 
 ### Autonomous Triage Hook
