@@ -154,6 +154,13 @@ Verify subsystem readiness and hardware plane detection:
 # First-time LLM setup (required before use)
 sudo routerctl setup
 
+# List connected models (routing aliases hidden)
+routerctl models
+
+# Show or pin the default model (pinning needs sudo)
+routerctl default
+sudo routerctl default MiniMax-M3
+
 # Verify umbrella system status
 syntropd status
 
