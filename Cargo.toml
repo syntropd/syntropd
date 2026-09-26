@@ -1,6 +1,6 @@
 [package]
 name = "syntropd"
-version = "0.3.6"
+version = "0.3.7"
 edition = "2021"
 rust-version = "1.80.0"
 description = "Native AI Subsystem for systemd — Umbrella Meta-Package & Supervisor"
@@ -19,6 +19,10 @@ path = "src/lib.rs"
 [[bin]]
 name = "syntropd"
 path = "src/main.rs"
+
+[[bin]]
+name = "syntrop"
+path = "src/bin/syntrop.rs"
 
 [features]
 default = []
