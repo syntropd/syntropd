@@ -19,6 +19,11 @@ out="$("${INSTALL}" --dry-run 2>&1)"
 echo "${out}" | grep -q "gemma-4-E2B-it-Q4_K_M.gguf" || { echo "FAIL: default dry-run misses Gemma"; exit 1; }
 pass "default dry-run ships the Gemma brain"
 
+# Either line proves the wiring step ran (outcome depends on local files).
+echo "${out}" | grep -q "routerctl setup --auto\|skipping router wiring" \
+  || { echo "FAIL: dry-run misses router wiring"; exit 1; }
+pass "dry-run covers router wiring"
+
 out="$("${INSTALL}" --dry-run --no-models 2>&1)"
 echo "${out}" | grep -q "engine only" || { echo "FAIL: --no-models not honored"; exit 1; }
 echo "${out}" | grep -q "gemma-4-E2B" && { echo "FAIL: --no-models still lists Gemma"; exit 1; }
