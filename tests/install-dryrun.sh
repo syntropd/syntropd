@@ -51,6 +51,9 @@ pass "opt-in flags add starter + vision (Gemma stays default)"
 if "${INSTALL}" --bogus-flag >/dev/null 2>&1; then echo "FAIL: unknown flag accepted"; exit 1; fi
 pass "unknown flag rejected"
 
+if grep -qi "ollama" "${INSTALL}"; then echo "FAIL: installer mentions Ollama"; exit 1; fi
+pass "installer never mentions Ollama"
+
 if [[ -f "${SITE_COPY}" ]]; then
   cmp -s "${INSTALL}" "${SITE_COPY}" || { echo "FAIL: site install.sh out of sync"; exit 1; }
   pass "site copy identical"
