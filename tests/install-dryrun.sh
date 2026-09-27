@@ -16,8 +16,21 @@ pass "syntax"
 pass "--help documents model flags"
 
 out="$("${INSTALL}" --dry-run 2>&1)"
-echo "${out}" | grep -q "gemma-4-E2B-it-Q4_K_M.gguf" || { echo "FAIL: default dry-run misses Gemma"; exit 1; }
-pass "default dry-run ships the Gemma brain"
+echo "${out}" | grep -q "gemma-4-E2B-it-Q4_K_M.gguf\|Qwen starter brain instead" \
+  || { echo "FAIL: default dry-run picks no brain"; exit 1; }
+pass "default dry-run picks a fitting brain"
+echo "${out}" | grep -q "Brain fit" || { echo "FAIL: dry-run hides fit decision"; exit 1; }
+pass "dry-run reports the RAM fit decision"
+
+out="$(TEST_MEM_KB=8000000 "${INSTALL}" --dry-run 2>&1)"
+echo "${out}" | grep -q "Qwen starter brain instead" || { echo "FAIL: small RAM not downgraded"; exit 1; }
+echo "${out}" | grep -q "qwen2.5-0.5b-instruct-q8_0.gguf" || { echo "FAIL: downgrade misses Qwen"; exit 1; }
+pass "small RAM auto-downgrades to Qwen"
+
+out="$(TEST_MEM_KB=8000000 "${INSTALL}" --dry-run --with-gemma 2>&1)"
+echo "${out}" | grep -q "gemma-4-E2B-it-Q4_K_M.gguf" || { echo "FAIL: explicit Gemma not honored"; exit 1; }
+echo "${out}" | grep -q "expect load failure" || { echo "FAIL: explicit Gemma unwarned"; exit 1; }
+pass "explicit --with-gemma wins with a warning"
 
 # Either line proves the wiring step ran (outcome depends on local files).
 echo "${out}" | grep -q "routerctl setup --auto\|skipping router wiring" \
