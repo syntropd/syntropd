@@ -2629,7 +2629,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-routerd"
-version = "0.3.3"
+version = "0.3.4"
 dependencies = [
  "anyhow",
  "axum",
@@ -2653,7 +2653,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-routerd-core"
-version = "0.3.3"
+version = "0.3.4"
 dependencies = [
  "async-trait",
  "bytes",
@@ -2886,7 +2886,7 @@ dependencies = [
 
 [[package]]
 name = "syntropd"
-version = "0.3.9"
+version = "0.3.10"
 dependencies = [
  "anyhow",
  "clap",
