@@ -2558,7 +2558,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-inferenced"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "anyhow",
  "axum",
@@ -2582,7 +2582,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-inferenced-core"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "chrono",
  "libc",
@@ -2629,7 +2629,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-routerd"
-version = "0.3.6"
+version = "0.3.7"
 dependencies = [
  "anyhow",
  "axum",
@@ -2653,7 +2653,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-routerd-core"
-version = "0.3.6"
+version = "0.3.7"
 dependencies = [
  "async-trait",
  "bytes",
@@ -2734,7 +2734,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "chrono",
  "reqwest",
@@ -2755,7 +2755,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry-core"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "chrono",
  "serde",
@@ -2766,7 +2766,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry-diagnostic"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "async-trait",
  "chrono",
@@ -2782,7 +2782,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry-driver"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "chrono",
  "futures-lite",
@@ -2801,7 +2801,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry-mcp"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "chrono",
  "serde",
@@ -2815,7 +2815,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry-safety"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "chrono",
  "serde",
@@ -2886,7 +2886,7 @@ dependencies = [
 
 [[package]]
 name = "syntropd"
-version = "0.3.13"
+version = "0.3.14"
 dependencies = [
  "anyhow",
  "clap",

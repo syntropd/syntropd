@@ -30,7 +30,7 @@ pub const SUITE_COMPONENTS: &[SuiteComponent] = &[
         package: "syntrop-inferenced",
         version: "0.3.0",
         binaries: &["inferenced", "inferenctl"],
-        role: "Hardware arbiter, demand paging, dynamic memory quotas & Ollama gateway",
+        role: "Hardware arbiter, demand paging, dynamic memory quotas & OpenAI-compatible gateway",
         primary_socket: Some("/run/syntrop/io.syntrop.Inference1"),
         service_unit: "inferenced.service",
         socket_unit: Some("inferenced.socket"),

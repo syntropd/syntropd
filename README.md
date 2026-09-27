@@ -61,7 +61,7 @@ All daemons communicate over standard UNIX domain sockets using [Varlink](https:
 
 | Component | Crates.io Package | Binaries | Primary Socket / Address | Functional Role |
 | :--- | :--- | :--- | :--- | :--- |
-| **inferenced** | `syntrop-inferenced` | `inferenced`, `inferenctl` | `/run/syntrop/io.syntrop.Inference1` | Hardware arbiter, demand paging, memory leases, Ollama/OpenAI gateway (`/run/syntrop/gateway.sock`) |
+| **inferenced** | `syntrop-inferenced` | `inferenced`, `inferenctl` | `/run/syntrop/io.syntrop.Inference1` | Hardware arbiter, demand paging, memory leases, OpenAI-compatible gateway (`/run/syntrop/gateway.sock`) |
 | **modeld** | `syntrop-modeld` | `modeld`, `modelctl` | `/run/syntrop/io.syntrop.Model1` | Content-addressable model cache, zero-copy shm distribution |
 | **contextd** | `syntrop-contextd` | `contextd`, `contextctl` | `/run/syntrop/io.syntrop.Context1` | Causal event graphs, configuration diffs, system chronology |
 | **toold** | `syntrop-toold` | `toold`, `toolctl` | `/run/syntrop/io.syntrop.Tool1` | Sandboxed diagnostic & remediation execution with automated rollback |
