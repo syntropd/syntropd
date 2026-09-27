@@ -165,7 +165,7 @@ syn router models
 
 # Show or pin the default model (pinning needs sudo)
 syn router default
-sudo syn router default MiniMax-M3
+sudo syn router default qwen2.5-coder:7b
 
 # Verify umbrella system status
 syn system status
