@@ -1,6 +1,6 @@
 {
  "repo": "syntropd",
- "rev": "15e0d15",
+ "rev": "c502ac7",
  "dirty": true,
  "pages": [
   {
@@ -13,9 +13,9 @@
   {
    "path": "./src/cli/mod.rs",
    "lines": 4,
-   "bin_bytes": 704485,
+   "bin_bytes": null,
    "heat_pct": null,
-   "reach": 2
+   "reach": 0
   },
   {
    "path": "./src/cli/parse_cli.rs",
@@ -34,7 +34,7 @@
   {
    "path": "./src/lib.rs",
    "lines": 69,
-   "bin_bytes": 148982,
+   "bin_bytes": 1766,
    "heat_pct": 9.09,
    "reach": 0
   },
@@ -50,19 +50,19 @@
    "lines": 204,
    "bin_bytes": 2637,
    "heat_pct": null,
-   "reach": 3
+   "reach": 2
   },
   {
    "path": "./src/suite.rs",
    "lines": 158,
    "bin_bytes": 2471,
    "heat_pct": null,
-   "reach": 3
+   "reach": 2
   },
   {
    "path": "./src/system.rs",
    "lines": 162,
-   "bin_bytes": 8472,
+   "bin_bytes": 7597,
    "heat_pct": null,
    "reach": 1
   },
@@ -78,7 +78,7 @@
    "lines": 230,
    "bin_bytes": 3968,
    "heat_pct": null,
-   "reach": 4
+   "reach": 3
   },
   {
    "path": "./tests/page_rule.rs",
@@ -88,5 +88,5 @@
    "reach": 0
   }
  ],
- "notes": "bin_bytes from newest dev rlib per crate via nm (inlining approx, bins re-link the same code); heat from 110 attributed samples over 28/430 binaries at 10Hz incl. one child level; every repo-resolving frame counts;"
+ "notes": "reach counts referencing files (shared file names qualified by ancestor dir); bin_bytes from newest workspace dev rlib per crate via nm (inlining approx, bins re-link the same code; shims excluded, foreign paths never attributed); heat from 66 attributed samples over 11/147 binaries at 10Hz incl. one child level; every repo-resolving frame counts;"
 }
