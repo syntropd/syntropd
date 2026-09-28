@@ -1,0 +1,92 @@
+{
+ "repo": "syntropd",
+ "rev": "15e0d15",
+ "dirty": true,
+ "pages": [
+  {
+   "path": "./src/bin/syntrop.rs",
+   "lines": 246,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 0
+  },
+  {
+   "path": "./src/cli/mod.rs",
+   "lines": 4,
+   "bin_bytes": 704485,
+   "heat_pct": null,
+   "reach": 2
+  },
+  {
+   "path": "./src/cli/parse_cli.rs",
+   "lines": 113,
+   "bin_bytes": 33331,
+   "heat_pct": null,
+   "reach": 1
+  },
+  {
+   "path": "./src/cli/render_report.rs",
+   "lines": 177,
+   "bin_bytes": 11143,
+   "heat_pct": null,
+   "reach": 1
+  },
+  {
+   "path": "./src/lib.rs",
+   "lines": 69,
+   "bin_bytes": 148982,
+   "heat_pct": 9.09,
+   "reach": 0
+  },
+  {
+   "path": "./src/main.rs",
+   "lines": 39,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 0
+  },
+  {
+   "path": "./src/sockets.rs",
+   "lines": 204,
+   "bin_bytes": 2637,
+   "heat_pct": null,
+   "reach": 3
+  },
+  {
+   "path": "./src/suite.rs",
+   "lines": 158,
+   "bin_bytes": 2471,
+   "heat_pct": null,
+   "reach": 3
+  },
+  {
+   "path": "./src/system.rs",
+   "lines": 162,
+   "bin_bytes": 8472,
+   "heat_pct": null,
+   "reach": 1
+  },
+  {
+   "path": "./src/triage.rs",
+   "lines": 222,
+   "bin_bytes": 9868,
+   "heat_pct": null,
+   "reach": 2
+  },
+  {
+   "path": "./src/units.rs",
+   "lines": 230,
+   "bin_bytes": 3968,
+   "heat_pct": null,
+   "reach": 4
+  },
+  {
+   "path": "./tests/page_rule.rs",
+   "lines": 153,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 0
+  }
+ ],
+ "notes": "bin_bytes from newest dev rlib per crate via nm (inlining approx, bins re-link the same code); heat from 110 attributed samples over 28/430 binaries at 10Hz incl. one child level; every repo-resolving frame counts;"
+}

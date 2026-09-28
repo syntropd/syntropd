@@ -11,6 +11,7 @@
 //! - `syntrop-routerd` (Multi-provider LLM reverse proxy & telemetry router)
 //! - `syntropctl` (Unified operator CLI)
 
+pub mod cli;
 pub mod sockets;
 pub mod suite;
 pub mod system;
