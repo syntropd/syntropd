@@ -15,6 +15,10 @@ pass "syntax"
 "${INSTALL}" --help | grep -q -- "--no-models" || { echo "FAIL: --help hides model flags"; exit 1; }
 pass "--help documents model flags"
 
+"${INSTALL}" --help | grep -q -- "--quiet" || { echo "FAIL: --help hides --quiet"; exit 1; }
+"${INSTALL}" --help | grep -q -- "--verbose" || { echo "FAIL: --help hides --verbose"; exit 1; }
+pass "--help documents verbosity flags"
+
 out="$("${INSTALL}" --dry-run 2>&1)"
 echo "${out}" | grep -q "gemma-4-E2B-it-Q4_K_M.gguf\|Qwen starter brain instead" \
   || { echo "FAIL: default dry-run picks no brain"; exit 1; }
@@ -50,6 +54,12 @@ pass "opt-in flags add starter + vision (Gemma stays default)"
 
 if "${INSTALL}" --bogus-flag >/dev/null 2>&1; then echo "FAIL: unknown flag accepted"; exit 1; fi
 pass "unknown flag rejected"
+
+out="$("${INSTALL}" --dry-run --quiet 2>&1)"
+echo "${out}" | grep -q "Native AI Subsystem" || { echo "FAIL: quiet hides banner"; exit 1; }
+echo "${out}" | grep -q "\[INFO\]" && { echo "FAIL: quiet leaks trivia"; exit 1; }
+echo "${out}" | grep -q "\[OK\]" && { echo "FAIL: quiet leaks trivia"; exit 1; }
+pass "--quiet suppresses trivia, keeps banner"
 
 if grep -qi "ollama" "${INSTALL}"; then echo "FAIL: installer mentions Ollama"; exit 1; fi
 pass "installer never mentions Ollama"
