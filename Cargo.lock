@@ -2629,7 +2629,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-routerd"
-version = "0.3.8"
+version = "0.3.9"
 dependencies = [
  "anyhow",
  "axum",
@@ -2653,7 +2653,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-routerd-core"
-version = "0.3.8"
+version = "0.3.9"
 dependencies = [
  "async-trait",
  "bytes",
@@ -2860,7 +2860,7 @@ dependencies = [
 
 [[package]]
 name = "syntropctl"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "anyhow",
  "clap",
@@ -2875,7 +2875,7 @@ dependencies = [
 
 [[package]]
 name = "syntropctl-core"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "serde",
  "serde_json",
@@ -2886,7 +2886,7 @@ dependencies = [
 
 [[package]]
 name = "syntropd"
-version = "0.3.15"
+version = "0.3.16"
 dependencies = [
  "anyhow",
  "clap",
