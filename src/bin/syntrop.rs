@@ -3,6 +3,8 @@
 //! Thin router over the per-repo CLIs. It resolves the first argument to a
 //! namespace and `exec`s the owning binary with the rest untouched, so help
 //! text, flags, pipes, and exit codes behave exactly like the repo tool.
+//! Bare words that are not a namespace are a question: they `exec`
+//! `routerctl ask` with the words untouched.
 //! No flags are duplicated here; the repo CLIs stay the source of truth.
 
 use clap::Parser;
@@ -29,7 +31,7 @@ struct Cli {
 
 /// (namespace, repo binary, one-line description)
 const NAMESPACES: &[(&str, &str, &str)] = &[
-    ("router", "routerctl", "Talk to LLMs: setup, models, default, test"),
+    ("router", "routerctl", "Talk to LLMs: ask, setup, models, default, test"),
     ("runtime", "runtimectl", "Run local models directly"),
     ("store", "modelctl", "Model file storage: list, import, prune"),
     ("hardware", "inferenctl", "GPU/accelerator planes and leases"),
@@ -73,6 +75,34 @@ fn edit_distance(a: &str, b: &str) -> usize {
     prev[b.len()]
 }
 
+/// True when the first word is a question, not a namespace dispatch.
+/// Namespaces, help/version, and dash-flags keep their existing behavior.
+fn is_bare_prompt(first: &str) -> bool {
+    !first.starts_with('-') && resolve(first).is_none()
+}
+
+/// `routerctl` argv for a bare question: `ask` plus every word untouched.
+fn prompt_argv(first: &str, rest: &[String]) -> Vec<String> {
+    let mut argv = Vec::with_capacity(rest.len() + 2);
+    argv.push("ask".to_string());
+    argv.push(first.to_string());
+    argv.extend(rest.iter().cloned());
+    argv
+}
+
+/// Replace this process with `routerctl ask <words...>`; the reply,
+/// pipes, and exit code behave exactly like invoking it directly.
+fn exec_prompt(first: &str, rest: &[String]) -> anyhow::Result<()> {
+    if !find_in_path("routerctl") {
+        eprintln!(
+            "asking needs 'routerctl', which is not installed. reinstall: curl -fsSL https://syntropd.github.io/install.sh | sudo bash"
+        );
+        std::process::exit(127);
+    }
+    let err = Command::new("routerctl").args(prompt_argv(first, rest)).exec();
+    Err(anyhow::anyhow!("failed to exec 'routerctl': {}", err))
+}
+
 fn find_in_path(bin: &str) -> bool {
     if bin.contains('/') {
         return is_executable(std::path::Path::new(bin));
@@ -95,8 +125,9 @@ fn print_overview() {
         println!("  {:<8} {} ({})", ns, desc, bin);
     }
     println!();
-    println!("usage: syn <namespace> <command> [args...]");
+    println!("usage: syn <question> | syn <namespace> <command> [args...]");
     println!("examples:");
+    println!("  syn say hello in one sentence");
     println!("  syn router models");
     println!("  syn fleet status");
     println!("  syn system units");
@@ -119,6 +150,13 @@ fn main() -> anyhow::Result<()> {
     if ns == "--version" || ns == "-V" {
         println!("syntrop {}", env!("CARGO_PKG_VERSION"));
         return Ok(());
+    }
+
+    // Bare words are a question for the router (`syn say hello` asks
+    // the fleet). A leading dash still errors: that is a mistyped flag,
+    // not something anyone would ask.
+    if is_bare_prompt(ns) {
+        return exec_prompt(ns, &cli.args);
     }
 
     let Some(bin) = resolve(ns) else {
@@ -176,6 +214,27 @@ mod tests {
         let cli = Cli::try_parse_from(["syn", "runtime", "generate", "--prompt", "hi"]).unwrap();
         assert_eq!(cli.namespace.as_deref(), Some("runtime"));
         assert_eq!(cli.args.len(), 3);
+    }
+
+    #[test]
+    fn bare_words_are_prompts_namespaces_are_not() {
+        assert!(is_bare_prompt("say"));
+        assert!(is_bare_prompt("Say hello in one sentence."));
+        assert!(is_bare_prompt("explain"));
+        assert!(!is_bare_prompt("router"));
+        assert!(!is_bare_prompt("fleet"));
+        assert!(!is_bare_prompt("--help"));
+        assert!(!is_bare_prompt("--json"));
+        assert!(!is_bare_prompt("-V"));
+    }
+
+    #[test]
+    fn prompt_argv_keeps_every_word() {
+        assert_eq!(prompt_argv("say", &[]), vec!["ask", "say"]);
+        assert_eq!(
+            prompt_argv("say", &["hello".to_string(), "there".to_string()]),
+            vec!["ask", "say", "hello", "there"]
+        );
     }
 
     #[test]
