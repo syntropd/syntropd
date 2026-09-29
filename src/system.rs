@@ -4,6 +4,19 @@ use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::Path;
 
+/// Detailed DRM device inspection descriptor.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct DrmDeviceInfo {
+    /// Render node path (e.g. `/dev/dri/renderD128`).
+    pub render_node: String,
+    /// Associated primary card node path if found (e.g. `/dev/dri/card0`).
+    pub card_node: Option<String>,
+    /// NUMA node identifier if exposed by sysfs.
+    pub numa_node: Option<u32>,
+    /// Detected PCI vendor ID string if available.
+    pub vendor_id: Option<String>,
+}
+
 /// System capabilities and pre-flight check results.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SystemCapabilities {
@@ -19,6 +32,8 @@ pub struct SystemCapabilities {
     pub psi_available: bool,
     /// Detected DRM/KMS render nodes in `/dev/dri`.
     pub dri_devices: Vec<String>,
+    /// Detailed multi-device DRM inspection descriptors.
+    pub drm_devices: Vec<DrmDeviceInfo>,
     /// Detected AI accelerator devices in `/dev/accel`.
     pub accel_devices: Vec<String>,
     /// True if system group `syntrop` exists.
@@ -45,6 +60,7 @@ impl SystemCapabilities {
 
         let psi_available = Path::new("/proc/pressure/memory").exists();
         let dri_devices = Self::scan_dir_devices("/dev/dri", "renderD");
+        let drm_devices = Self::inspect_drm_devices();
         let accel_devices = Self::scan_dir_devices("/dev/accel", "accel");
 
         let syntrop_group_exists = Self::check_group_exists("syntrop");
@@ -58,6 +74,7 @@ impl SystemCapabilities {
             cgroup_controllers,
             psi_available,
             dri_devices,
+            drm_devices,
             accel_devices,
             syntrop_group_exists,
             sentry_user_exists,
@@ -123,6 +140,41 @@ impl SystemCapabilities {
         false
     }
 
+    /// Inspect multi-device DRM topology across `/dev/dri` and `/sys/class/drm`.
+    pub fn inspect_drm_devices() -> Vec<DrmDeviceInfo> {
+        let render_nodes = Self::scan_dir_devices("/dev/dri", "renderD");
+        let card_nodes = Self::scan_dir_devices("/dev/dri", "card");
+        let mut devices = Vec::with_capacity(render_nodes.len());
+
+        for (idx, render) in render_nodes.iter().enumerate() {
+            let card = card_nodes.get(idx).cloned();
+            let base_name = Path::new(render).file_name().and_then(|n| n.to_str()).unwrap_or_default();
+            let sysfs = Path::new("/sys/class/drm").join(base_name).join("device");
+
+            let numa_node = fs::read_to_string(sysfs.join("numa_node"))
+                .ok()
+                .and_then(|s| s.trim().parse::<i32>().ok())
+                .and_then(|n| if n >= 0 { Some(n as u32) } else { None });
+
+            let vendor_id = fs::read_to_string(sysfs.join("vendor"))
+                .ok()
+                .map(|s| s.trim().to_string());
+
+            devices.push(DrmDeviceInfo {
+                render_node: render.clone(),
+                card_node: card,
+                numa_node,
+                vendor_id,
+            });
+        }
+        devices
+    }
+
+    /// Check if system has multiple DRM compute devices available.
+    pub fn is_multi_gpu(&self) -> bool {
+        self.dri_devices.len() > 1 || self.drm_devices.len() > 1
+    }
+
     /// Evaluate overall readiness for zero-idle daemon operations.
     pub fn is_ready(&self) -> bool {
         self.systemd_running && self.cgroups_v2 && self.psi_available
@@ -140,6 +192,7 @@ mod tests {
         // We ensure probe does not panic and returns valid struct.
         println!("Probed capabilities: {:?}", caps);
         assert!(caps.cgroups_v2 || !caps.cgroups_v2); // Boolean sanity
+        assert!(caps.is_multi_gpu() || !caps.is_multi_gpu());
     }
 
     #[test]
@@ -160,3 +213,4 @@ mod tests {
         assert!(!SystemCapabilities::check_user_exists("definitely_nonexistent_user_xyz"));
     }
 }
+

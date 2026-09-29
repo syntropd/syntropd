@@ -1,18 +1,25 @@
 {
  "repo": "syntropd",
- "rev": "c502ac7",
+ "rev": "12874a8",
  "dirty": true,
  "pages": [
   {
    "path": "./src/bin/syntrop.rs",
-   "lines": 246,
+   "lines": 200,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
   },
   {
+   "path": "./src/cli/dispatch.rs",
+   "lines": 85,
+   "bin_bytes": 3918,
+   "heat_pct": null,
+   "reach": 1
+  },
+  {
    "path": "./src/cli/mod.rs",
-   "lines": 4,
+   "lines": 6,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
@@ -33,9 +40,9 @@
   },
   {
    "path": "./src/lib.rs",
-   "lines": 69,
-   "bin_bytes": 1766,
-   "heat_pct": 9.09,
+   "lines": 73,
+   "bin_bytes": 2053,
+   "heat_pct": null,
    "reach": 0
   },
   {
@@ -61,8 +68,8 @@
   },
   {
    "path": "./src/system.rs",
-   "lines": 162,
-   "bin_bytes": 7597,
+   "lines": 216,
+   "bin_bytes": 11723,
    "heat_pct": null,
    "reach": 1
   },
@@ -75,8 +82,8 @@
   },
   {
    "path": "./src/units.rs",
-   "lines": 230,
-   "bin_bytes": 3968,
+   "lines": 191,
+   "bin_bytes": 6200,
    "heat_pct": null,
    "reach": 3
   },
@@ -88,5 +95,5 @@
    "reach": 0
   }
  ],
- "notes": "reach counts referencing files (shared file names qualified by ancestor dir); bin_bytes from newest workspace dev rlib per crate via nm (inlining approx, bins re-link the same code; shims excluded, foreign paths never attributed); heat from 66 attributed samples over 11/147 binaries at 10Hz incl. one child level; every repo-resolving frame counts;"
+ "notes": "reach counts referencing files (shared file names qualified by ancestor dir); bin_bytes from newest workspace dev rlib per crate via nm (inlining approx, bins re-link the same code; shims excluded, foreign paths never attributed);"
 }

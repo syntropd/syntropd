@@ -14,120 +14,34 @@ pub struct SystemdUnitDescriptor {
     pub is_umbrella: bool,
 }
 
+const fn desc(
+    name: &'static str,
+    unit_type: &'static str,
+    description: &'static str,
+    documentation: &'static str,
+    is_umbrella: bool,
+) -> SystemdUnitDescriptor {
+    SystemdUnitDescriptor { name, unit_type, description, documentation, is_umbrella }
+}
+
 /// Authoritative catalog of all units in the subsystem.
 pub const ALL_UNITS: &[SystemdUnitDescriptor] = &[
-    SystemdUnitDescriptor {
-        name: "syntrop-sockets.target",
-        unit_type: "target",
-        description: "syntropd Unified Socket Activation Umbrella",
-        documentation: "https://syntropd.github.io/architecture.html#socket",
-        is_umbrella: true,
-    },
-    SystemdUnitDescriptor {
-        name: "syntrop-triage@.service",
-        unit_type: "service",
-        description: "syntropd Autonomous Triage for Failed Unit %I",
-        documentation: "https://syntropd.github.io/manual.html",
-        is_umbrella: true,
-    },
-    SystemdUnitDescriptor {
-        name: "toold.socket",
-        unit_type: "socket",
-        description: "toold Varlink socket",
-        documentation: "https://github.com/syntropd/toold",
-        is_umbrella: false,
-    },
-    SystemdUnitDescriptor {
-        name: "toold.service",
-        unit_type: "service",
-        description: "toold sandboxed execution daemon",
-        documentation: "https://github.com/syntropd/toold",
-        is_umbrella: false,
-    },
-    SystemdUnitDescriptor {
-        name: "runtimed.socket",
-        unit_type: "socket",
-        description: "runtimed Varlink socket",
-        documentation: "https://github.com/syntropd/runtimed",
-        is_umbrella: false,
-    },
-    SystemdUnitDescriptor {
-        name: "runtimed.service",
-        unit_type: "service",
-        description: "runtimed tensor execution daemon",
-        documentation: "https://github.com/syntropd/runtimed",
-        is_umbrella: false,
-    },
-    SystemdUnitDescriptor {
-        name: "inferenced.socket",
-        unit_type: "socket",
-        description: "inferenced activation sockets",
-        documentation: "https://github.com/syntropd/inferenced",
-        is_umbrella: false,
-    },
-    SystemdUnitDescriptor {
-        name: "inferenced.service",
-        unit_type: "service",
-        description: "inferenced hardware arbiter & paging daemon",
-        documentation: "https://github.com/syntropd/inferenced",
-        is_umbrella: false,
-    },
-    SystemdUnitDescriptor {
-        name: "contextd.socket",
-        unit_type: "socket",
-        description: "contextd Varlink socket",
-        documentation: "https://github.com/syntropd/contextd",
-        is_umbrella: false,
-    },
-    SystemdUnitDescriptor {
-        name: "contextd.service",
-        unit_type: "service",
-        description: "contextd causal chronology daemon",
-        documentation: "https://github.com/syntropd/contextd",
-        is_umbrella: false,
-    },
-    SystemdUnitDescriptor {
-        name: "modeld.socket",
-        unit_type: "socket",
-        description: "modeld Varlink socket",
-        documentation: "https://github.com/syntropd/modeld",
-        is_umbrella: false,
-    },
-    SystemdUnitDescriptor {
-        name: "modeld.service",
-        unit_type: "service",
-        description: "modeld content-addressable model cache daemon",
-        documentation: "https://github.com/syntropd/modeld",
-        is_umbrella: false,
-    },
-    SystemdUnitDescriptor {
-        name: "systemd-sentry.socket",
-        unit_type: "socket",
-        description: "systemd-sentry IPC socket",
-        documentation: "https://github.com/syntropd/sentry",
-        is_umbrella: false,
-    },
-    SystemdUnitDescriptor {
-        name: "systemd-sentry.service",
-        unit_type: "service",
-        description: "systemd-sentry crash triage and supervisor",
-        documentation: "https://github.com/syntropd/sentry",
-        is_umbrella: false,
-    },
-    SystemdUnitDescriptor {
-        name: "routerd.socket",
-        unit_type: "socket",
-        description: "routerd Varlink socket",
-        documentation: "https://github.com/syntropd/routerd",
-        is_umbrella: false,
-    },
-    SystemdUnitDescriptor {
-        name: "routerd.service",
-        unit_type: "service",
-        description: "routerd model router and gateway daemon",
-        documentation: "https://github.com/syntropd/routerd",
-        is_umbrella: false,
-    },
+    desc("syntrop-sockets.target", "target", "syntropd Unified Socket Activation Umbrella", "https://syntropd.github.io/architecture.html#socket", true),
+    desc("syntrop-triage@.service", "service", "syntropd Autonomous Triage for Failed Unit %I", "https://syntropd.github.io/manual.html", true),
+    desc("toold.socket", "socket", "toold Varlink socket", "https://github.com/syntropd/toold", false),
+    desc("toold.service", "service", "toold sandboxed execution daemon", "https://github.com/syntropd/toold", false),
+    desc("runtimed.socket", "socket", "runtimed Varlink socket", "https://github.com/syntropd/runtimed", false),
+    desc("runtimed.service", "service", "runtimed tensor execution daemon", "https://github.com/syntropd/runtimed", false),
+    desc("inferenced.socket", "socket", "inferenced activation sockets", "https://github.com/syntropd/inferenced", false),
+    desc("inferenced.service", "service", "inferenced hardware arbiter & paging daemon", "https://github.com/syntropd/inferenced", false),
+    desc("contextd.socket", "socket", "contextd Varlink socket", "https://github.com/syntropd/contextd", false),
+    desc("contextd.service", "service", "contextd causal chronology daemon", "https://github.com/syntropd/contextd", false),
+    desc("modeld.socket", "socket", "modeld Varlink socket", "https://github.com/syntropd/modeld", false),
+    desc("modeld.service", "service", "modeld content-addressable model cache daemon", "https://github.com/syntropd/modeld", false),
+    desc("systemd-sentry.socket", "socket", "systemd-sentry IPC socket", "https://github.com/syntropd/sentry", false),
+    desc("systemd-sentry.service", "service", "systemd-sentry crash triage and supervisor", "https://github.com/syntropd/sentry", false),
+    desc("routerd.socket", "socket", "routerd Varlink socket", "https://github.com/syntropd/routerd", false),
+    desc("routerd.service", "service", "routerd model router and gateway daemon", "https://github.com/syntropd/routerd", false),
 ];
 
 /// Status of a systemd unit.
@@ -206,6 +120,45 @@ pub fn inspect_all_units() -> Vec<UnitStatus> {
         .collect()
 }
 
+/// Comprehensive canonical unit supervision summary.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CanonicalSupervisionReport {
+    pub total_units: usize,
+    pub installed_count: usize,
+    pub active_count: usize,
+    pub failed_units: Vec<String>,
+    pub all_healthy: bool,
+}
+
+/// Perform canonical supervision across all subsystem units.
+pub fn supervise_canonical_units() -> CanonicalSupervisionReport {
+    let statuses = inspect_all_units();
+    let total_units = statuses.len();
+    let mut installed_count = 0;
+    let mut active_count = 0;
+    let mut failed_units = Vec::new();
+
+    for s in &statuses {
+        if s.installed {
+            installed_count += 1;
+        }
+        if s.active_state == "active" {
+            active_count += 1;
+        } else if s.active_state == "failed" {
+            failed_units.push(s.name.clone());
+        }
+    }
+
+    let all_healthy = failed_units.is_empty();
+    CanonicalSupervisionReport {
+        total_units,
+        installed_count,
+        active_count,
+        failed_units,
+        all_healthy,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -227,4 +180,12 @@ mod tests {
     fn test_unit_installed_nonexistent() {
         assert!(!is_unit_installed("nonexistent_phantom_unit_12345.service"));
     }
+
+    #[test]
+    fn test_supervise_canonical_units() {
+        let rep = supervise_canonical_units();
+        assert_eq!(rep.total_units, 16);
+        assert!(rep.installed_count <= 16);
+    }
 }
+
