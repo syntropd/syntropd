@@ -5,12 +5,16 @@
 //! text, flags, pipes, and exit codes behave exactly like the repo tool.
 //! Bare words that are not a namespace are a question: they `exec`
 //! `routerctl ask` with the words untouched.
+//! Intercepts `syn pull <model>` and dispatches directly to `modelctl pull`.
 //! No flags are duplicated here; the repo CLIs stay the source of truth.
 
 use clap::Parser;
-use std::os::unix::fs::PermissionsExt;
 use std::os::unix::process::CommandExt;
 use std::process::Command;
+use syntropd::cli::dispatch::{
+    find_in_path, is_bare_prompt, prompt_argv, resolve, suggest, NAMESPACES,
+};
+
 
 #[derive(Parser, Debug)]
 #[command(
@@ -20,74 +24,13 @@ use std::process::Command;
     disable_version_flag = true
 )]
 struct Cli {
-    /// Namespace: router, runtime, store, hardware, context, tools, fleet, system
+    /// Namespace: router, runtime, store, hardware, context, tools, fleet, system, pull
     #[arg(allow_hyphen_values = true)]
     namespace: Option<String>,
 
     /// Arguments passed through untouched to the repo CLI
     #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
     args: Vec<String>,
-}
-
-/// (namespace, repo binary, one-line description)
-const NAMESPACES: &[(&str, &str, &str)] = &[
-    ("router", "routerctl", "Talk to LLMs: ask, setup, models, default, test"),
-    ("runtime", "runtimectl", "Run local models directly"),
-    ("store", "modelctl", "Model file storage: list, import, prune"),
-    ("hardware", "inferenctl", "GPU/accelerator planes and leases"),
-    ("context", "contextctl", "System history and config drift"),
-    ("tools", "toolctl", "Sandboxed repair tools and rollback"),
-    ("fleet", "syntropctl", "Fleet health and failure forensics"),
-    ("system", "syntropd", "Units, triage, and suite version"),
-];
-
-fn resolve(namespace: &str) -> Option<&'static str> {
-    NAMESPACES
-        .iter()
-        .find(|(ns, _, _)| *ns == namespace)
-        .map(|(_, bin, _)| *bin)
-}
-
-/// Closest namespace within a small edit distance, for "did you mean?".
-fn suggest(unknown: &str) -> Option<&'static str> {
-    let mut best: Option<(&'static str, usize)> = None;
-    for (ns, _, _) in NAMESPACES {
-        let d = edit_distance(unknown, ns);
-        if d <= 2 && best.map(|(_, b)| d < b).unwrap_or(true) {
-            best = Some((ns, d));
-        }
-    }
-    best.map(|(ns, _)| ns)
-}
-
-fn edit_distance(a: &str, b: &str) -> usize {
-    let a: Vec<char> = a.chars().collect();
-    let b: Vec<char> = b.chars().collect();
-    let mut prev: Vec<usize> = (0..=b.len()).collect();
-    for i in 1..=a.len() {
-        let mut cur = vec![i; b.len() + 1];
-        for j in 1..=b.len() {
-            let cost = usize::from(a[i - 1] != b[j - 1]);
-            cur[j] = (prev[j] + 1).min(cur[j - 1] + 1).min(prev[j - 1] + cost);
-        }
-        prev = cur;
-    }
-    prev[b.len()]
-}
-
-/// True when the first word is a question, not a namespace dispatch.
-/// Namespaces, help/version, and dash-flags keep their existing behavior.
-fn is_bare_prompt(first: &str) -> bool {
-    !first.starts_with('-') && resolve(first).is_none()
-}
-
-/// `routerctl` argv for a bare question: `ask` plus every word untouched.
-fn prompt_argv(first: &str, rest: &[String]) -> Vec<String> {
-    let mut argv = Vec::with_capacity(rest.len() + 2);
-    argv.push("ask".to_string());
-    argv.push(first.to_string());
-    argv.extend(rest.iter().cloned());
-    argv
 }
 
 /// Replace this process with `routerctl ask <words...>`; the reply,
@@ -103,31 +46,18 @@ fn exec_prompt(first: &str, rest: &[String]) -> anyhow::Result<()> {
     Err(anyhow::anyhow!("failed to exec 'routerctl': {}", err))
 }
 
-fn find_in_path(bin: &str) -> bool {
-    if bin.contains('/') {
-        return is_executable(std::path::Path::new(bin));
-    }
-    std::env::var_os("PATH").map(|paths| {
-        std::env::split_paths(&paths).any(|dir| is_executable(&dir.join(bin)))
-    }).unwrap_or(false)
-}
-
-fn is_executable(path: &std::path::Path) -> bool {
-    std::fs::metadata(path)
-        .map(|m| m.is_file() && m.permissions().mode() & 0o111 != 0)
-        .unwrap_or(false)
-}
-
 fn print_overview() {
     println!("syntrop {} — front door to the suite", env!("CARGO_PKG_VERSION"));
     println!();
     for (ns, bin, desc) in NAMESPACES {
         println!("  {:<8} {} ({})", ns, desc, bin);
     }
+    println!("  {:<8} {} ({})", "pull", "Pull and register a model directly", "modelctl");
     println!();
-    println!("usage: syn <question> | syn <namespace> <command> [args...]");
+    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn pull <model>");
     println!("examples:");
     println!("  syn say hello in one sentence");
+    println!("  syn pull qwen2.5:0.5b");
     println!("  syn router models");
     println!("  syn fleet status");
     println!("  syn system units");
@@ -150,6 +80,20 @@ fn main() -> anyhow::Result<()> {
     if ns == "--version" || ns == "-V" {
         println!("syntrop {}", env!("CARGO_PKG_VERSION"));
         return Ok(());
+    }
+
+    // Intercept `syn pull <args...>` and dispatch to `modelctl pull <args...>`.
+    if ns == "pull" {
+        if !find_in_path("modelctl") {
+            eprintln!(
+                "pulling models needs 'modelctl', which is not installed. reinstall: curl -fsSL https://syntropd.github.io/install.sh | sudo bash"
+            );
+            std::process::exit(127);
+        }
+        let mut pull_args = vec!["pull".to_string()];
+        pull_args.extend_from_slice(&cli.args);
+        let err = Command::new("modelctl").args(&pull_args).exec();
+        return Err(anyhow::anyhow!("failed to exec 'modelctl': {}", err));
     }
 
     // Bare words are a question for the router (`syn say hello` asks
@@ -188,6 +132,8 @@ fn main() -> anyhow::Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use syntropd::cli::dispatch::edit_distance;
+
 
     #[test]
     fn every_namespace_resolves() {
@@ -221,6 +167,7 @@ mod tests {
         assert!(is_bare_prompt("say"));
         assert!(is_bare_prompt("Say hello in one sentence."));
         assert!(is_bare_prompt("explain"));
+        assert!(!is_bare_prompt("pull"));
         assert!(!is_bare_prompt("router"));
         assert!(!is_bare_prompt("fleet"));
         assert!(!is_bare_prompt("--help"));
@@ -242,5 +189,12 @@ mod tests {
         assert_eq!(edit_distance("router", "router"), 0);
         assert_eq!(edit_distance("rounter", "router"), 1);
         assert_eq!(edit_distance("", "abc"), 3);
+    }
+
+    #[test]
+    fn cli_parses_pull_command() {
+        let cli = Cli::try_parse_from(["syn", "pull", "qwen2.5:0.5b"]).unwrap();
+        assert_eq!(cli.namespace.as_deref(), Some("pull"));
+        assert_eq!(cli.args, vec!["qwen2.5:0.5b".to_string()]);
     }
 }
