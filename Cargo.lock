@@ -2607,7 +2607,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-contextd"
-version = "0.3.1"
+version = "0.3.2"
 dependencies = [
  "anyhow",
  "libc",
@@ -2623,7 +2623,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-contextd-core"
-version = "0.3.1"
+version = "0.3.2"
 dependencies = [
  "anyhow",
  "libc",
@@ -2638,7 +2638,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-inferenced"
-version = "0.3.2"
+version = "0.3.3"
 dependencies = [
  "anyhow",
  "axum",
@@ -2662,7 +2662,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-inferenced-core"
-version = "0.3.2"
+version = "0.3.3"
 dependencies = [
  "chrono",
  "libc",
@@ -2677,7 +2677,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-modeld"
-version = "0.3.1"
+version = "0.3.2"
 dependencies = [
  "anyhow",
  "libc",
@@ -2693,7 +2693,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-modeld-core"
-version = "0.3.1"
+version = "0.3.2"
 dependencies = [
  "anyhow",
  "libc",
@@ -2709,7 +2709,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-routerd"
-version = "0.3.10"
+version = "0.3.11"
 dependencies = [
  "anyhow",
  "axum",
@@ -2733,7 +2733,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-routerd-core"
-version = "0.3.10"
+version = "0.3.11"
 dependencies = [
  "async-trait",
  "bytes",
@@ -2754,7 +2754,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-runtimed"
-version = "0.5.4"
+version = "0.5.5"
 dependencies = [
  "anyhow",
  "libc",
@@ -2770,7 +2770,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-runtimed-core"
-version = "0.5.4"
+version = "0.5.5"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
@@ -2792,7 +2792,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-runtimed-gguf"
-version = "0.5.4"
+version = "0.5.5"
 dependencies = [
  "hex",
  "memmap2",
@@ -2805,7 +2805,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-runtimed-model"
-version = "0.5.4"
+version = "0.5.5"
 dependencies = [
  "candle-core",
  "image",
@@ -2819,7 +2819,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry"
-version = "0.3.3"
+version = "0.3.4"
 dependencies = [
  "chrono",
  "reqwest",
@@ -2840,7 +2840,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry-core"
-version = "0.3.3"
+version = "0.3.4"
 dependencies = [
  "chrono",
  "serde",
@@ -2851,7 +2851,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry-diagnostic"
-version = "0.3.3"
+version = "0.3.4"
 dependencies = [
  "async-trait",
  "chrono",
@@ -2867,7 +2867,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry-driver"
-version = "0.3.3"
+version = "0.3.4"
 dependencies = [
  "chrono",
  "futures-lite",
@@ -2886,7 +2886,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry-mcp"
-version = "0.3.3"
+version = "0.3.4"
 dependencies = [
  "chrono",
  "serde",
@@ -2900,7 +2900,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-sentry-safety"
-version = "0.3.3"
+version = "0.3.4"
 dependencies = [
  "chrono",
  "serde",
@@ -2913,7 +2913,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-toold"
-version = "0.3.2"
+version = "0.3.3"
 dependencies = [
  "anyhow",
  "libc",
@@ -2929,7 +2929,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-toold-core"
-version = "0.3.2"
+version = "0.3.3"
 dependencies = [
  "anyhow",
  "landlock",
@@ -2946,7 +2946,7 @@ dependencies = [
 
 [[package]]
 name = "syntropctl"
-version = "0.3.2"
+version = "0.3.3"
 dependencies = [
  "anyhow",
  "clap",
@@ -2961,7 +2961,7 @@ dependencies = [
 
 [[package]]
 name = "syntropctl-core"
-version = "0.3.2"
+version = "0.3.3"
 dependencies = [
  "serde",
  "serde_json",
@@ -2972,7 +2972,7 @@ dependencies = [
 
 [[package]]
 name = "syntropd"
-version = "0.3.19"
+version = "0.3.20"
 dependencies = [
  "anyhow",
  "clap",

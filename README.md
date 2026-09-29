@@ -86,7 +86,28 @@ Traditional AI subsystems continuously consume gigabytes of host RAM even when d
 
 ---
 
-## 4. Installation
+## 4. Advanced AI Subsystem Frontiers
+
+`syntropd` incorporates five architectural frontiers for production-grade, reliable system intelligence:
+
+1. **Constrained / Grammar-Guided Decoding (`runtimed`)**:
+   Deterministic FSM token filtering supporting JSON schema, regex, and Varlink nul-terminated protocols with SIMD-aligned bitset logit masking and vocab trie pruning, guaranteeing syntactically valid machine outputs.
+
+2. **Heterogeneous Speculative Decoding (`inferenced` & `runtimed`)**:
+   Gang-scheduling drafts onto CPU-host matrix extensions (`PlaneRole::Draft`) while serving target models on discrete GPU/NPU accelerators (`PlaneRole::Target`), backed by O(1) KV-cache rollback (`truncate`).
+
+3. **Autonomous Agentic Triage & Environment Feedback (`toold` & `sentry`)**:
+   Unprivileged bubblewrap and Landlock sandboxing with isolated namespaces, executing guarded diagnostic iterations under strict circuit breaking (5 iterations / 30s timeout) and error reflection.
+
+4. **Test-Time Compute Scaling & Reasoning Budgets (`routerd` & `runtimed`)**:
+   Granular reasoning token allocation (`reasoning_budget`, `max_thinking_tokens`) with forced `</think>` token emission/logit masking, and streaming state machine (`ThinkFilter`) separating internal thoughts into `reasoning_content`.
+
+5. **Dynamic State Compression & Streaming Infinite Context (`runtimed`)**:
+   StreamingLLM attention sinks (`SinkWindowCache`, `sink_causal_mask`) with cache-relative RoPE and bounded streaming event journals (`StreamJournal`) providing continuous unbounded inference without memory leakage.
+
+---
+
+## 5. Installation
 
 ### 4.1 Universal Automated Installer
 The easiest way to install `syntropd` across any Linux distribution:
