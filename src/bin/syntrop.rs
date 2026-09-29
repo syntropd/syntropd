@@ -15,7 +15,6 @@ use syntropd::cli::dispatch::{
     find_in_path, is_bare_prompt, prompt_argv, resolve, suggest, NAMESPACES,
 };
 
-
 #[derive(Parser, Debug)]
 #[command(
     name = "syntrop",
@@ -42,17 +41,25 @@ fn exec_prompt(first: &str, rest: &[String]) -> anyhow::Result<()> {
         );
         std::process::exit(127);
     }
-    let err = Command::new("routerctl").args(prompt_argv(first, rest)).exec();
+    let err = Command::new("routerctl")
+        .args(prompt_argv(first, rest))
+        .exec();
     Err(anyhow::anyhow!("failed to exec 'routerctl': {}", err))
 }
 
 fn print_overview() {
-    println!("syntrop {} — front door to the suite", env!("CARGO_PKG_VERSION"));
+    println!(
+        "syntrop {} — front door to the suite",
+        env!("CARGO_PKG_VERSION")
+    );
     println!();
     for (ns, bin, desc) in NAMESPACES {
         println!("  {:<8} {} ({})", ns, desc, bin);
     }
-    println!("  {:<8} {} ({})", "pull", "Pull and register a model directly", "modelctl");
+    println!(
+        "  {:<8} {} ({})",
+        "pull", "Pull and register a model directly", "modelctl"
+    );
     println!();
     println!("usage: syn <question> | syn <namespace> <command> [args...] | syn pull <model>");
     println!("examples:");
@@ -109,7 +116,11 @@ fn main() -> anyhow::Result<()> {
             None => eprintln!(
                 "unknown namespace '{}'. namespaces: {}",
                 ns,
-                NAMESPACES.iter().map(|(n, _, _)| *n).collect::<Vec<_>>().join(", ")
+                NAMESPACES
+                    .iter()
+                    .map(|(n, _, _)| *n)
+                    .collect::<Vec<_>>()
+                    .join(", ")
             ),
         }
         std::process::exit(2);
@@ -133,7 +144,6 @@ fn main() -> anyhow::Result<()> {
 mod tests {
     use super::*;
     use syntropd::cli::dispatch::edit_distance;
-
 
     #[test]
     fn every_namespace_resolves() {
@@ -196,5 +206,21 @@ mod tests {
         let cli = Cli::try_parse_from(["syn", "pull", "qwen2.5:0.5b"]).unwrap();
         assert_eq!(cli.namespace.as_deref(), Some("pull"));
         assert_eq!(cli.args, vec!["qwen2.5:0.5b".to_string()]);
+    }
+
+    #[test]
+    fn cli_parses_pull_command_with_flags() {
+        let cli = Cli::try_parse_from(["syn", "pull", "org/repo", "--quant", "Q4_K_M", "--force"])
+            .unwrap();
+        assert_eq!(cli.namespace.as_deref(), Some("pull"));
+        assert_eq!(
+            cli.args,
+            vec![
+                "org/repo".to_string(),
+                "--quant".to_string(),
+                "Q4_K_M".to_string(),
+                "--force".to_string()
+            ]
+        );
     }
 }

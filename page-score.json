@@ -1,11 +1,11 @@
 {
  "repo": "syntropd",
- "rev": "12874a8",
- "dirty": true,
+ "rev": "84a034c",
+ "dirty": false,
  "pages": [
   {
    "path": "./src/bin/syntrop.rs",
-   "lines": 200,
+   "lines": 226,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
