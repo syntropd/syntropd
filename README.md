@@ -73,15 +73,16 @@ All daemons communicate over standard UNIX domain sockets using [Varlink](https:
 
 ---
 
-## 3. Zero-Idle Socket Activation
+## 3. Zero-Idle Socket Activation & Memory Governance
 
-Traditional AI subsystems continuously consume gigabytes of host RAM even when dormant. In contrast, `syntropd` daemons are governed by **systemd socket activation**:
+Traditional AI subsystems continuously consume gigabytes of host RAM even when dormant. In contrast, `syntropd` daemons are governed by **systemd socket activation and kernel-native memory controls**:
 
-1. At boot, systemd creates and listens on all IPC sockets (`/run/syntrop/*.sock`, `/run/systemd-sentry/sentry.sock`).
-2. While idle, **0 daemons run and 0 MB of resident RAM is consumed**.
-3. When an event or request arrives on a socket, systemd transparently starts the responsible daemon and hands over the listening socket file descriptor via `LISTEN_FDS`.
-4. Once started, daemons stay up (the router and engine stay warm so the next request is instant). For memory recovery, `runtimed` offers opt-in idle unload: set `RUNTIMED_IDLE_UNLOAD_SECS=300` and it sheds resident weights — leases released, VRAM/RAM freed — after 5 minutes with no generations. Unset (the default) keeps the engine warm.
-5. If memory pressure rises, the kernel PSI monitor signals `inferenced` to page out dormant tensors via `madvise(MADV_DONTNEED)` or freeze lower-priority cgroups.
+1. **Zero Idle Overhead**: At boot, systemd creates and listens on all IPC sockets (`/run/syntrop/*.sock`, `/run/systemd-sentry/sentry.sock`). While idle, **0 daemons run and 0 MB of resident RAM is consumed**.
+2. **Demand Activation**: When an event or request arrives on a socket, systemd transparently starts the responsible daemon and hands over the listening socket file descriptor via `LISTEN_FDS`.
+3. **Zero-Copy Sealed `memfd` CAS Pipeline**: `modeld` provisions immutable, sealed memory descriptors (`memfd_create` + `F_SEAL_SEAL | F_SEAL_WRITE`) transmitted over Unix sockets via `SCM_RIGHTS` into `runtimed`. Model weights are mapped directly without duplicate disk reads or memory copying.
+4. **Autonomous PSI Memory Load-Shedding**: `runtimed` continuously samples Linux Pressure Stall Information (`/proc/pressure/memory`). When stalls spike (`some > 25.0%` or `full > 5.0%`), proactive load-shedding evicts non-busy resident weights within one sample window without dropping active client sessions.
+5. **Configurable Idle Unload**: When quiet, `runtimed` can shed resident weights automatically after a quiet duration (`RUNTIMED_IDLE_UNLOAD_SECS=300`), releasing hardware leases and freeing RAM/VRAM.
+6. **Strict Security Sandboxing**: 100% of daemons drop root privileges to run under dedicated system accounts with Landlock ABI v3 filesystem sandboxing, seccomp filters (`@system-service`), and strict cgroups v2 resource ceilings.
 
 ---
 

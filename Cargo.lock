@@ -1462,6 +1462,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "landlock"
+version = "0.4.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4cca98e95f35b29d469dade6724c6f96cec9236640f745a0e99b0334ec320ab1"
+dependencies = [
+ "enumflags2",
+ "libc",
+ "thiserror 2.0.21",
+]
+
+[[package]]
 name = "lazy_static"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2673,7 +2684,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-runtimed"
-version = "0.5.3"
+version = "0.5.4"
 dependencies = [
  "anyhow",
  "libc",
@@ -2689,7 +2700,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-runtimed-core"
-version = "0.5.3"
+version = "0.5.4"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
@@ -2709,7 +2720,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-runtimed-gguf"
-version = "0.5.3"
+version = "0.5.4"
 dependencies = [
  "hex",
  "memmap2",
@@ -2722,7 +2733,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-runtimed-model"
-version = "0.5.3"
+version = "0.5.4"
 dependencies = [
  "candle-core",
  "image",
@@ -2828,7 +2839,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-toold"
-version = "0.3.1"
+version = "0.3.2"
 dependencies = [
  "anyhow",
  "libc",
@@ -2844,9 +2855,10 @@ dependencies = [
 
 [[package]]
 name = "syntrop-toold-core"
-version = "0.3.1"
+version = "0.3.2"
 dependencies = [
  "anyhow",
+ "landlock",
  "libc",
  "rustix 0.38.44",
  "serde",
@@ -2886,7 +2898,7 @@ dependencies = [
 
 [[package]]
 name = "syntropd"
-version = "0.3.18"
+version = "0.3.19"
 dependencies = [
  "anyhow",
  "clap",
