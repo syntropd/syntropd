@@ -1,6 +1,6 @@
 {
  "repo": "syntropd",
- "rev": "c502ac7",
+ "rev": "ea2898d",
  "dirty": true,
  "pages": [
   {
@@ -20,22 +20,22 @@
   {
    "path": "./src/cli/parse_cli.rs",
    "lines": 113,
-   "bin_bytes": 33331,
+   "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
   },
   {
    "path": "./src/cli/render_report.rs",
    "lines": 177,
-   "bin_bytes": 11143,
+   "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
   },
   {
    "path": "./src/lib.rs",
-   "lines": 69,
-   "bin_bytes": 1766,
-   "heat_pct": 9.09,
+   "lines": 73,
+   "bin_bytes": null,
+   "heat_pct": null,
    "reach": 0
   },
   {
@@ -48,35 +48,35 @@
   {
    "path": "./src/sockets.rs",
    "lines": 204,
-   "bin_bytes": 2637,
+   "bin_bytes": null,
    "heat_pct": null,
    "reach": 2
   },
   {
    "path": "./src/suite.rs",
    "lines": 158,
-   "bin_bytes": 2471,
+   "bin_bytes": null,
    "heat_pct": null,
    "reach": 2
   },
   {
    "path": "./src/system.rs",
-   "lines": 162,
-   "bin_bytes": 7597,
+   "lines": 216,
+   "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
   },
   {
    "path": "./src/triage.rs",
    "lines": 222,
-   "bin_bytes": 9868,
+   "bin_bytes": null,
    "heat_pct": null,
    "reach": 2
   },
   {
    "path": "./src/units.rs",
-   "lines": 230,
-   "bin_bytes": 3968,
+   "lines": 191,
+   "bin_bytes": null,
    "heat_pct": null,
    "reach": 3
   },
@@ -88,5 +88,5 @@
    "reach": 0
   }
  ],
- "notes": "reach counts referencing files (shared file names qualified by ancestor dir); bin_bytes from newest workspace dev rlib per crate via nm (inlining approx, bins re-link the same code; shims excluded, foreign paths never attributed); heat from 66 attributed samples over 11/147 binaries at 10Hz incl. one child level; every repo-resolving frame counts;"
+ "notes": "reach counts referencing files (shared file names qualified by ancestor dir);"
 }

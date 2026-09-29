@@ -31,6 +31,8 @@ pub struct SubsystemStatus {
     pub sockets: Vec<sockets::SocketReport>,
     /// Systemd units status.
     pub units: Vec<units::UnitStatus>,
+    /// Canonical unit supervision report.
+    pub supervision: units::CanonicalSupervisionReport,
     /// Subsystem version string.
     pub version: &'static str,
 }
@@ -42,6 +44,7 @@ pub fn inspect_subsystem() -> SubsystemStatus {
         components: suite::get_components().to_vec(),
         sockets: sockets::inspect_sockets(),
         units: units::inspect_all_units(),
+        supervision: units::supervise_canonical_units(),
         version: env!("CARGO_PKG_VERSION"),
     }
 }
@@ -57,6 +60,7 @@ mod tests {
         assert_eq!(status.components.len(), 8);
         assert!(!status.sockets.is_empty());
         assert!(!status.units.is_empty());
+        assert_eq!(status.supervision.total_units, 16);
     }
 
     #[test]
