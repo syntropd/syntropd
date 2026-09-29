@@ -64,6 +64,23 @@ pass "--quiet suppresses trivia, keeps banner"
 if grep -qi "ollama" "${INSTALL}"; then echo "FAIL: installer mentions Ollama"; exit 1; fi
 pass "installer never mentions Ollama"
 
+# Unprivileged daemons: each generated unit must carry its User= line.
+for spec in \
+  "toold.service:User=syntrop-tool" \
+  "contextd.service:User=syntrop-context" \
+  "inferenced.service:User=inferenced" \
+  "modeld.service:User=modeld" \
+; do
+  unit="${spec%%:*}"; want="${spec##*:}"
+  awk "/UNIT_DIR}\/${unit}\"/,/^EOF\$/" "${INSTALL}" | grep -q "^${want}\$" \
+    || { echo "FAIL: generated ${unit} lacks ${want}"; exit 1; }
+done
+pass "generated units run unprivileged"
+
+grep -q 'polkit-1/rules.d/49-syntrop-tool.rules' "${INSTALL}" \
+  || { echo "FAIL: installer ships no toold polkit rule"; exit 1; }
+pass "installer ships toold polkit rule"
+
 if [[ -f "${SITE_COPY}" ]]; then
   cmp -s "${INSTALL}" "${SITE_COPY}" || { echo "FAIL: site install.sh out of sync"; exit 1; }
   pass "site copy identical"
