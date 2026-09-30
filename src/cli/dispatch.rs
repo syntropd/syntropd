@@ -69,6 +69,28 @@ pub fn edit_distance(a: &str, b: &str) -> usize {
     prev[b.len()]
 }
 
+/// Checks whether an argument is a recognized reasoning effort tier name.
+fn is_effort_tier(s: &str) -> bool {
+    matches!(
+        s.to_ascii_lowercase().as_str(),
+        "none"
+            | "off"
+            | "0"
+            | "disabled"
+            | "false"
+            | "low"
+            | "1"
+            | "medium"
+            | "med"
+            | "2"
+            | "high"
+            | "3"
+            | "max"
+            | "full"
+            | "unlimited"
+    )
+}
+
 /// Checks whether an argument is a reasoning effort flag name.
 fn is_effort_flag(s: &str) -> bool {
     s == "-e" || s == "--effort" || s == "--reasoning-effort"
@@ -76,9 +98,15 @@ fn is_effort_flag(s: &str) -> bool {
 
 /// Checks whether an argument is an inline reasoning effort flag (flag=val or -eval).
 fn is_inline_effort_flag(s: &str) -> bool {
-    s.starts_with("--effort=")
-        || s.starts_with("--reasoning-effort=")
-        || (s.starts_with("-e") && s.len() > 2)
+    if let Some(val) = s.strip_prefix("--effort=") {
+        !val.is_empty()
+    } else if let Some(val) = s.strip_prefix("--reasoning-effort=") {
+        !val.is_empty()
+    } else if let Some(val) = s.strip_prefix("-e") {
+        is_effort_tier(val)
+    } else {
+        false
+    }
 }
 
 /// True when the first word is a question, not a namespace dispatch or intercepted command.
@@ -100,10 +128,18 @@ pub fn normalize_prompt_argv(first: &str, rest: &[String]) -> Vec<String> {
     while i < words.len() {
         let w = &words[i];
         if is_effort_flag(w) {
-            flags.push(w.clone());
-            if i + 1 < words.len() {
+            if i == 0 {
+                flags.push(w.clone());
+                if i + 1 < words.len() {
+                    i += 1;
+                    flags.push(words[i].clone());
+                }
+            } else if i + 1 < words.len() && is_effort_tier(&words[i + 1]) {
+                flags.push(w.clone());
                 i += 1;
                 flags.push(words[i].clone());
+            } else {
+                prompt.push(w.clone());
             }
         } else if is_inline_effort_flag(w) {
             flags.push(w.clone());

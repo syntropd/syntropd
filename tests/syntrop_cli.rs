@@ -84,6 +84,25 @@ fn normalize_prompt_argv_inline_and_leading_flags() {
     ];
     let argv3 = normalize_prompt_argv("-e", &rest3);
     assert_eq!(argv3, vec!["ask", "-e", "medium", "what", "is", "rust"]);
+
+    let rest4 = vec!["say".to_string(), "hi".to_string()];
+    let argv4 = normalize_prompt_argv("-ehigh", &rest4);
+    assert_eq!(argv4, vec!["ask", "-ehigh", "say", "hi"]);
+}
+
+#[test]
+fn normalize_prompt_argv_preserves_english_and_dangling_flags() {
+    let rest = vec!["does".to_string(), "-e".to_string(), "mean".to_string()];
+    let argv = normalize_prompt_argv("what", &rest);
+    assert_eq!(argv, vec!["ask", "what", "does", "-e", "mean"]);
+
+    let rest2 = vec!["me".to_string(), "a".to_string(), "joke".to_string(), "-e".to_string()];
+    let argv2 = normalize_prompt_argv("tell", &rest2);
+    assert_eq!(argv2, vec!["ask", "tell", "me", "a", "joke", "-e"]);
+
+    let rest3 = vec!["is".to_string(), "-eval".to_string()];
+    let argv3 = normalize_prompt_argv("what", &rest3);
+    assert_eq!(argv3, vec!["ask", "what", "is", "-eval"]);
 }
 
 #[test]
