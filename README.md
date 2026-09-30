@@ -105,6 +105,9 @@ Traditional AI subsystems continuously consume gigabytes of host RAM even when d
 5. **Dynamic State Compression & Streaming Infinite Context (`runtimed`)**:
    StreamingLLM attention sinks (`SinkWindowCache`, `sink_causal_mask`) with cache-relative RoPE and bounded streaming event journals (`StreamJournal`) providing continuous unbounded inference without memory leakage.
 
+6. **End-to-End Multimedia Pipeline (`routerd` & `runtimed`)**:
+   SigLIP vision tower projection, smart bicubic resampling, and multimodal token embedding (Gemma 4 vision / SigLIP) with base64 image data-URI ingestion through `routerd` reverse proxy and the `io.syntrop.Runtime1.Generate` Varlink gateway.
+
 ---
 
 ## 5. Installation

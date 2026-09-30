@@ -1,5 +1,5 @@
 Name:           syntropd
-Version:        0.3.21
+Version:        0.3.22
 Release:        1%{?dist}
 Summary:        Native AI Subsystem for systemd
 
@@ -64,6 +64,8 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/models
 %dir %{_sharedstatedir}/models
 
 %changelog
+* Wed Sep 30 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.22-1
+- End-to-end multimedia support with vision base64 pass-through in routerd and updated suite component synchronization.
 * Wed Sep 30 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.21-1
 - Unified front door syntrop and syn CLI, unprivileged daemon units, idle unload.
 * Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.5-1

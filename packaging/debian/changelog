@@ -1,3 +1,9 @@
+syntropd (0.3.22-1) unstable; urgency=medium
+
+  * End-to-end multimedia support with vision base64 pass-through in routerd and updated suite component synchronization.
+
+ -- Syntropd Team <syntropd@users.noreply.github.com>  Wed, 30 Sep 2026 18:20:00 +0000
+
 syntropd (0.3.21-1) unstable; urgency=medium
 
   * Unified front door syntrop and syn CLI, unprivileged daemon units, idle unload.
