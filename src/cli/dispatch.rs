@@ -112,7 +112,12 @@ fn is_inline_effort_flag(s: &str) -> bool {
 /// True when the first word is a question, not a namespace dispatch or intercepted command.
 pub fn is_bare_prompt(first: &str) -> bool {
     let is_effort = is_effort_flag(first) || is_inline_effort_flag(first);
-    (is_effort || !first.starts_with('-')) && first != "pull" && resolve(first).is_none()
+    (is_effort || !first.starts_with('-'))
+        && first != "pull"
+        && first != "decide"
+        && first != "prompt"
+        && first != "audit"
+        && resolve(first).is_none()
 }
 
 /// Partitions `-e` / `--effort` flags before prompt words so Clap's

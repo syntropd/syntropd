@@ -2951,6 +2951,7 @@ dependencies = [
  "anyhow",
  "clap",
  "clap_complete",
+ "rustix 0.38.44",
  "serde",
  "serde_json",
  "syntropctl-core",

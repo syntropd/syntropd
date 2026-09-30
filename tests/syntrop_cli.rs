@@ -39,6 +39,9 @@ fn bare_words_are_prompts_namespaces_are_not() {
     assert!(is_bare_prompt("Say hello in one sentence."));
     assert!(is_bare_prompt("explain"));
     assert!(!is_bare_prompt("pull"));
+    assert!(!is_bare_prompt("decide"));
+    assert!(!is_bare_prompt("prompt"));
+    assert!(!is_bare_prompt("audit"));
     assert!(!is_bare_prompt("router"));
     assert!(!is_bare_prompt("fleet"));
     assert!(!is_bare_prompt("--help"));

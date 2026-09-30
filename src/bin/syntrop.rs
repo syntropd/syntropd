@@ -44,12 +44,14 @@ fn print_overview() {
         "pull", "Pull and register a model directly", "modelctl"
     );
     println!();
-    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn pull <model>");
+    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn pull <model> | syn decide | syn audit");
     println!("effort: -e, --effort <tier>  (none, low, med, high, max; defaults to 0 tokens on CPU / tight memory, 1,024 on GPU with healthy VRAM)");
     println!("examples:");
     println!("  syn say hello in one sentence");
     println!("  syn -e low explain quantum computing");
     println!("  syn pull qwen2.5:0.5b");
+    println!("  syn decide");
+    println!("  syn audit");
     println!("  syn router models");
     println!("  syn fleet status");
     println!("  syn system units");
@@ -86,6 +88,20 @@ fn main() -> anyhow::Result<()> {
         pull_args.extend_from_slice(&cli.args);
         let err = Command::new("modelctl").args(&pull_args).exec();
         return Err(anyhow::anyhow!("failed to exec 'modelctl': {}", err));
+    }
+
+    // Intercept `syn decide`, `syn prompt`, `syn audit` and dispatch to `syntropctl <cmd> <args...>`.
+    if ns == "decide" || ns == "prompt" || ns == "audit" {
+        if !find_in_path("syntropctl") {
+            eprintln!(
+                "command '{ns}' needs 'syntropctl', which is not installed. reinstall: curl -fsSL https://syntropd.github.io/install.sh | sudo bash"
+            );
+            std::process::exit(127);
+        }
+        let mut cmd_args = vec![ns.to_string()];
+        cmd_args.extend_from_slice(&cli.args);
+        let err = Command::new("syntropctl").args(&cmd_args).exec();
+        return Err(anyhow::anyhow!("failed to exec 'syntropctl': {}", err));
     }
 
     // Bare words are a question for the router (`syn say hello` asks
