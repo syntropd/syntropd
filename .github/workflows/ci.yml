@@ -26,7 +26,7 @@ jobs:
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: 1.80.0
+          toolchain: stable
           components: clippy
 
       - name: Cache cargo registry and target
@@ -41,10 +41,10 @@ jobs:
             ${{ runner.os }}-cargo-
 
       - name: Build workspace
-        run: cargo build --locked
+        run: cargo build
 
       - name: Run test suite
-        run: cargo test --locked
+        run: cargo test
 
       - name: Run clippy
         run: cargo clippy --all-targets -- -D warnings
