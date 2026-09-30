@@ -106,7 +106,7 @@ Traditional AI subsystems continuously consume gigabytes of host RAM even when d
    StreamingLLM attention sinks (`SinkWindowCache`, `sink_causal_mask`) with cache-relative RoPE and bounded streaming event journals (`StreamJournal`) providing continuous unbounded inference without memory leakage.
 
 6. **End-to-End Multimedia Pipeline (`routerd` & `runtimed`)**:
-   SigLIP vision tower projection, smart bicubic resampling, and multimodal token embedding (Gemma 4 vision / SigLIP) with base64 image data-URI ingestion through `routerd` reverse proxy and the `io.syntrop.Runtime1.Generate` Varlink gateway.
+   Full bidirectional multimodal engine: vectorized spatial patch pooling (2x2, 3x3, 4x4) with symmetric edge replication, ephemeral vision tower lifecycle (VRAM unpinning post-prefill saving 20%–30% device memory), L2 host visual KV prefix caching for multi-turn chats, real-time 24kHz S16LE streaming audio out (Kokoro-82M TTS) directly to PipeWire (`pw-cat`), and 1-step SD-Turbo generative visuals rendering to sealed Linux `memfd` buffers via isolated compute leases. Exposed natively over Varlink RPCs (`StreamAudioOut` and `GenerateVisual`).
 
 ---
 
