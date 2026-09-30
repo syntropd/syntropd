@@ -68,7 +68,7 @@ pub const SUITE_COMPONENTS: &[SuiteComponent] = &[
     SuiteComponent {
         name: "runtimed",
         package: "syntrop-runtimed",
-        version: "0.5.6",
+        version: "0.5.7",
         binaries: &["runtimed", "runtimectl"],
         role: "Headless model execution, tensor generation & NPU acceleration",
         primary_socket: Some("/run/syntrop/io.syntrop.Runtime1"),

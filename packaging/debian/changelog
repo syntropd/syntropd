@@ -1,3 +1,9 @@
+syntropd (0.3.24-1) unstable; urgency=medium
+
+  * Multimedia enhancements in runtimed (0.5.7) including async non-blocking audio streaming, atomic visual file output, soft token image cache wiring, and neural weights integration.
+
+ -- Syntropd Team <syntropd@users.noreply.github.com>  Wed, 30 Sep 2026 22:40:00 +0000
+
 syntropd (0.3.23-1) unstable; urgency=medium
 
   * Multimedia Memory & Pipeline enhancements in runtimed (0.5.6) including vectorized patch pooling, ephemeral vision lifecycle, visual prefix cache, Kokoro TTS, and SD-Turbo generative output.
