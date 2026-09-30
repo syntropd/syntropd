@@ -40,8 +40,8 @@ fn print_overview() {
         println!("  {:<8} {} ({})", ns, desc, bin);
     }
     println!(
-        "  {:<8} {} ({})",
-        "pull", "Pull and register a model directly", "modelctl"
+        "  {:<8} Pull and register a model directly (modelctl)",
+        "pull"
     );
     println!();
     println!("usage: syn <question> | syn <namespace> <command> [args...] | syn pull <model> | syn decide | syn audit");

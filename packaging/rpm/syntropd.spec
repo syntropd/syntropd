@@ -1,5 +1,5 @@
 Name:           syntropd
-Version:        0.3.5
+Version:        0.3.21
 Release:        1%{?dist}
 Summary:        Native AI Subsystem for systemd
 
@@ -30,6 +30,8 @@ cargo build --release --locked
 
 %install
 install -D -p -m 0755 target/release/syntropd %{buildroot}%{_bindir}/syntropd
+install -D -p -m 0755 target/release/syntrop %{buildroot}%{_bindir}/syntrop
+ln -sf syntrop %{buildroot}%{_bindir}/syn
 install -D -p -m 0644 units/syntrop-sockets.target %{buildroot}%{_unitdir}/syntrop-sockets.target
 install -D -p -m 0644 units/syntrop-triage@.service %{buildroot}%{_unitdir}/syntrop-triage@.service
 install -D -p -m 0644 tmpfiles.d/syntrop.conf %{buildroot}%{_tmpfilesdir}/syntrop.conf
@@ -52,6 +54,8 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/models
 %license LICENSE
 %doc README.md
 %{_bindir}/syntropd
+%{_bindir}/syntrop
+%{_bindir}/syn
 %{_unitdir}/syntrop-sockets.target
 %{_unitdir}/syntrop-triage@.service
 %{_tmpfilesdir}/syntrop.conf
@@ -60,6 +64,8 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/models
 %dir %{_sharedstatedir}/models
 
 %changelog
+* Wed Sep 30 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.21-1
+- Unified front door syntrop and syn CLI, unprivileged daemon units, idle unload.
 * Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.5-1
 - Setup verifies every provider live before enabling; dead entries switch off.
 * Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.4-1

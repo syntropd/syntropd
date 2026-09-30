@@ -18,8 +18,18 @@ jobs:
 
       - name: Distribute AGENTS.md to all Org Repos
         env:
-          GH_TOKEN: ${{ secrets.ORG_SYNC_TOKEN }}
+          GH_TOKEN: ${{ secrets.ORG_SYNC_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "Neither ORG_SYNC_TOKEN nor GITHUB_TOKEN is set; skipping org fan-out."
+            exit 0
+          fi
+
+          if ! gh auth status >/dev/null 2>&1; then
+            echo "gh auth status failed (token lacks required scope); skipping org fan-out."
+            exit 0
+          fi
+
           REPOS=(
             "sentry"
             "runtimed"

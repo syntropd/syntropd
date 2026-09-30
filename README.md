@@ -109,7 +109,7 @@ Traditional AI subsystems continuously consume gigabytes of host RAM even when d
 
 ## 5. Installation
 
-### 4.1 Universal Automated Installer
+### 5.1 Universal Automated Installer
 The easiest way to install `syntropd` across any Linux distribution:
 
 ```bash
@@ -125,7 +125,7 @@ If a binary is missing from both local builds and the release bundle, the
 installer compiles it from a matching source checkout instead of failing.
 Builds run offline first, as your user, so your cargo cache is reused.
 
-### 4.2 Single-Command Cargo Installation
+### 5.2 Single-Command Cargo Installation
 Install the umbrella CLI directly from crates.io:
 
 ```bash
@@ -137,7 +137,7 @@ To install the individual daemons:
 cargo install syntropctl syntrop-toold syntrop-runtimed syntrop-inferenced syntrop-contextd syntrop-modeld syntrop-sentry syntrop-routerd
 ```
 
-### 4.3 Distribution Packages
+### 5.3 Distribution Packages
 
 #### Fedora, RHEL & CentOS (RPM)
 ```bash
@@ -158,7 +158,7 @@ sudo apt-get install syntropd
 sudo systemctl enable --now syntrop-sockets.target
 ```
 
-### 4.4 Building from source
+### 5.4 Building from source
 Release builds use thin link-time optimization with stripped symbols
 (portable x86-64, no chip-specific instructions):
 
@@ -168,7 +168,7 @@ cargo build --release
 
 ---
 
-## 5. Verification & Operator Usage
+## 6. Verification & Operator Usage
 
 One front door reaches every tool: `syn <namespace> <command>`, e.g.
 `syn router models`, `syn fleet status`, `syn system units`. The full
@@ -217,6 +217,6 @@ When the service fails, systemd immediately dispatches `syntrop-triage@.service`
 
 ---
 
-## 6. License
+## 7. License
 
 Dual-licensed under the **Apache License, Version 2.0** ([LICENSE](LICENSE)).

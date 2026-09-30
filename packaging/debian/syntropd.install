@@ -1,4 +1,5 @@
 target/release/syntropd usr/bin/
+target/release/syntrop usr/bin/
 units/syntrop-sockets.target lib/systemd/system/
 units/syntrop-triage@.service lib/systemd/system/
 tmpfiles.d/syntrop.conf usr/lib/tmpfiles.d/
