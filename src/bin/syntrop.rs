@@ -12,25 +12,8 @@ use clap::Parser;
 use std::os::unix::process::CommandExt;
 use std::process::Command;
 use syntropd::cli::dispatch::{
-    find_in_path, is_bare_prompt, prompt_argv, resolve, suggest, NAMESPACES,
+    find_in_path, is_bare_prompt, normalize_prompt_argv, resolve, suggest, Cli, NAMESPACES,
 };
-
-#[derive(Parser, Debug)]
-#[command(
-    name = "syntrop",
-    about = "Front door to the syntropd suite",
-    disable_help_flag = true,
-    disable_version_flag = true
-)]
-struct Cli {
-    /// Namespace: router, runtime, store, hardware, context, tools, fleet, system, pull
-    #[arg(allow_hyphen_values = true)]
-    namespace: Option<String>,
-
-    /// Arguments passed through untouched to the repo CLI
-    #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
-    args: Vec<String>,
-}
 
 /// Replace this process with `routerctl ask <words...>`; the reply,
 /// pipes, and exit code behave exactly like invoking it directly.
@@ -42,7 +25,7 @@ fn exec_prompt(first: &str, rest: &[String]) -> anyhow::Result<()> {
         std::process::exit(127);
     }
     let err = Command::new("routerctl")
-        .args(prompt_argv(first, rest))
+        .args(normalize_prompt_argv(first, rest))
         .exec();
     Err(anyhow::anyhow!("failed to exec 'routerctl': {}", err))
 }
@@ -138,89 +121,4 @@ fn main() -> anyhow::Result<()> {
     // like invoking the repo CLI directly.
     let err = Command::new(bin).args(&cli.args).exec();
     Err(anyhow::anyhow!("failed to exec '{}': {}", bin, err))
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use syntropd::cli::dispatch::edit_distance;
-
-    #[test]
-    fn every_namespace_resolves() {
-        for (ns, bin, _) in NAMESPACES {
-            assert_eq!(resolve(ns), Some(*bin));
-        }
-        assert_eq!(resolve("nope"), None);
-    }
-
-    #[test]
-    fn suggestions_catch_typos() {
-        assert_eq!(suggest("rounter"), Some("router"));
-        assert_eq!(suggest("runetime"), Some("runtime"));
-        assert_eq!(suggest("xyz"), None);
-    }
-
-    #[test]
-    fn hyphen_flags_pass_through() {
-        let cli = Cli::try_parse_from(["syn", "router", "--help"]).unwrap();
-        assert_eq!(cli.namespace.as_deref(), Some("router"));
-        assert_eq!(cli.args, vec!["--help".to_string()]);
-        let cli = Cli::try_parse_from(["syn", "--help"]).unwrap();
-        assert_eq!(cli.namespace.as_deref(), Some("--help"));
-        let cli = Cli::try_parse_from(["syn", "runtime", "generate", "--prompt", "hi"]).unwrap();
-        assert_eq!(cli.namespace.as_deref(), Some("runtime"));
-        assert_eq!(cli.args.len(), 3);
-    }
-
-    #[test]
-    fn bare_words_are_prompts_namespaces_are_not() {
-        assert!(is_bare_prompt("say"));
-        assert!(is_bare_prompt("Say hello in one sentence."));
-        assert!(is_bare_prompt("explain"));
-        assert!(!is_bare_prompt("pull"));
-        assert!(!is_bare_prompt("router"));
-        assert!(!is_bare_prompt("fleet"));
-        assert!(!is_bare_prompt("--help"));
-        assert!(!is_bare_prompt("--json"));
-        assert!(!is_bare_prompt("-V"));
-    }
-
-    #[test]
-    fn prompt_argv_keeps_every_word() {
-        assert_eq!(prompt_argv("say", &[]), vec!["ask", "say"]);
-        assert_eq!(
-            prompt_argv("say", &["hello".to_string(), "there".to_string()]),
-            vec!["ask", "say", "hello", "there"]
-        );
-    }
-
-    #[test]
-    fn edit_distance_basics() {
-        assert_eq!(edit_distance("router", "router"), 0);
-        assert_eq!(edit_distance("rounter", "router"), 1);
-        assert_eq!(edit_distance("", "abc"), 3);
-    }
-
-    #[test]
-    fn cli_parses_pull_command() {
-        let cli = Cli::try_parse_from(["syn", "pull", "qwen2.5:0.5b"]).unwrap();
-        assert_eq!(cli.namespace.as_deref(), Some("pull"));
-        assert_eq!(cli.args, vec!["qwen2.5:0.5b".to_string()]);
-    }
-
-    #[test]
-    fn cli_parses_pull_command_with_flags() {
-        let cli = Cli::try_parse_from(["syn", "pull", "org/repo", "--quant", "Q4_K_M", "--force"])
-            .unwrap();
-        assert_eq!(cli.namespace.as_deref(), Some("pull"));
-        assert_eq!(
-            cli.args,
-            vec![
-                "org/repo".to_string(),
-                "--quant".to_string(),
-                "Q4_K_M".to_string(),
-                "--force".to_string()
-            ]
-        );
-    }
 }

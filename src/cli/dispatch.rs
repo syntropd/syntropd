@@ -1,7 +1,25 @@
 //! Helper functions for CLI command, namespace, and question dispatch.
 
+use clap::Parser;
 use std::os::unix::fs::PermissionsExt;
 use std::path::Path;
+
+#[derive(Parser, Debug)]
+#[command(
+    name = "syntrop",
+    about = "Front door to the syntropd suite",
+    disable_help_flag = true,
+    disable_version_flag = true
+)]
+pub struct Cli {
+    /// Namespace: router, runtime, store, hardware, context, tools, fleet, system, pull
+    #[arg(allow_hyphen_values = true)]
+    pub namespace: Option<String>,
+
+    /// Arguments passed through untouched to the repo CLI
+    #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
+    pub args: Vec<String>,
+}
 
 /// (namespace, repo binary, one-line description)
 pub const NAMESPACES: &[(&str, &str, &str)] = &[
@@ -51,18 +69,60 @@ pub fn edit_distance(a: &str, b: &str) -> usize {
     prev[b.len()]
 }
 
-/// True when the first word is a question, not a namespace dispatch or intercepted command.
-pub fn is_bare_prompt(first: &str) -> bool {
-    !first.starts_with('-') && first != "pull" && resolve(first).is_none()
+/// Checks whether an argument is a reasoning effort flag name.
+fn is_effort_flag(s: &str) -> bool {
+    s == "-e" || s == "--effort" || s == "--reasoning-effort"
 }
 
-/// `routerctl` argv for a bare question: `ask` plus every word untouched.
-pub fn prompt_argv(first: &str, rest: &[String]) -> Vec<String> {
-    let mut argv = Vec::with_capacity(rest.len() + 2);
+/// Checks whether an argument is an inline reasoning effort flag (flag=val or -eval).
+fn is_inline_effort_flag(s: &str) -> bool {
+    s.starts_with("--effort=")
+        || s.starts_with("--reasoning-effort=")
+        || (s.starts_with("-e") && s.len() > 2)
+}
+
+/// True when the first word is a question, not a namespace dispatch or intercepted command.
+pub fn is_bare_prompt(first: &str) -> bool {
+    let is_effort = is_effort_flag(first) || is_inline_effort_flag(first);
+    (is_effort || !first.starts_with('-')) && first != "pull" && resolve(first).is_none()
+}
+
+/// Partitions `-e` / `--effort` flags before prompt words so Clap's
+/// `trailing_var_arg` on prompt doesn't capture flags as prompt text.
+pub fn normalize_prompt_argv(first: &str, rest: &[String]) -> Vec<String> {
+    let mut words = Vec::with_capacity(rest.len() + 1);
+    words.push(first.to_string());
+    words.extend(rest.iter().cloned());
+
+    let mut flags = Vec::new();
+    let mut prompt = Vec::new();
+    let mut i = 0;
+    while i < words.len() {
+        let w = &words[i];
+        if is_effort_flag(w) {
+            flags.push(w.clone());
+            if i + 1 < words.len() {
+                i += 1;
+                flags.push(words[i].clone());
+            }
+        } else if is_inline_effort_flag(w) {
+            flags.push(w.clone());
+        } else {
+            prompt.push(w.clone());
+        }
+        i += 1;
+    }
+
+    let mut argv = Vec::with_capacity(flags.len() + prompt.len() + 1);
     argv.push("ask".to_string());
-    argv.push(first.to_string());
-    argv.extend(rest.iter().cloned());
+    argv.extend(flags);
+    argv.extend(prompt);
     argv
+}
+
+/// `routerctl` argv for a bare question: `ask` plus words normalized.
+pub fn prompt_argv(first: &str, rest: &[String]) -> Vec<String> {
+    normalize_prompt_argv(first, rest)
 }
 
 /// Checks if a binary name exists and is executable in `$PATH` or as a path.
