@@ -45,8 +45,10 @@ fn print_overview() {
     );
     println!();
     println!("usage: syn <question> | syn <namespace> <command> [args...] | syn pull <model>");
+    println!("effort: -e, --effort <tier>  (none, low, med, high, max; defaults to 0 tokens on CPU / tight memory, 1,024 on GPU with healthy VRAM)");
     println!("examples:");
     println!("  syn say hello in one sentence");
+    println!("  syn -e low explain quantum computing");
     println!("  syn pull qwen2.5:0.5b");
     println!("  syn router models");
     println!("  syn fleet status");
