@@ -20,7 +20,7 @@ jobs:
       - name: Checkout sibling daemons
         run: |
           for repo in toold runtimed inferenced contextd modeld sentry routerd syntropctl; do
-            git clone --depth 1 https://github.com/syntropd/$repo.git ../$repo
+            git clone --depth 1 -b main https://github.com/syntropd/$repo.git ../$repo || git clone --depth 1 https://github.com/syntropd/$repo.git ../$repo
           done
 
       - name: Install Rust toolchain
