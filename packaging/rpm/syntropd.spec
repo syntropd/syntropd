@@ -1,5 +1,5 @@
 Name:           syntropd
-Version:        0.3.23
+Version:        0.3.24
 Release:        1%{?dist}
 Summary:        Native AI Subsystem for systemd
 
@@ -64,6 +64,8 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/models
 %dir %{_sharedstatedir}/models
 
 %changelog
+* Wed Sep 30 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.24-1
+- Multimedia enhancements in runtimed (0.5.7) including async non-blocking audio streaming, atomic visual file output, soft token image cache wiring, and neural weights integration.
 * Wed Sep 30 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.23-1
 - Multimedia Memory & Pipeline enhancements in runtimed (0.5.6) including vectorized patch pooling, ephemeral vision lifecycle, visual prefix cache, Kokoro TTS, and SD-Turbo generative output.
 * Wed Sep 30 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.22-1
