@@ -1,3 +1,9 @@
+syntropd (0.3.23-1) unstable; urgency=medium
+
+  * Multimedia Memory & Pipeline enhancements in runtimed (0.5.6) including vectorized patch pooling, ephemeral vision lifecycle, visual prefix cache, Kokoro TTS, and SD-Turbo generative output.
+
+ -- Syntropd Team <syntropd@users.noreply.github.com>  Wed, 30 Sep 2026 21:30:00 +0000
+
 syntropd (0.3.22-1) unstable; urgency=medium
 
   * End-to-end multimedia support with vision base64 pass-through in routerd and updated suite component synchronization.
