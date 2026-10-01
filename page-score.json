@@ -1,6 +1,6 @@
 {
  "repo": "syntropd",
- "rev": "ac92fd7",
+ "rev": "7854a06",
  "dirty": false,
  "pages": [
   {
@@ -12,7 +12,7 @@
   },
   {
    "path": "./src/cli/dispatch.rs",
-   "lines": 187,
+   "lines": 197,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 2
@@ -33,21 +33,21 @@
   },
   {
    "path": "./src/cli/render_report.rs",
-   "lines": 177,
+   "lines": 250,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
   },
   {
    "path": "./src/cli/router_config.rs",
-   "lines": 143,
+   "lines": 154,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
   },
   {
    "path": "./src/cli/setup.rs",
-   "lines": 154,
+   "lines": 201,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
@@ -82,14 +82,14 @@
   },
   {
    "path": "./src/system.rs",
-   "lines": 216,
+   "lines": 224,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
   },
   {
    "path": "./src/triage.rs",
-   "lines": 222,
+   "lines": 225,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 2
@@ -103,14 +103,14 @@
   },
   {
    "path": "./tests/page_rule.rs",
-   "lines": 153,
+   "lines": 183,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
   },
   {
    "path": "./tests/syntrop_cli.rs",
-   "lines": 155,
+   "lines": 159,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
