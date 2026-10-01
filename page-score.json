@@ -1,6 +1,6 @@
 {
  "repo": "syntropd",
- "rev": "632bf98",
+ "rev": "a285b0f",
  "dirty": false,
  "pages": [
   {
@@ -12,7 +12,7 @@
   },
   {
    "path": "./src/cli/admin.rs",
-   "lines": 159,
+   "lines": 161,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
