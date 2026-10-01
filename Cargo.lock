@@ -2777,6 +2777,7 @@ dependencies = [
  "anyhow",
  "base64 0.22.1",
  "candle-core",
+ "image",
  "libc",
  "memmap2",
  "rustix 0.38.44",
