@@ -88,7 +88,7 @@ Traditional AI subsystems continuously consume gigabytes of host RAM even when d
 
 ## 4. Advanced AI Subsystem Frontiers
 
-`syntropd` incorporates five architectural frontiers for production-grade, reliable system intelligence:
+`syntropd` incorporates seven architectural frontiers for production-grade, reliable system intelligence:
 
 1. **Constrained / Grammar-Guided Decoding (`runtimed`)**:
    Deterministic FSM token filtering supporting JSON schema, regex, and Varlink nul-terminated protocols with SIMD-aligned bitset logit masking and vocab trie pruning, guaranteeing syntactically valid machine outputs.
