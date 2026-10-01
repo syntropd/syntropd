@@ -114,6 +114,7 @@ pub fn is_bare_prompt(first: &str) -> bool {
     let is_effort = is_effort_flag(first) || is_inline_effort_flag(first);
     (is_effort || !first.starts_with('-'))
         && first != "pull"
+        && first != "setup"
         && first != "decide"
         && first != "prompt"
         && first != "audit"

@@ -43,12 +43,17 @@ fn print_overview() {
         "  {:<8} Pull and register a model directly (modelctl)",
         "pull"
     );
+    println!(
+        "  {:<8} Bootstrap model family and speculative router (modelctl/routerd)",
+        "setup"
+    );
     println!();
-    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn pull <model> | syn decide | syn audit");
+    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|gemma] | syn pull <model>");
     println!("effort: -e, --effort <tier>  (none, low, med, high, max; defaults to 0 tokens on CPU / tight memory, 1,024 on GPU with healthy VRAM)");
     println!("examples:");
     println!("  syn say hello in one sentence");
     println!("  syn -e low explain quantum computing");
+    println!("  syn setup --family qwen");
     println!("  syn pull qwen2.5:0.5b");
     println!("  syn decide");
     println!("  syn audit");
@@ -74,6 +79,11 @@ fn main() -> anyhow::Result<()> {
     if ns == "--version" || ns == "-V" {
         println!("syntrop {}", env!("CARGO_PKG_VERSION"));
         return Ok(());
+    }
+
+    // Intercept `syn setup <args...>` and dispatch to model autoloader setup.
+    if ns == "setup" {
+        return syntropd::cli::setup::handle_syn_setup(&cli.args);
     }
 
     // Intercept `syn pull <args...>` and dispatch to `modelctl pull <args...>`.

@@ -39,6 +39,7 @@ fn bare_words_are_prompts_namespaces_are_not() {
     assert!(is_bare_prompt("Say hello in one sentence."));
     assert!(is_bare_prompt("explain"));
     assert!(!is_bare_prompt("pull"));
+    assert!(!is_bare_prompt("setup"));
     assert!(!is_bare_prompt("decide"));
     assert!(!is_bare_prompt("prompt"));
     assert!(!is_bare_prompt("audit"));
@@ -137,3 +138,18 @@ fn cli_parses_pull_command_with_flags() {
         ]
     );
 }
+
+#[test]
+fn cli_parses_setup_command() {
+    let cli = Cli::try_parse_from(["syn", "setup", "--family", "granite", "--dry-run"]).unwrap();
+    assert_eq!(cli.namespace.as_deref(), Some("setup"));
+    assert_eq!(
+        cli.args,
+        vec![
+            "--family".to_string(),
+            "granite".to_string(),
+            "--dry-run".to_string()
+        ]
+    );
+}
+

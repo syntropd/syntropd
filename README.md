@@ -182,10 +182,21 @@ name `syntrop` works identically; per-repo CLIs (`routerctl`, …) are
 unchanged underneath. Namespaces: `router`, `runtime`, `store`,
 `hardware`, `context`, `tools`, `fleet`, `system`.
 
+### Model Family Autoloader (`syn setup`)
+`syn setup` inspects your machine's hardware envelope (host RAM, GPU VRAM, CPU cores), downloads and pins a complete curated model family (Qwen, Granite, or Gemma) with optimal CPU draft / GPU primary pairings via `modelctl bootstrap`, configures `/etc/syntrop/routerd.toml` for heterogeneous speculative decoding, and reloads `routerd.service`:
+
+```bash
+# Bootstrap curated model family (default: qwen)
+sudo syn setup --family qwen
+
+# Preview hardware envelope sizing without downloading
+syn setup --family granite --dry-run
+```
+
 Verify subsystem readiness and hardware plane detection:
 
 ```bash
-# First-time LLM setup (required before use)
+# First-time LLM setup (alternative manual wiring)
 sudo syn router setup
 
 # List connected models (routing aliases hidden)
