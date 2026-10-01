@@ -20,3 +20,4 @@ NoNewPrivileges=true
 
 # Varlink Delegation & Runtime
 RuntimeDirectory=syntrop
+RuntimeDirectoryPreserve=yes

@@ -8,7 +8,7 @@ use std::process::Command;
 /// Command line arguments for `syn admin`.
 #[derive(Parser, Debug, Clone)]
 #[command(
-    name = "admin",
+    name = "syn admin",
     about = "Autonomous OS self-healing and administration"
 )]
 pub struct AdminArgs {
@@ -80,10 +80,10 @@ pub enum AdminLockoutSubcommand {
 
 /// Dispatches `syn admin` commands directly to `syntropctl admin`.
 pub fn handle_syn_admin(args: &[String]) -> anyhow::Result<()> {
-    let mut full_args = vec!["admin".to_string()];
-    full_args.extend_from_slice(args);
+    let mut parse_args = vec!["syn admin".to_string()];
+    parse_args.extend_from_slice(args);
 
-    if let Err(e) = AdminArgs::try_parse_from(&full_args) {
+    if let Err(e) = AdminArgs::try_parse_from(&parse_args) {
         if e.kind() == clap::error::ErrorKind::DisplayHelp
             || e.kind() == clap::error::ErrorKind::DisplayVersion
         {
@@ -99,7 +99,9 @@ pub fn handle_syn_admin(args: &[String]) -> anyhow::Result<()> {
         std::process::exit(127);
     }
 
-    let err = Command::new("syntropctl").args(&full_args).exec();
+    let mut exec_args = vec!["admin".to_string()];
+    exec_args.extend_from_slice(args);
+    let err = Command::new("syntropctl").args(&exec_args).exec();
     Err(anyhow::anyhow!("failed to exec 'syntropctl': {}", err))
 }
 
@@ -109,14 +111,14 @@ mod tests {
 
     #[test]
     fn test_admin_args_parse_status() {
-        let args = AdminArgs::try_parse_from(["admin", "status"]).unwrap();
+        let args = AdminArgs::try_parse_from(["syn admin", "status"]).unwrap();
         assert!(matches!(args.command, Some(AdminSubcommand::Status)));
     }
 
     #[test]
     fn test_admin_args_parse_remediate() {
         let args = AdminArgs::try_parse_from([
-            "admin",
+            "syn admin",
             "remediate",
             "nginx.service",
             "--recipe",
@@ -141,7 +143,7 @@ mod tests {
     #[test]
     fn test_admin_args_parse_lockout_reset() {
         let args = AdminArgs::try_parse_from([
-            "admin",
+            "syn admin",
             "lockout",
             "reset",
             "caddy.service",
