@@ -1,25 +1,32 @@
 {
  "repo": "syntropd",
- "rev": "95519e8",
- "dirty": true,
+ "rev": "632bf98",
+ "dirty": false,
  "pages": [
   {
    "path": "./src/bin/syntrop.rs",
-   "lines": 152,
+   "lines": 161,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
   },
   {
-   "path": "./src/cli/dispatch.rs",
-   "lines": 197,
+   "path": "./src/cli/admin.rs",
+   "lines": 159,
    "bin_bytes": null,
    "heat_pct": null,
-   "reach": 2
+   "reach": 1
+  },
+  {
+   "path": "./src/cli/dispatch.rs",
+   "lines": 198,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 3
   },
   {
    "path": "./src/cli/mod.rs",
-   "lines": 7,
+   "lines": 8,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
@@ -96,7 +103,7 @@
   },
   {
    "path": "./src/units.rs",
-   "lines": 191,
+   "lines": 193,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 3
@@ -110,7 +117,7 @@
   },
   {
    "path": "./tests/syntrop_cli.rs",
-   "lines": 159,
+   "lines": 174,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
