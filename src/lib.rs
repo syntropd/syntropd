@@ -60,7 +60,7 @@ mod tests {
         assert_eq!(status.components.len(), 8);
         assert!(!status.sockets.is_empty());
         assert!(!status.units.is_empty());
-        assert_eq!(status.supervision.total_units, 17);
+        assert_eq!(status.supervision.total_units, 18);
     }
 
     #[test]

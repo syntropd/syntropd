@@ -1,0 +1,20 @@
+[Unit]
+Description=syntropd Linux Cognitive Desktop Companion
+Documentation=https://syntropd.github.io/manual.html
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/syntropctl companion listen
+Restart=on-failure
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=syntrop-companion
+
+# Sandboxing (GEMINI.md pure systemd-native)
+PrivateTmp=true
+
+[Install]
+WantedBy=graphical-session.target

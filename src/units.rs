@@ -29,6 +29,7 @@ pub const ALL_UNITS: &[SystemdUnitDescriptor] = &[
     desc("syntrop-sockets.target", "target", "syntropd Unified Socket Activation Umbrella", "https://syntropd.github.io/architecture.html#socket", true),
     desc("syntrop-triage@.service", "service", "syntropd Autonomous Triage for Failed Unit %I", "https://syntropd.github.io/manual.html", true),
     desc("syntrop-admin@.service", "service", "syntropd Autonomous OS Self-Healing & Remediation for %I", "https://syntropd.github.io/manual.html", true),
+    desc("syntrop-companion.service", "service", "syntropd Linux Cognitive Desktop Companion", "https://syntropd.github.io/manual.html", true),
     desc("toold.socket", "socket", "toold Varlink socket", "https://github.com/syntropd/toold", false),
     desc("toold.service", "service", "toold sandboxed execution daemon", "https://github.com/syntropd/toold", false),
     desc("runtimed.socket", "socket", "runtimed Varlink socket", "https://github.com/syntropd/runtimed", false),
@@ -62,6 +63,8 @@ pub const UNIT_SEARCH_PATHS: &[&str] = &[
     "/run/systemd/system",
     "/usr/lib/systemd/system",
     "/lib/systemd/system",
+    "/etc/systemd/user",
+    "/usr/lib/systemd/user",
 ];
 
 /// Check if a unit file exists on disk in any systemd search path.
@@ -166,16 +169,17 @@ mod tests {
 
     #[test]
     fn test_all_units_count() {
-        assert_eq!(ALL_UNITS.len(), 17);
+        assert_eq!(ALL_UNITS.len(), 18);
     }
 
     #[test]
     fn test_umbrella_units() {
         let umbrella_units: Vec<_> = ALL_UNITS.iter().filter(|u| u.is_umbrella).collect();
-        assert_eq!(umbrella_units.len(), 3);
+        assert_eq!(umbrella_units.len(), 4);
         assert_eq!(umbrella_units[0].name, "syntrop-sockets.target");
         assert_eq!(umbrella_units[1].name, "syntrop-triage@.service");
         assert_eq!(umbrella_units[2].name, "syntrop-admin@.service");
+        assert_eq!(umbrella_units[3].name, "syntrop-companion.service");
     }
 
     #[test]
@@ -186,8 +190,8 @@ mod tests {
     #[test]
     fn test_supervise_canonical_units() {
         let rep = supervise_canonical_units();
-        assert_eq!(rep.total_units, 17);
-        assert!(rep.installed_count <= 17);
+        assert_eq!(rep.total_units, 18);
+        assert!(rep.installed_count <= 18);
     }
 }
 

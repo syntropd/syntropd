@@ -51,8 +51,12 @@ fn print_overview() {
         "  {:<8} Autonomous OS self-healing & administration (syntropctl admin)",
         "admin"
     );
+    println!(
+        "  {:<8} Linux Cognitive Desktop Companion (syntropctl companion)",
+        "companion"
+    );
     println!();
-    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|gemma] | syn pull <model> | syn admin <command>");
+    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|gemma] | syn pull <model> | syn admin <command> | syn companion <command>");
     println!("effort: -e, --effort <tier>  (none, low, med, high, max; defaults to 0 tokens on CPU / tight memory, 1,024 on GPU with healthy VRAM)");
     println!("examples:");
     println!("  syn say hello in one sentence");
@@ -93,6 +97,11 @@ fn main() -> anyhow::Result<()> {
     // Intercept `syn admin <args...>` and dispatch to autonomous self-healing admin.
     if ns == "admin" {
         return syntropd::cli::admin::handle_syn_admin(&cli.args);
+    }
+
+    // Intercept `syn companion <args...>` and dispatch to desktop companion.
+    if ns == "companion" {
+        return syntropd::cli::companion::handle_syn_companion(&cli.args);
     }
 
     // Intercept `syn pull <args...>` and dispatch to `modelctl pull <args...>`.

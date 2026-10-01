@@ -44,6 +44,7 @@ fn bare_words_are_prompts_namespaces_are_not() {
     assert!(!is_bare_prompt("prompt"));
     assert!(!is_bare_prompt("audit"));
     assert!(!is_bare_prompt("admin"));
+    assert!(!is_bare_prompt("companion"));
     assert!(!is_bare_prompt("router"));
     assert!(!is_bare_prompt("fleet"));
     assert!(!is_bare_prompt("--help"));
@@ -172,3 +173,17 @@ fn cli_parses_admin_command() {
         ]
     );
 }
+
+#[test]
+fn cli_parses_companion_command() {
+    let cli = Cli::try_parse_from(["syn", "companion", "ask", "inspect desktop"]).unwrap();
+    assert_eq!(cli.namespace.as_deref(), Some("companion"));
+    assert_eq!(
+        cli.args,
+        vec![
+            "ask".to_string(),
+            "inspect desktop".to_string(),
+        ]
+    );
+}
+

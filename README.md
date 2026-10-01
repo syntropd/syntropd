@@ -111,6 +111,9 @@ Traditional AI subsystems continuously consume gigabytes of host RAM even when d
 7. **Dynamic Memory & Host OS Elasticity (`inferenced` & `runtimed`)**:
    Zero-idle kernel telemetry via non-blocking fixed-stack sysfs DRM sampling (`/sys/class/drm/renderD*`), dual-watermark hysteresis memory governor (spill from 85% high down to 70%, prefetch below 65% with 5.0s dwell cooldown), recursive cgroups v2 slice priority binding (`user.slice` interactive preemption with 250ms cooperative SIGUSR1 deadline), and circular double-buffered JIT attention layer prefetching from host pinned RAM.
 
+8. **Linux Cognitive Desktop Companion (`syntropctl companion` / `syn companion`)**:
+   Zero-disk multimodal streaming of desktop screen frames directly to `routerd` (`/run/syntrop/router.sock`) via HTTP `POST /v1/chat/completions`, grounded visual question answering (`syn companion ask`), planned virtual HID UI actions via `io.syntrop.Actuator1` (`syn companion execute`), intermediate visual state validation, automatic physical user input preemption, and session-aware systemd user unit daemon (`syntrop-companion.service`).
+
 ---
 
 ## 5. Installation
@@ -258,6 +261,28 @@ syn admin lockout reset nginx.service
 
 ---
 
-## 8. License
+## 8. Linux Cognitive Desktop Companion (`syn companion`)
+
+`syn companion` provides multimodal visual grounding, UI action planning, and desktop actuation:
+
+```bash
+# Ask a grounded visual question about the active screen
+syn companion ask "Explain what is causing the compilation error in the active terminal"
+
+# Plan and execute desktop UI actions via virtual HID actuator
+syn companion execute "focus terminal and run cargo check" --dry-run
+syn companion execute "click the submit button"
+
+# Run daemonized ambient listening session for voice or hotkey triggers
+syn companion listen --voice --hotkey "Super+Space"
+
+# Manage systemd user unit
+systemctl --user status syntrop-companion.service
+systemctl --user enable --now syntrop-companion.service
+```
+
+---
+
+## 9. License
 
 Dual-licensed under the **Apache License, Version 2.0** ([LICENSE](LICENSE)).
