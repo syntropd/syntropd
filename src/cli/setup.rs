@@ -35,7 +35,17 @@ pub struct SetupArgs {
 pub fn handle_syn_setup(args: &[String]) -> anyhow::Result<()> {
     let mut full_args = vec!["setup".to_string()];
     full_args.extend_from_slice(args);
-    let parsed = SetupArgs::try_parse_from(full_args)?;
+    let parsed = match SetupArgs::try_parse_from(full_args) {
+        Ok(p) => p,
+        Err(e)
+            if e.kind() == clap::error::ErrorKind::DisplayHelp
+                || e.kind() == clap::error::ErrorKind::DisplayVersion =>
+        {
+            print!("{e}");
+            return Ok(());
+        }
+        Err(e) => return Err(e.into()),
+    };
 
     let fam = parsed.family.trim().to_ascii_lowercase();
     if fam != "qwen" && fam != "granite" && fam != "gemma" {
@@ -197,5 +207,11 @@ mod tests {
             "--dry-run".to_string(),
         ];
         assert!(handle_syn_setup(&args).is_err());
+    }
+
+    #[test]
+    fn test_handle_syn_setup_help() {
+        let args = vec!["--help".to_string()];
+        assert!(handle_syn_setup(&args).is_ok());
     }
 }

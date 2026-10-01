@@ -1,7 +1,7 @@
 {
  "repo": "syntropd",
- "rev": "7854a06",
- "dirty": false,
+ "rev": "95519e8",
+ "dirty": true,
  "pages": [
   {
    "path": "./src/bin/syntrop.rs",
@@ -47,7 +47,7 @@
   },
   {
    "path": "./src/cli/setup.rs",
-   "lines": 201,
+   "lines": 217,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
