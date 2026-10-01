@@ -35,6 +35,7 @@ ln -sf syntrop %{buildroot}%{_bindir}/syn
 install -D -p -m 0644 units/syntrop-sockets.target %{buildroot}%{_unitdir}/syntrop-sockets.target
 install -D -p -m 0644 units/syntrop-triage@.service %{buildroot}%{_unitdir}/syntrop-triage@.service
 install -D -p -m 0644 tmpfiles.d/syntrop.conf %{buildroot}%{_tmpfilesdir}/syntrop.conf
+install -D -p -m 0644 packaging/udev/70-syntrop-uinput.rules %{buildroot}/usr/lib/udev/rules.d/70-syntrop-uinput.rules
 
 install -d -m 0755 %{buildroot}%{_sysconfdir}/syntrop
 install -d -m 0750 %{buildroot}%{_sharedstatedir}/syntrop
@@ -59,6 +60,7 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/models
 %{_unitdir}/syntrop-sockets.target
 %{_unitdir}/syntrop-triage@.service
 %{_tmpfilesdir}/syntrop.conf
+/usr/lib/udev/rules.d/70-syntrop-uinput.rules
 %dir %{_sysconfdir}/syntrop
 %dir %{_sharedstatedir}/syntrop
 %dir %{_sharedstatedir}/models

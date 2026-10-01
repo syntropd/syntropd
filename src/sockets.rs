@@ -38,6 +38,13 @@ pub const ALL_SOCKETS: &[SocketDefinition] = &[
         group: "syntrop",
     },
     SocketDefinition {
+        daemon: "runtimed",
+        address: "/run/syntrop/io.syntrop.Sensory1",
+        is_varlink: true,
+        mode: 0o660,
+        group: "syntrop",
+    },
+    SocketDefinition {
         daemon: "inferenced",
         address: "/run/syntrop/io.syntrop.Inference1",
         is_varlink: true,
@@ -173,7 +180,7 @@ mod tests {
 
     #[test]
     fn test_all_sockets_definition() {
-        assert_eq!(ALL_SOCKETS.len(), 11);
+        assert_eq!(ALL_SOCKETS.len(), 12);
         for s in ALL_SOCKETS {
             assert!(s.address.starts_with("/run/"));
         }
