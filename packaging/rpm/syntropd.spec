@@ -1,5 +1,5 @@
 Name:           syntropd
-Version:        0.3.25
+Version:        0.3.26
 Release:        1%{?dist}
 Summary:        Native AI Subsystem for systemd
 
@@ -64,6 +64,8 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/models
 %dir %{_sharedstatedir}/models
 
 %changelog
+* Thu Oct 01 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.26-1
+- Dynamic Memory & Elasticity wiring: AmbientCapabilities (CAP_SYS_PTRACE) and caller lease ownership in inferenced (0.3.7), JIT layer prefetch pipeline integration and sample VRAM watermark decode loop in runtimed (0.5.11).
 * Thu Oct 01 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.25-1
 - Dynamic Memory & Host OS Elasticity: DRM sysfs telemetry and cgroup v2 slice priority preemption in inferenced (0.3.5), dual-watermark hysteresis controller and JIT layer prefetcher in runtimed (0.5.9).
 * Wed Sep 30 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.24-1

@@ -1,3 +1,9 @@
+syntropd (0.3.26-1) unstable; urgency=medium
+
+  * Dynamic Memory & Elasticity wiring: AmbientCapabilities (CAP_SYS_PTRACE) and caller lease ownership in inferenced (0.3.7), JIT layer prefetch pipeline integration and sample VRAM watermark decode loop in runtimed (0.5.11).
+
+ -- Syntropd Team <syntropd@users.noreply.github.com>  Thu, 01 Oct 2026 03:15:00 +0000
+
 syntropd (0.3.25-1) unstable; urgency=medium
 
   * Dynamic Memory & Host OS Elasticity: DRM sysfs telemetry and cgroup v2 slice priority preemption in inferenced (0.3.5), dual-watermark hysteresis controller and JIT layer prefetcher in runtimed (0.5.9).
