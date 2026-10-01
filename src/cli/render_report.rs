@@ -12,26 +12,81 @@ pub fn handle_status(json: bool) -> anyhow::Result<()> {
     }
 
     println!("============================================================");
-    println!(" syntropd Subsystem Status — Native AI for systemd (v{})", status.version);
+    println!(
+        " syntropd Subsystem Status — Native AI for systemd (v{})",
+        status.version
+    );
     println!("============================================================");
 
     println!("\n[Kernel & OS Capabilities]");
-    println!("  PID 1 Systemd:       {}", if status.capabilities.systemd_running { "Running (PASS)" } else { "Not Detected (FAIL)" });
+    println!(
+        "  PID 1 Systemd:       {}",
+        if status.capabilities.systemd_running {
+            "Running (PASS)"
+        } else {
+            "Not Detected (FAIL)"
+        }
+    );
     if let Some(ref ver) = status.capabilities.systemd_version {
         println!("  Systemd Version:     {}", ver);
     }
-    println!("  cgroups v2:          {}", if status.capabilities.cgroups_v2 { "Active (PASS)" } else { "Disabled/Legacy (FAIL)" });
+    println!(
+        "  cgroups v2:          {}",
+        if status.capabilities.cgroups_v2 {
+            "Active (PASS)"
+        } else {
+            "Disabled/Legacy (FAIL)"
+        }
+    );
     if let Some(ref ctrl) = status.capabilities.cgroup_controllers {
         println!("  Controllers:         {}", ctrl);
     }
-    println!("  Memory PSI:          {}", if status.capabilities.psi_available { "Available (PASS)" } else { "Unavailable (FAIL)" });
-    println!("  DRM Render Nodes:    {}", if status.capabilities.dri_devices.is_empty() { "None detected".to_string() } else { status.capabilities.dri_devices.join(", ") });
-    println!("  AI Accelerators:     {}", if status.capabilities.accel_devices.is_empty() { "None detected".to_string() } else { status.capabilities.accel_devices.join(", ") });
-    println!("  Group 'syntrop':     {}", if status.capabilities.syntrop_group_exists { "Present" } else { "Missing" });
-    println!("  User 'sentry':       {}", if status.capabilities.sentry_user_exists { "Present" } else { "Missing" });
+    println!(
+        "  Memory PSI:          {}",
+        if status.capabilities.psi_available {
+            "Available (PASS)"
+        } else {
+            "Unavailable (FAIL)"
+        }
+    );
+    println!(
+        "  DRM Render Nodes:    {}",
+        if status.capabilities.dri_devices.is_empty() {
+            "None detected".to_string()
+        } else {
+            status.capabilities.dri_devices.join(", ")
+        }
+    );
+    println!(
+        "  AI Accelerators:     {}",
+        if status.capabilities.accel_devices.is_empty() {
+            "None detected".to_string()
+        } else {
+            status.capabilities.accel_devices.join(", ")
+        }
+    );
+    println!(
+        "  Group 'syntrop':     {}",
+        if status.capabilities.syntrop_group_exists {
+            "Present"
+        } else {
+            "Missing"
+        }
+    );
+    println!(
+        "  User 'sentry':       {}",
+        if status.capabilities.sentry_user_exists {
+            "Present"
+        } else {
+            "Missing"
+        }
+    );
 
     println!("\n[IPC & Varlink Sockets]");
-    println!("  {:<12} {:<36} {:<10}", "DAEMON", "SOCKET ADDRESS", "STATE");
+    println!(
+        "  {:<12} {:<36} {:<10}",
+        "DAEMON", "SOCKET ADDRESS", "STATE"
+    );
     println!("  {:-<12} {:-<36} {:-<10}", "", "", "");
     for s in &status.sockets {
         let state_str = match s.health {
@@ -44,11 +99,17 @@ pub fn handle_status(json: bool) -> anyhow::Result<()> {
     }
 
     println!("\n[Systemd Units]");
-    println!("  {:<26} {:<8} {:<12} {:<14}", "UNIT", "TYPE", "INSTALLED", "ACTIVE STATE");
+    println!(
+        "  {:<26} {:<8} {:<12} {:<14}",
+        "UNIT", "TYPE", "INSTALLED", "ACTIVE STATE"
+    );
     println!("  {:-<26} {:-<8} {:-<12} {:-<14}", "", "", "", "");
     for u in &status.units {
         let inst_str = if u.installed { "yes" } else { "no" };
-        println!("  {:<26} {:<8} {:<12} {:<14}", u.name, u.unit_type, inst_str, u.active_state);
+        println!(
+            "  {:<26} {:<8} {:<12} {:<14}",
+            u.name, u.unit_type, inst_str, u.active_state
+        );
     }
 
     println!();
@@ -99,13 +160,22 @@ pub fn handle_units(r#type: Option<&str>, json: bool) -> anyhow::Result<()> {
     println!("============================================================");
     println!(" syntropd Subsystem Units Catalog");
     println!("============================================================");
-    println!("  {:<26} {:<8} {:<10} {:<12} {:<24}", "UNIT", "TYPE", "UMBRELLA", "INSTALLED", "ACTIVE");
-    println!("  {:-<26} {:-<8} {:-<10} {:-<12} {:-<24}", "", "", "", "", "");
+    println!(
+        "  {:<26} {:<8} {:<10} {:<12} {:<24}",
+        "UNIT", "TYPE", "UMBRELLA", "INSTALLED", "ACTIVE"
+    );
+    println!(
+        "  {:-<26} {:-<8} {:-<10} {:-<12} {:-<24}",
+        "", "", "", "", ""
+    );
 
     for u in &all {
         let umb_str = if u.is_umbrella { "yes" } else { "no" };
         let inst_str = if u.installed { "yes" } else { "no" };
-        println!("  {:<26} {:<8} {:<10} {:<12} {:<24}", u.name, u.unit_type, umb_str, inst_str, u.active_state);
+        println!(
+            "  {:<26} {:<8} {:<10} {:<12} {:<24}",
+            u.name, u.unit_type, umb_str, inst_str, u.active_state
+        );
     }
     println!();
     Ok(())
@@ -137,7 +207,10 @@ pub fn handle_version(json: bool) -> anyhow::Result<()> {
     println!("Native AI Subsystem for systemd — Umbrella Meta-Package");
     println!("\nIncluded Suite Components:");
     for c in components {
-        println!("  {:<12} (crate: {:<20} v{:<6})", c.name, c.package, c.version);
+        println!(
+            "  {:<12} (crate: {:<20} v{:<6})",
+            c.name, c.package, c.version
+        );
         println!("    Role: {}", c.role);
     }
     println!();

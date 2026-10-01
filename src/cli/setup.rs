@@ -9,7 +9,10 @@ use std::process::Command;
 
 /// Command line arguments for `syn setup`.
 #[derive(Parser, Debug, Clone)]
-#[command(name = "setup", about = "Bootstrap model family and configure speculative router")]
+#[command(
+    name = "setup",
+    about = "Bootstrap model family and configure speculative router"
+)]
 pub struct SetupArgs {
     /// Model family to bootstrap: qwen, granite, or gemma.
     #[arg(long, default_value = "qwen")]
@@ -42,7 +45,10 @@ pub fn handle_syn_setup(args: &[String]) -> anyhow::Result<()> {
         ));
     }
 
-    println!("=== Syntrop Setup: Family [{}] (Envelope: {}) ===", fam, parsed.envelope);
+    println!(
+        "=== Syntrop Setup: Family [{}] (Envelope: {}) ===",
+        fam, parsed.envelope
+    );
 
     // 1. Dispatch to modelctl bootstrap
     dispatch_modelctl_bootstrap(&fam, parsed.dry_run)?;
@@ -60,9 +66,42 @@ pub fn handle_syn_setup(args: &[String]) -> anyhow::Result<()> {
     Ok(())
 }
 
+fn which_modelctl() -> PathBuf {
+    if let Ok(bin) = std::env::var("MODELCTL_BIN") {
+        let p = PathBuf::from(bin);
+        if p.is_file() {
+            return p;
+        }
+    }
+    if let Ok(path_var) = std::env::var("PATH") {
+        for dir in std::env::split_paths(&path_var) {
+            let candidate = dir.join("modelctl");
+            if candidate.is_file() {
+                return candidate;
+            }
+        }
+    }
+    if let Ok(curr) = std::env::current_exe() {
+        if let Some(parent) = curr.parent() {
+            let candidate = parent.join("modelctl");
+            if candidate.is_file() {
+                return candidate;
+            }
+        }
+    }
+    for dir in &["/usr/local/bin", "/usr/bin"] {
+        let candidate = Path::new(dir).join("modelctl");
+        if candidate.is_file() {
+            return candidate;
+        }
+    }
+    PathBuf::from("modelctl")
+}
+
 fn dispatch_modelctl_bootstrap(family: &str, dry_run: bool) -> anyhow::Result<()> {
     println!("\n[1/3] Sizing hardware envelope and dispatching to modelctl bootstrap...");
-    let mut cmd = Command::new("modelctl");
+    let bin = which_modelctl();
+    let mut cmd = Command::new(bin);
     cmd.arg("bootstrap").arg("--family").arg(family);
     if dry_run {
         cmd.arg("--dry-run");
@@ -81,12 +120,18 @@ fn dispatch_modelctl_bootstrap(family: &str, dry_run: bool) -> anyhow::Result<()
                 );
                 Ok(())
             } else {
-                Err(anyhow::anyhow!("modelctl bootstrap exited with status {}", status))
+                Err(anyhow::anyhow!(
+                    "modelctl bootstrap exited with status {}",
+                    status
+                ))
             }
         }
         Err(e) => {
             if dry_run {
-                println!("  [!] Notice: modelctl not found in PATH ({}), continuing dry run.", e);
+                println!(
+                    "  [!] Notice: modelctl not found in PATH ({}), continuing dry run.",
+                    e
+                );
                 Ok(())
             } else {
                 Err(anyhow::anyhow!(
@@ -102,7 +147,9 @@ fn dispatch_modelctl_bootstrap(family: &str, dry_run: bool) -> anyhow::Result<()
 fn reload_routerd_service() {
     println!("\n[3/3] Reloading routerd service...");
     // 1. Varlink IPC reload notification
-    let sock = Path::new("/run/syntrop/io.syntrop.Router1");
+    let router_socket_env = std::env::var("SYNTROP_ROUTER_SOCKET")
+        .unwrap_or_else(|_| "/run/syntrop/io.syntrop.Router1".to_string());
+    let sock = Path::new(&router_socket_env);
     if sock.exists() {
         if let Ok(mut stream) = UnixStream::connect(sock) {
             let req = serde_json::json!({

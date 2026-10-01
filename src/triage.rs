@@ -128,8 +128,7 @@ pub fn categorize_failure(
         );
     }
 
-    if full_text.contains("failed with result 'watchdog'")
-        || full_text.contains("watchdog timeout")
+    if full_text.contains("failed with result 'watchdog'") || full_text.contains("watchdog timeout")
     {
         return (
             FaultCategory::WatchdogTimeout,
@@ -138,13 +137,15 @@ pub fn categorize_failure(
         );
     }
 
-    if full_text.contains("status=203/exec")
-        || full_text.contains("no such file or directory")
-    {
+    if full_text.contains("status=203/exec") || full_text.contains("no such file or directory") {
         return (
             FaultCategory::MissingExecutableOrPath,
-            format!("Unit {} failed to start because the executable or path is missing.", unit),
-            "Verify binary path in ExecStart= and ensure all required directories exist.".to_string(),
+            format!(
+                "Unit {} failed to start because the executable or path is missing.",
+                unit
+            ),
+            "Verify binary path in ExecStart= and ensure all required directories exist."
+                .to_string(),
         );
     }
 
@@ -174,7 +175,8 @@ mod tests {
     fn test_categorize_oom() {
         let logs = vec![
             "kernel: Memory cgroup out of memory: Killed process 12345 (worker)".to_string(),
-            "systemd[1]: worker.service: Main process exited, code=killed, status=9/KILL".to_string(),
+            "systemd[1]: worker.service: Main process exited, code=killed, status=9/KILL"
+                .to_string(),
         ];
         let (cat, summary, rec) = categorize_failure("worker.service", "failed", &logs);
         assert_eq!(cat, FaultCategory::OutOfMemory);
@@ -185,7 +187,8 @@ mod tests {
     #[test]
     fn test_categorize_crash() {
         let logs = vec![
-            "systemd[1]: test.service: Main process exited, code=dumped, status=11/SEGV".to_string(),
+            "systemd[1]: test.service: Main process exited, code=dumped, status=11/SEGV"
+                .to_string(),
             "systemd-coredump[445]: Process 123 (test) of user 1000 dumped core.".to_string(),
         ];
         let (cat, summary, _rec) = categorize_failure("test.service", "failed", &logs);

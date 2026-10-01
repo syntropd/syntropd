@@ -100,7 +100,12 @@ fn normalize_prompt_argv_preserves_english_and_dangling_flags() {
     let argv = normalize_prompt_argv("what", &rest);
     assert_eq!(argv, vec!["ask", "what", "does", "-e", "mean"]);
 
-    let rest2 = vec!["me".to_string(), "a".to_string(), "joke".to_string(), "-e".to_string()];
+    let rest2 = vec![
+        "me".to_string(),
+        "a".to_string(),
+        "joke".to_string(),
+        "-e".to_string(),
+    ];
     let argv2 = normalize_prompt_argv("tell", &rest2);
     assert_eq!(argv2, vec!["ask", "tell", "me", "a", "joke", "-e"]);
 
@@ -152,4 +157,3 @@ fn cli_parses_setup_command() {
         ]
     );
 }
-

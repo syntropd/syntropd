@@ -52,7 +52,9 @@ impl SystemCapabilities {
 
         let cgroups_v2_path = Path::new("/sys/fs/cgroup/cgroup.controllers");
         let (cgroups_v2, cgroup_controllers) = if cgroups_v2_path.exists() {
-            let controllers = fs::read_to_string(cgroups_v2_path).ok().map(|s| s.trim().to_string());
+            let controllers = fs::read_to_string(cgroups_v2_path)
+                .ok()
+                .map(|s| s.trim().to_string());
             (true, controllers)
         } else {
             (false, None)
@@ -148,7 +150,10 @@ impl SystemCapabilities {
 
         for (idx, render) in render_nodes.iter().enumerate() {
             let card = card_nodes.get(idx).cloned();
-            let base_name = Path::new(render).file_name().and_then(|n| n.to_str()).unwrap_or_default();
+            let base_name = Path::new(render)
+                .file_name()
+                .and_then(|n| n.to_str())
+                .unwrap_or_default();
             let sysfs = Path::new("/sys/class/drm").join(base_name).join("device");
 
             let numa_node = fs::read_to_string(sysfs.join("numa_node"))
@@ -204,13 +209,16 @@ mod tests {
     #[test]
     fn test_group_exists_root() {
         assert!(SystemCapabilities::check_group_exists("root"));
-        assert!(!SystemCapabilities::check_group_exists("definitely_nonexistent_group_xyz"));
+        assert!(!SystemCapabilities::check_group_exists(
+            "definitely_nonexistent_group_xyz"
+        ));
     }
 
     #[test]
     fn test_user_exists_root() {
         assert!(SystemCapabilities::check_user_exists("root"));
-        assert!(!SystemCapabilities::check_user_exists("definitely_nonexistent_user_xyz"));
+        assert!(!SystemCapabilities::check_user_exists(
+            "definitely_nonexistent_user_xyz"
+        ));
     }
 }
-

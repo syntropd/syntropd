@@ -23,10 +23,22 @@ pub struct Cli {
 
 /// (namespace, repo binary, one-line description)
 pub const NAMESPACES: &[(&str, &str, &str)] = &[
-    ("router", "routerctl", "Talk to LLMs: ask, setup, models, default, test"),
+    (
+        "router",
+        "routerctl",
+        "Talk to LLMs: ask, setup, models, default, test",
+    ),
     ("runtime", "runtimectl", "Run local models directly"),
-    ("store", "modelctl", "Model file storage: list, import, prune"),
-    ("hardware", "inferenctl", "GPU/accelerator planes and leases"),
+    (
+        "store",
+        "modelctl",
+        "Model file storage: list, import, prune",
+    ),
+    (
+        "hardware",
+        "inferenctl",
+        "GPU/accelerator planes and leases",
+    ),
     ("context", "contextctl", "System history and config drift"),
     ("tools", "toolctl", "Sandboxed repair tools and rollback"),
     ("fleet", "syntropctl", "Fleet health and failure forensics"),
@@ -173,9 +185,7 @@ pub fn find_in_path(bin: &str) -> bool {
         return is_executable(Path::new(bin));
     }
     std::env::var_os("PATH")
-        .map(|paths| {
-            std::env::split_paths(&paths).any(|dir| is_executable(&dir.join(bin)))
-        })
+        .map(|paths| std::env::split_paths(&paths).any(|dir| is_executable(&dir.join(bin))))
         .unwrap_or(false)
 }
 
