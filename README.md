@@ -108,6 +108,9 @@ Traditional AI subsystems continuously consume gigabytes of host RAM even when d
 6. **End-to-End Multimedia Pipeline (`routerd` & `runtimed`)**:
    Full bidirectional multimodal engine: vectorized spatial patch pooling (2x2, 3x3, 4x4) with symmetric edge replication, ephemeral vision tower lifecycle (VRAM unpinning post-prefill saving 20%–30% device memory), L2 host visual KV prefix caching for multi-turn chats, real-time 24kHz S16LE streaming audio out (Kokoro-82M TTS) directly to PipeWire (`pw-cat`), and 1-step SD-Turbo generative visuals rendering to atomic PNG output via isolated compute leases. Exposed natively over Varlink RPCs (`StreamAudioOut` and `GenerateVisual`).
 
+7. **Dynamic Memory & Host OS Elasticity (`inferenced` & `runtimed`)**:
+   Zero-idle kernel telemetry via non-blocking fixed-stack sysfs DRM sampling (`/sys/class/drm/renderD*`), dual-watermark hysteresis memory governor (spill from 85% high down to 70%, prefetch below 65% with 5.0s dwell cooldown), recursive cgroups v2 slice priority binding (`user.slice` interactive preemption with 250ms cooperative SIGUSR1 deadline), and circular double-buffered JIT attention layer prefetching from host pinned RAM.
+
 ---
 
 ## 5. Installation

@@ -2638,7 +2638,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-inferenced"
-version = "0.3.3"
+version = "0.3.5"
 dependencies = [
  "anyhow",
  "axum",
@@ -2662,7 +2662,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-inferenced-core"
-version = "0.3.3"
+version = "0.3.5"
 dependencies = [
  "chrono",
  "libc",
@@ -2754,7 +2754,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-runtimed"
-version = "0.5.7"
+version = "0.5.9"
 dependencies = [
  "anyhow",
  "libc",
@@ -2771,7 +2771,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-runtimed-core"
-version = "0.5.7"
+version = "0.5.9"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
@@ -2793,7 +2793,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-runtimed-gguf"
-version = "0.5.7"
+version = "0.5.9"
 dependencies = [
  "hex",
  "memmap2",
@@ -2806,7 +2806,7 @@ dependencies = [
 
 [[package]]
 name = "syntrop-runtimed-model"
-version = "0.5.7"
+version = "0.5.9"
 dependencies = [
  "candle-core",
  "image",
@@ -2977,7 +2977,7 @@ dependencies = [
 
 [[package]]
 name = "syntropd"
-version = "0.3.24"
+version = "0.3.25"
 dependencies = [
  "anyhow",
  "clap",
