@@ -1,5 +1,5 @@
 Name:           syntropd
-Version:        0.3.27
+Version:        0.3.28
 Release:        1%{?dist}
 Summary:        Native AI Subsystem for systemd
 
@@ -64,6 +64,8 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/models
 %dir %{_sharedstatedir}/models
 
 %changelog
+* Thu Oct 01 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.28-1
+- Model Family Cooperative Inference: Heterogeneous CPU AVX-512 draft session, Leviathan exact rejection sampler, shared VocabTrie pool, and decode_loop_managed KV layer cache spilling in runtimed (0.5.14); cascaded System 1/System 2 routing and elastic VRAM pressure downgrading in routerd (0.3.12); on-demand binary build target detection in inferenced-qa (0.3.10).
 * Thu Oct 01 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.27-1
 - Dynamic Memory & Elasticity production hardening: Production generate routed via decode_loop_managed with zero-budget short-circuit and empty sequence guard in runtimed (0.5.13); GetDrmWatermark and ResizeLease Varlink specs synchronized with device parameter examples and CLI profile path resolution in inferenced (0.3.9); resolved systemd socket activation ordering cycle by removing redundant network.target dependency from syntrop-sockets.target.
 * Thu Oct 01 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.26-1

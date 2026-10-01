@@ -28,7 +28,7 @@ pub const SUITE_COMPONENTS: &[SuiteComponent] = &[
     SuiteComponent {
         name: "inferenced",
         package: "syntrop-inferenced",
-        version: "0.3.9",
+        version: "0.3.10",
         binaries: &["inferenced", "inferenctl"],
         role: "Hardware arbiter, demand paging, dynamic memory quotas & OpenAI-compatible gateway",
         primary_socket: Some("/run/syntrop/io.syntrop.Inference1"),
@@ -68,7 +68,7 @@ pub const SUITE_COMPONENTS: &[SuiteComponent] = &[
     SuiteComponent {
         name: "runtimed",
         package: "syntrop-runtimed",
-        version: "0.5.13",
+        version: "0.5.14",
         binaries: &["runtimed", "runtimectl"],
         role: "Headless model execution, tensor generation & NPU acceleration",
         primary_socket: Some("/run/syntrop/io.syntrop.Runtime1"),
@@ -88,7 +88,7 @@ pub const SUITE_COMPONENTS: &[SuiteComponent] = &[
     SuiteComponent {
         name: "routerd",
         package: "syntrop-routerd",
-        version: "0.3.11",
+        version: "0.3.12",
         binaries: &["routerd", "routerctl"],
         role: "Multi-provider LLM reverse proxy, dynamic router & telemetry offload gateway",
         primary_socket: Some("/run/syntrop/io.syntrop.Router1"),
