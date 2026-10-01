@@ -221,19 +221,43 @@ syn fleet explain nginx.service
 syn system triage nginx.service
 ```
 
-### Autonomous Triage Hook
-To enable autonomous diagnosis for any mission-critical systemd service, append `OnFailure=syntrop-triage@%n.service` to its unit definition:
+### Autonomous Triage & Self-Healing Hooks
+To enable autonomous diagnosis and self-healing for any mission-critical systemd service, append `OnFailure=` hooks to its unit definition:
 
 ```ini
 [Unit]
 Description=My Critical Service
-OnFailure=syntrop-triage@%n.service
+OnFailure=syntrop-admin@%n.service
 ```
 
-When the service fails, systemd immediately dispatches `syntrop-triage@.service`, running `syntropctl explain` and writing a root-cause explanation directly into the system journal.
+When the service fails, systemd dispatches `syntrop-admin@.service`, which triggers `syn admin remediate %I` under an unprivileged sandboxed user, querying `sentry` for circuit-breaker safety, inspecting causal drift in `contextd`, verifying syntax and executing remediations with pre-mutation snapshots in `toold`, and logging structured audit fields directly to `systemd-journald`.
 
 ---
 
-## 7. License
+## 7. Autonomous Administration (`syn admin`)
+
+`syn admin` provides unified management of autonomous self-healing, declarative remediation recipes, and circuit-breaker lockout safety:
+
+```bash
+# Check autonomous healing readiness and circuit-breaker states
+syn admin status
+
+# Execute or simulate a guided remediation recipe
+syn admin remediate nginx.service --recipe restart --dry-run
+syn admin remediate nginx.service
+
+# Roll back configuration modifications from remediation snapshots
+syn admin rollback nginx.service
+
+# Inspect structured journald forensic audit records
+syn admin audit --limit 50 --unit nginx.service --json
+
+# Manually clear a flapping or tripped circuit breaker lockout
+syn admin lockout reset nginx.service
+```
+
+---
+
+## 8. License
 
 Dual-licensed under the **Apache License, Version 2.0** ([LICENSE](LICENSE)).

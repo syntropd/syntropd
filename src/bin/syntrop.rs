@@ -47,8 +47,12 @@ fn print_overview() {
         "  {:<8} Bootstrap model family and speculative router (modelctl/routerd)",
         "setup"
     );
+    println!(
+        "  {:<8} Autonomous OS self-healing & administration (syntropctl admin)",
+        "admin"
+    );
     println!();
-    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|gemma] | syn pull <model>");
+    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|gemma] | syn pull <model> | syn admin <command>");
     println!("effort: -e, --effort <tier>  (none, low, med, high, max; defaults to 0 tokens on CPU / tight memory, 1,024 on GPU with healthy VRAM)");
     println!("examples:");
     println!("  syn say hello in one sentence");
@@ -84,6 +88,11 @@ fn main() -> anyhow::Result<()> {
     // Intercept `syn setup <args...>` and dispatch to model autoloader setup.
     if ns == "setup" {
         return syntropd::cli::setup::handle_syn_setup(&cli.args);
+    }
+
+    // Intercept `syn admin <args...>` and dispatch to autonomous self-healing admin.
+    if ns == "admin" {
+        return syntropd::cli::admin::handle_syn_admin(&cli.args);
     }
 
     // Intercept `syn pull <args...>` and dispatch to `modelctl pull <args...>`.

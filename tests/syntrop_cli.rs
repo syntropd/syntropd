@@ -43,6 +43,7 @@ fn bare_words_are_prompts_namespaces_are_not() {
     assert!(!is_bare_prompt("decide"));
     assert!(!is_bare_prompt("prompt"));
     assert!(!is_bare_prompt("audit"));
+    assert!(!is_bare_prompt("admin"));
     assert!(!is_bare_prompt("router"));
     assert!(!is_bare_prompt("fleet"));
     assert!(!is_bare_prompt("--help"));
@@ -153,6 +154,20 @@ fn cli_parses_setup_command() {
         vec![
             "--family".to_string(),
             "granite".to_string(),
+            "--dry-run".to_string()
+        ]
+    );
+}
+
+#[test]
+fn cli_parses_admin_command() {
+    let cli = Cli::try_parse_from(["syn", "admin", "remediate", "nginx.service", "--dry-run"]).unwrap();
+    assert_eq!(cli.namespace.as_deref(), Some("admin"));
+    assert_eq!(
+        cli.args,
+        vec![
+            "remediate".to_string(),
+            "nginx.service".to_string(),
             "--dry-run".to_string()
         ]
     );

@@ -1,0 +1,22 @@
+[Unit]
+Description=syntropd Autonomous OS Self-Healing & Remediation for %I
+Documentation=https://syntropd.github.io/manual.html
+After=syntrop-sockets.target sentry.service toold.service contextd.service
+
+[Service]
+Type=oneshot
+User=syntrop-admin
+Group=syntrop
+ExecStart=/usr/bin/syn admin remediate %I
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=syntrop-admin
+
+# Confinement & Sandboxing (GEMINI.md pure systemd-native)
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+NoNewPrivileges=true
+
+# Varlink Delegation & Runtime
+RuntimeDirectory=syntrop
