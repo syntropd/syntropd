@@ -1,6 +1,6 @@
 {
  "repo": "syntropd",
- "rev": "7754a5d",
+ "rev": "88a0744",
  "dirty": true,
  "pages": [
   {
@@ -19,7 +19,7 @@
   },
   {
    "path": "./src/cli/companion.rs",
-   "lines": 150,
+   "lines": 156,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
@@ -110,7 +110,7 @@
   },
   {
    "path": "./src/units.rs",
-   "lines": 197,
+   "lines": 212,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 3

@@ -82,6 +82,21 @@ pub fn is_unit_installed(unit_name: &str) -> bool {
 
 /// Query active state via systemctl is-active.
 pub fn query_unit_active_state(unit_name: &str) -> String {
+    let is_user = unit_name == "syntrop-companion.service";
+    if is_user {
+        if let Ok(out) = Command::new("systemctl")
+            .arg("--user")
+            .arg("is-active")
+            .arg(unit_name)
+            .output()
+        {
+            let state = String::from_utf8_lossy(&out.stdout).trim().to_string();
+            if !state.is_empty() && state != "unknown" {
+                return state;
+            }
+        }
+    }
+
     let output = Command::new("systemctl")
         .arg("is-active")
         .arg(unit_name)

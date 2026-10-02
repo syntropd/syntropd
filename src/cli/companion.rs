@@ -38,6 +38,10 @@ pub enum CompanionSubcommand {
         /// High-level natural language instruction or UI action plan
         instruction: String,
 
+        /// Optional display identifier (e.g. :0, wayland-0)
+        #[arg(long)]
+        display: Option<String>,
+
         /// Validate and preview action plan without emitting hardware actuator events
         #[arg(long)]
         dry_run: bool,
@@ -114,9 +118,11 @@ mod tests {
         match args.command {
             Some(CompanionSubcommand::Execute {
                 instruction,
+                display,
                 dry_run,
             }) => {
                 assert_eq!(instruction, "click 0.5 0.5");
+                assert!(display.is_none());
                 assert!(dry_run);
             }
             _ => panic!("Expected Execute subcommand"),
