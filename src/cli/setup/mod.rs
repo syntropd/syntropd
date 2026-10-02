@@ -1,6 +1,8 @@
 //! Automated model family setup and routerd configuration generator.
 
+pub mod families;
 pub mod router_config;
+use families::SetupFamily;
 use router_config::write_routerd_config;
 use clap::Parser;
 use std::io::Write;
@@ -15,7 +17,7 @@ use std::process::Command;
     about = "Bootstrap model family and configure speculative router"
 )]
 pub struct SetupArgs {
-    /// Model family to bootstrap: qwen, granite, or gemma.
+    /// Model family to bootstrap: qwen, granite, phi, or gemma.
     #[arg(long, default_value = "qwen")]
     pub family: String,
 
@@ -48,13 +50,8 @@ pub fn handle_syn_setup(args: &[String]) -> anyhow::Result<()> {
         Err(e) => return Err(e.into()),
     };
 
-    let fam = parsed.family.trim().to_ascii_lowercase();
-    if fam != "qwen" && fam != "granite" && fam != "gemma" {
-        return Err(anyhow::anyhow!(
-            "Invalid model family '{}'. Supported: qwen, granite, gemma",
-            parsed.family
-        ));
-    }
+    let family = SetupFamily::parse(&parsed.family)?;
+    let fam = family.as_str();
 
     println!(
         "=== Syntrop Setup: Family [{}] (Envelope: {}) ===",
@@ -62,7 +59,7 @@ pub fn handle_syn_setup(args: &[String]) -> anyhow::Result<()> {
     );
 
     // 1. Dispatch to modelctl bootstrap
-    dispatch_modelctl_bootstrap(&fam, parsed.dry_run)?;
+    dispatch_modelctl_bootstrap(fam, parsed.dry_run)?;
 
     // 2. Generate and write routerd.toml with paired speculative sessions and shared Arc<VocabTrie>
     let is_cpu = if parsed.envelope.eq_ignore_ascii_case("cpu") || parsed.envelope.eq_ignore_ascii_case("cpu-only") {
@@ -72,7 +69,7 @@ pub fn handle_syn_setup(args: &[String]) -> anyhow::Result<()> {
     } else {
         router_config::detect_cpu_only_envelope()
     };
-    let toml_content = router_config::generate_speculative_routerd_toml_envelope(&fam, is_cpu);
+    let toml_content = family.render_routerd_toml(is_cpu);
     write_routerd_config(&parsed.config, &toml_content, parsed.dry_run)?;
 
     // 3. Reload routerd.service if not in dry-run mode
@@ -200,6 +197,20 @@ mod tests {
         let args = vec![
             "--family".to_string(),
             "qwen".to_string(),
+            "--dry-run".to_string(),
+            "--config".to_string(),
+            cfg.to_str().unwrap().to_string(),
+        ];
+        assert!(handle_syn_setup(&args).is_ok());
+    }
+
+    #[test]
+    fn test_handle_syn_setup_dry_run_phi() {
+        let dir = tempdir().unwrap();
+        let cfg = dir.path().join("routerd.toml");
+        let args = vec![
+            "--family".to_string(),
+            "phi".to_string(),
             "--dry-run".to_string(),
             "--config".to_string(),
             cfg.to_str().unwrap().to_string(),
