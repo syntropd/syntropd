@@ -1,7 +1,7 @@
 {
  "repo": "syntropd",
- "rev": "0ad6824",
- "dirty": true,
+ "rev": "fc8f17c",
+ "dirty": false,
  "pages": [
   {
    "path": "./src/bin/syntrop.rs",
@@ -89,7 +89,7 @@
   },
   {
    "path": "./src/cli/setup/router_config.rs",
-   "lines": 200,
+   "lines": 235,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 2
