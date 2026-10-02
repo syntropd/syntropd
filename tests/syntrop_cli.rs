@@ -47,6 +47,9 @@ fn bare_words_are_prompts_namespaces_are_not() {
     assert!(!is_bare_prompt("companion"));
     assert!(!is_bare_prompt("telemetry"));
     assert!(!is_bare_prompt("tune"));
+    assert!(!is_bare_prompt("visual"));
+    assert!(!is_bare_prompt("audio"));
+    assert!(!is_bare_prompt("video"));
     assert!(!is_bare_prompt("router"));
     assert!(!is_bare_prompt("fleet"));
     assert!(!is_bare_prompt("--help"));
@@ -208,5 +211,36 @@ fn cli_parses_tune_command() {
         vec!["--policy".to_string(), "balanced".to_string()]
     );
 }
+
+#[test]
+fn cli_parses_audio_command() {
+    let cli = Cli::try_parse_from(["syn", "audio", "generate", "synthwave", "-d", "10"]).unwrap();
+    assert_eq!(cli.namespace.as_deref(), Some("audio"));
+    assert_eq!(
+        cli.args,
+        vec![
+            "generate".to_string(),
+            "synthwave".to_string(),
+            "-d".to_string(),
+            "10".to_string()
+        ]
+    );
+}
+
+#[test]
+fn cli_parses_video_command() {
+    let cli = Cli::try_parse_from(["syn", "video", "generate", "waves", "-f", "16"]).unwrap();
+    assert_eq!(cli.namespace.as_deref(), Some("video"));
+    assert_eq!(
+        cli.args,
+        vec![
+            "generate".to_string(),
+            "waves".to_string(),
+            "-f".to_string(),
+            "16".to_string()
+        ]
+    );
+}
+
 
 

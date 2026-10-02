@@ -1,11 +1,11 @@
 {
  "repo": "syntropd",
- "rev": "d99e10f",
+ "rev": "36f33f6",
  "dirty": true,
  "pages": [
   {
    "path": "./src/bin/syntrop.rs",
-   "lines": 194,
+   "lines": 214,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
@@ -26,17 +26,45 @@
   },
   {
    "path": "./src/cli/dispatch.rs",
-   "lines": 202,
+   "lines": 204,
    "bin_bytes": null,
    "heat_pct": null,
-   "reach": 6
+   "reach": 9
   },
   {
    "path": "./src/cli/mod.rs",
-   "lines": 12,
+   "lines": 23,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
+  },
+  {
+   "path": "./src/cli/multimedia/audio.rs",
+   "lines": 93,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 1
+  },
+  {
+   "path": "./src/cli/multimedia/mod.rs",
+   "lines": 22,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 0
+  },
+  {
+   "path": "./src/cli/multimedia/video.rs",
+   "lines": 93,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 1
+  },
+  {
+   "path": "./src/cli/multimedia/visual.rs",
+   "lines": 95,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 1
   },
   {
    "path": "./src/cli/parse_cli.rs",
@@ -69,13 +97,6 @@
   {
    "path": "./src/cli/telemetry.rs",
    "lines": 146,
-   "bin_bytes": null,
-   "heat_pct": null,
-   "reach": 1
-  },
-  {
-   "path": "./src/cli/visual.rs",
-   "lines": 95,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
@@ -138,7 +159,7 @@
   },
   {
    "path": "./tests/syntrop_cli.rs",
-   "lines": 212,
+   "lines": 246,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0

@@ -1,6 +1,6 @@
 //! Generative visual synthesis command parser and dispatcher.
 
-use super::dispatch::find_in_path;
+use crate::cli::dispatch::find_in_path;
 use clap::{Parser, Subcommand};
 use std::os::unix::process::CommandExt;
 use std::process::Command;

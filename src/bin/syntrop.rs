@@ -63,13 +63,23 @@ fn print_overview() {
         "  {:<8} Generative visual image synthesis (syntropctl visual)",
         "visual"
     );
+    println!(
+        "  {:<8} Generative music & acoustic atmosphere (syntropctl audio)",
+        "audio"
+    );
+    println!(
+        "  {:<8} Generative short-form video synthesis (syntropctl video)",
+        "video"
+    );
     println!();
-    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|gemma] | syn pull <model> | syn admin <command> | syn companion <command> | syn telemetry [status|tune] | syn tune [-p <policy>] | syn visual [generate] [args...]");
+    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|gemma] | syn pull <model> | syn admin <command> | syn companion <command> | syn telemetry [status|tune] | syn tune [-p <policy>] | syn visual [generate] [args...] | syn audio [generate] [args...] | syn video [generate] [args...]");
     println!("effort: -e, --effort <tier>  (none, low, med, high, max; defaults to 0 tokens on CPU / tight memory, 1,024 on GPU with healthy VRAM)");
     println!("examples:");
     println!("  syn say hello in one sentence");
     println!("  syn -e low explain quantum computing");
     println!("  syn visual generate \"a sunset over mountains\"");
+    println!("  syn audio generate \"cyberpunk synthwave beats\" --bpm 120");
+    println!("  syn video generate \"ocean waves crashing\" --frames 16");
     println!("  syn setup --family qwen");
     println!("  syn pull qwen2.5:0.5b");
     println!("  syn decide");
@@ -125,7 +135,17 @@ fn main() -> anyhow::Result<()> {
 
     // Intercept `syn visual <args...>` and dispatch to `syntropctl visual <args...>`.
     if ns == "visual" {
-        return syntropd::cli::visual::handle_syn_visual(&cli.args);
+        return syntropd::cli::multimedia::handle_syn_visual(&cli.args);
+    }
+
+    // Intercept `syn audio <args...>` and dispatch to `syntropctl audio <args...>`.
+    if ns == "audio" {
+        return syntropd::cli::multimedia::handle_syn_audio(&cli.args);
+    }
+
+    // Intercept `syn video <args...>` and dispatch to `syntropctl video <args...>`.
+    if ns == "video" {
+        return syntropd::cli::multimedia::handle_syn_video(&cli.args);
     }
 
     // Intercept `syn pull <args...>` and dispatch to `modelctl pull <args...>`.
