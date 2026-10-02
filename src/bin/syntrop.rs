@@ -64,11 +64,12 @@ fn print_overview() {
         "visual"
     );
     println!();
-    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|gemma] | syn pull <model> | syn admin <command> | syn companion <command> | syn telemetry [status|tune] | syn tune [-p <policy>]");
+    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|gemma] | syn pull <model> | syn admin <command> | syn companion <command> | syn telemetry [status|tune] | syn tune [-p <policy>] | syn visual [generate] [args...]");
     println!("effort: -e, --effort <tier>  (none, low, med, high, max; defaults to 0 tokens on CPU / tight memory, 1,024 on GPU with healthy VRAM)");
     println!("examples:");
     println!("  syn say hello in one sentence");
     println!("  syn -e low explain quantum computing");
+    println!("  syn visual generate \"a sunset over mountains\"");
     println!("  syn setup --family qwen");
     println!("  syn pull qwen2.5:0.5b");
     println!("  syn decide");
