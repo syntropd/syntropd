@@ -55,8 +55,12 @@ fn print_overview() {
         "  {:<8} Linux Cognitive Desktop Companion (syntropctl companion)",
         "companion"
     );
+    println!(
+        "  {:<8} Dynamic kernel telemetry & closed-loop PSI tuning (syntropctl)",
+        "telemetry"
+    );
     println!();
-    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|gemma] | syn pull <model> | syn admin <command> | syn companion <command>");
+    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|gemma] | syn pull <model> | syn admin <command> | syn companion <command> | syn telemetry [status|tune] | syn tune [-p <policy>]");
     println!("effort: -e, --effort <tier>  (none, low, med, high, max; defaults to 0 tokens on CPU / tight memory, 1,024 on GPU with healthy VRAM)");
     println!("examples:");
     println!("  syn say hello in one sentence");
@@ -102,6 +106,16 @@ fn main() -> anyhow::Result<()> {
     // Intercept `syn companion <args...>` and dispatch to desktop companion.
     if ns == "companion" {
         return syntropd::cli::companion::handle_syn_companion(&cli.args);
+    }
+
+    // Intercept `syn telemetry <args...>` and dispatch to kernel telemetry.
+    if ns == "telemetry" {
+        return syntropd::cli::telemetry::handle_syn_telemetry(&cli.args);
+    }
+
+    // Intercept `syn tune <args...>` and dispatch to dynamic tuning governor.
+    if ns == "tune" {
+        return syntropd::cli::telemetry::handle_syn_tune(&cli.args);
     }
 
     // Intercept `syn pull <args...>` and dispatch to `modelctl pull <args...>`.

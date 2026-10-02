@@ -1,0 +1,17 @@
+[Unit]
+Description=syntropd Dynamic Kernel Telemetry & Closed-Loop Tuning Governor
+Documentation=https://syntropd.github.io/manual.html
+After=syntrop-sockets.target
+PartOf=syntrop-sockets.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/syntropctl telemetry tune --policy balanced
+CapabilityBoundingSet=CAP_BPF CAP_PERFMON CAP_SYS_RESOURCE
+AmbientCapabilities=CAP_BPF CAP_PERFMON CAP_SYS_RESOURCE
+ProtectSystem=strict
+SyslogIdentifier=syntrop-tuning
+
+[Install]
+WantedBy=multi-user.target

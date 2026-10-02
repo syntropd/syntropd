@@ -30,6 +30,7 @@ pub const ALL_UNITS: &[SystemdUnitDescriptor] = &[
     desc("syntrop-triage@.service", "service", "syntropd Autonomous Triage for Failed Unit %I", "https://syntropd.github.io/manual.html", true),
     desc("syntrop-admin@.service", "service", "syntropd Autonomous OS Self-Healing & Remediation for %I", "https://syntropd.github.io/manual.html", true),
     desc("syntrop-companion.service", "service", "syntropd Linux Cognitive Desktop Companion", "https://syntropd.github.io/manual.html", true),
+    desc("syntrop-tuning.service", "service", "syntropd Dynamic Kernel Telemetry & Closed-Loop Tuning Governor", "https://syntropd.github.io/manual.html", true),
     desc("toold.socket", "socket", "toold Varlink socket", "https://github.com/syntropd/toold", false),
     desc("toold.service", "service", "toold sandboxed execution daemon", "https://github.com/syntropd/toold", false),
     desc("runtimed.socket", "socket", "runtimed Varlink socket", "https://github.com/syntropd/runtimed", false),
@@ -184,17 +185,18 @@ mod tests {
 
     #[test]
     fn test_all_units_count() {
-        assert_eq!(ALL_UNITS.len(), 18);
+        assert_eq!(ALL_UNITS.len(), 19);
     }
 
     #[test]
     fn test_umbrella_units() {
         let umbrella_units: Vec<_> = ALL_UNITS.iter().filter(|u| u.is_umbrella).collect();
-        assert_eq!(umbrella_units.len(), 4);
+        assert_eq!(umbrella_units.len(), 5);
         assert_eq!(umbrella_units[0].name, "syntrop-sockets.target");
         assert_eq!(umbrella_units[1].name, "syntrop-triage@.service");
         assert_eq!(umbrella_units[2].name, "syntrop-admin@.service");
         assert_eq!(umbrella_units[3].name, "syntrop-companion.service");
+        assert_eq!(umbrella_units[4].name, "syntrop-tuning.service");
     }
 
     #[test]
@@ -205,8 +207,8 @@ mod tests {
     #[test]
     fn test_supervise_canonical_units() {
         let rep = supervise_canonical_units();
-        assert_eq!(rep.total_units, 18);
-        assert!(rep.installed_count <= 18);
+        assert_eq!(rep.total_units, 19);
+        assert!(rep.installed_count <= 19);
     }
 }
 

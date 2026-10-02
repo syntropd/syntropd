@@ -283,6 +283,29 @@ systemctl --user enable --now syntrop-companion.service
 
 ---
 
-## 9. License
+## 9. Dynamic Kernel Telemetry & Closed-Loop Tuning (`syn telemetry`, `syn tune`)
+
+`syntropd` provides zero-allocation kernel Pressure Stall Information (PSI) monitoring and eBPF runqueue latency tracking with dynamic closed-loop tuning:
+
+```bash
+# Inspect instantaneous kernel PSI pressure and eBPF runqueue latency
+syn telemetry status
+syn telemetry status --json
+
+# Query or adjust closed-loop dynamic tuning governor policy
+syn tune --policy balanced
+syn tune --policy aggressive
+syn tune --policy conservative
+
+# Manage the systemd governor unit
+systemctl status syntrop-tuning.service
+```
+
+When memory pressure spikes (`some > 25.0%` or `full > 10.0%` under balanced policy), `routerd` automatically clamps token budgets, shortens speculative draft horizons ($K \to 1$), and triggers proactive KV cache compaction (`io.syntrop.Runtime1.CompactKvCache`). When CPU contention spikes, speculative threads yield cooperatively (`tokio::task::yield_now()`) within a 250ms deadline.
+
+---
+
+## 10. License
 
 Dual-licensed under the **Apache License, Version 2.0** ([LICENSE](LICENSE)).
+

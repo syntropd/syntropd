@@ -45,6 +45,8 @@ fn bare_words_are_prompts_namespaces_are_not() {
     assert!(!is_bare_prompt("audit"));
     assert!(!is_bare_prompt("admin"));
     assert!(!is_bare_prompt("companion"));
+    assert!(!is_bare_prompt("telemetry"));
+    assert!(!is_bare_prompt("tune"));
     assert!(!is_bare_prompt("router"));
     assert!(!is_bare_prompt("fleet"));
     assert!(!is_bare_prompt("--help"));
@@ -186,4 +188,25 @@ fn cli_parses_companion_command() {
         ]
     );
 }
+
+#[test]
+fn cli_parses_telemetry_command() {
+    let cli = Cli::try_parse_from(["syn", "telemetry", "status", "--json"]).unwrap();
+    assert_eq!(cli.namespace.as_deref(), Some("telemetry"));
+    assert_eq!(
+        cli.args,
+        vec!["status".to_string(), "--json".to_string()]
+    );
+}
+
+#[test]
+fn cli_parses_tune_command() {
+    let cli = Cli::try_parse_from(["syn", "tune", "--policy", "balanced"]).unwrap();
+    assert_eq!(cli.namespace.as_deref(), Some("tune"));
+    assert_eq!(
+        cli.args,
+        vec!["--policy".to_string(), "balanced".to_string()]
+    );
+}
+
 

@@ -1,6 +1,7 @@
 //! Automated model family setup and routerd configuration generator.
 
-use super::router_config::{generate_speculative_routerd_toml, write_routerd_config};
+pub mod router_config;
+use router_config::{generate_speculative_routerd_toml, write_routerd_config};
 use clap::Parser;
 use std::io::Write;
 use std::os::unix::net::UnixStream;
