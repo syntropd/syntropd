@@ -1,6 +1,6 @@
 {
  "repo": "syntropd",
- "rev": "fc8f17c",
+ "rev": "f5eeb3d",
  "dirty": false,
  "pages": [
   {
@@ -81,8 +81,15 @@
    "reach": 1
   },
   {
+   "path": "./src/cli/setup/families.rs",
+   "lines": 172,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 1
+  },
+  {
    "path": "./src/cli/setup/mod.rs",
-   "lines": 225,
+   "lines": 236,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
