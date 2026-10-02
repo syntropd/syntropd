@@ -35,6 +35,14 @@ pub enum VideoSubcommand {
         /// Frame playback rate in frames per second
         #[arg(long = "fps")]
         fps: Option<u32>,
+
+        /// Generate keyframe storyboard strip instead of full temporal video
+        #[arg(long = "storyboard")]
+        storyboard: Option<usize>,
+
+        /// Allow graceful degradation to CPU storyboard keyframes on zero-VRAM hardware
+        #[arg(long = "allow-degrade")]
+        allow_degrade: bool,
     },
 }
 
@@ -87,6 +95,7 @@ mod tests {
                 ref prompt,
                 frames: Some(16),
                 fps: Some(8),
+                ..
             }) if prompt == "ocean waves crashing"
         ));
     }

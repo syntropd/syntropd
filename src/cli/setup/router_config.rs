@@ -3,16 +3,53 @@
 use std::fs;
 use std::path::Path;
 
+/// Detects whether current host is in a CPU-only hardware envelope (no discrete GPU VRAM).
+pub fn detect_cpu_only_envelope() -> bool {
+    if let Ok(val) = std::env::var("SYNTROP_HARDWARE_ENVELOPE") {
+        let v = val.trim().to_ascii_lowercase();
+        if v == "cpu" || v == "cpu-only" {
+            return true;
+        }
+        if v == "gpu" || v == "cuda" {
+            return false;
+        }
+    }
+    if Path::new("/dev/nvidia0").exists() || Path::new("/dev/nvidiactl").exists() || Path::new("/dev/kfd").exists() {
+        return false;
+    }
+    if let Ok(entries) = fs::read_dir("/sys/class/drm") {
+        for entry in entries.flatten() {
+            let name = entry.file_name();
+            let name_str = name.to_string_lossy();
+            if name_str.starts_with("card") && !name_str.contains('-') {
+                if let Ok(vendor) = fs::read_to_string(entry.path().join("device/vendor")) {
+                    let v = vendor.trim().trim_start_matches("0x");
+                    if v.eq_ignore_ascii_case("10de") || v.eq_ignore_ascii_case("1002") {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+    true
+}
+
 /// Generates `/etc/syntrop/routerd.toml` with paired speculative sessions (`draft_model`)
 /// and shared `Arc<VocabTrie>` pooling comments.
 pub fn generate_speculative_routerd_toml(family: &str) -> String {
+    generate_speculative_routerd_toml_envelope(family, detect_cpu_only_envelope())
+}
+
+/// Generates speculative router configuration with explicit CPU-only envelope gating.
+pub fn generate_speculative_routerd_toml_envelope(family: &str, cpu_only: bool) -> String {
     let (primary, draft, reasoner) = match family {
         "granite" => ("granite-3.0:8b", "granite-3.0:1b", None),
         "gemma" => ("gemma:9b", "gemma:2b", Some("gemma:27b")),
         _ => ("qwen2.5:7b", "qwen2.5:0.5b", Some("qwen2.5:14b")),
     };
 
-    let hard_default = reasoner.unwrap_or(primary);
+    let fast_default = if cpu_only { draft } else { primary };
+    let hard_default = if cpu_only { draft } else { reasoner.unwrap_or(primary) };
     let reasoner_section = if let Some(r) = reasoner {
         format!(
             r#"
@@ -53,7 +90,7 @@ name = "fast"
 latency_weight = 0.60
 cost_weight = 0.30
 capability_weight = 0.10
-default_model = "{primary}"
+default_model = "{fast_default}"
 
 [tiers.hard]
 name = "hard"
@@ -150,5 +187,14 @@ mod tests {
         let toml = generate_speculative_routerd_toml("gemma");
         assert!(toml.contains("name = \"gemma:9b\""));
         assert!(toml.contains("draft_model = \"gemma:2b\""));
+    }
+
+    #[test]
+    fn test_generate_speculative_routerd_toml_cpu_only() {
+        let toml_cpu = generate_speculative_routerd_toml_envelope("qwen", true);
+        assert!(toml_cpu.contains("default_model = \"qwen2.5:0.5b\""));
+        let toml_gpu = generate_speculative_routerd_toml_envelope("qwen", false);
+        assert!(toml_gpu.contains("default_model = \"qwen2.5:7b\""));
+        assert!(toml_gpu.contains("default_model = \"qwen2.5:14b\""));
     }
 }

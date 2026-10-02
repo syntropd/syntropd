@@ -1,6 +1,6 @@
 {
  "repo": "syntropd",
- "rev": "36f33f6",
+ "rev": "0ad6824",
  "dirty": true,
  "pages": [
   {
@@ -54,14 +54,14 @@
   },
   {
    "path": "./src/cli/multimedia/video.rs",
-   "lines": 93,
+   "lines": 102,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
   },
   {
    "path": "./src/cli/multimedia/visual.rs",
-   "lines": 95,
+   "lines": 103,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
@@ -82,14 +82,14 @@
   },
   {
    "path": "./src/cli/setup/mod.rs",
-   "lines": 218,
+   "lines": 225,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
   },
   {
    "path": "./src/cli/setup/router_config.rs",
-   "lines": 154,
+   "lines": 200,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 2

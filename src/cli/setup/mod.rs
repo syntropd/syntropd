@@ -1,7 +1,7 @@
 //! Automated model family setup and routerd configuration generator.
 
 pub mod router_config;
-use router_config::{generate_speculative_routerd_toml, write_routerd_config};
+use router_config::write_routerd_config;
 use clap::Parser;
 use std::io::Write;
 use std::os::unix::net::UnixStream;
@@ -65,7 +65,14 @@ pub fn handle_syn_setup(args: &[String]) -> anyhow::Result<()> {
     dispatch_modelctl_bootstrap(&fam, parsed.dry_run)?;
 
     // 2. Generate and write routerd.toml with paired speculative sessions and shared Arc<VocabTrie>
-    let toml_content = generate_speculative_routerd_toml(&fam);
+    let is_cpu = if parsed.envelope.eq_ignore_ascii_case("cpu") || parsed.envelope.eq_ignore_ascii_case("cpu-only") {
+        true
+    } else if parsed.envelope.eq_ignore_ascii_case("gpu") || parsed.envelope.eq_ignore_ascii_case("cuda") {
+        false
+    } else {
+        router_config::detect_cpu_only_envelope()
+    };
+    let toml_content = router_config::generate_speculative_routerd_toml_envelope(&fam, is_cpu);
     write_routerd_config(&parsed.config, &toml_content, parsed.dry_run)?;
 
     // 3. Reload routerd.service if not in dry-run mode
