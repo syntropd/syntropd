@@ -59,6 +59,10 @@ fn print_overview() {
         "  {:<8} Dynamic kernel telemetry & closed-loop PSI tuning (syntropctl)",
         "telemetry"
     );
+    println!(
+        "  {:<8} Generative visual image synthesis (syntropctl visual)",
+        "visual"
+    );
     println!();
     println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|gemma] | syn pull <model> | syn admin <command> | syn companion <command> | syn telemetry [status|tune] | syn tune [-p <policy>]");
     println!("effort: -e, --effort <tier>  (none, low, med, high, max; defaults to 0 tokens on CPU / tight memory, 1,024 on GPU with healthy VRAM)");
@@ -116,6 +120,11 @@ fn main() -> anyhow::Result<()> {
     // Intercept `syn tune <args...>` and dispatch to dynamic tuning governor.
     if ns == "tune" {
         return syntropd::cli::telemetry::handle_syn_tune(&cli.args);
+    }
+
+    // Intercept `syn visual <args...>` and dispatch to `syntropctl visual <args...>`.
+    if ns == "visual" {
+        return syntropd::cli::visual::handle_syn_visual(&cli.args);
     }
 
     // Intercept `syn pull <args...>` and dispatch to `modelctl pull <args...>`.

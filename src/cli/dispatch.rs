@@ -134,6 +134,7 @@ pub fn is_bare_prompt(first: &str) -> bool {
         && first != "companion"
         && first != "telemetry"
         && first != "tune"
+        && first != "visual"
         && resolve(first).is_none()
 }
 

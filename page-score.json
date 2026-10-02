@@ -1,11 +1,11 @@
 {
  "repo": "syntropd",
- "rev": "2b8c024",
- "dirty": false,
+ "rev": "c46366e",
+ "dirty": true,
  "pages": [
   {
    "path": "./src/bin/syntrop.rs",
-   "lines": 184,
+   "lines": 193,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
@@ -26,10 +26,10 @@
   },
   {
    "path": "./src/cli/dispatch.rs",
-   "lines": 201,
+   "lines": 202,
    "bin_bytes": null,
    "heat_pct": null,
-   "reach": 5
+   "reach": 6
   },
   {
    "path": "./src/cli/mod.rs",
@@ -69,6 +69,13 @@
   {
    "path": "./src/cli/telemetry.rs",
    "lines": 146,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 1
+  },
+  {
+   "path": "./src/cli/visual.rs",
+   "lines": 95,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 1

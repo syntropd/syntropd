@@ -7,6 +7,6 @@ pub mod parse_cli;
 pub mod render_report;
 pub mod setup;
 pub mod telemetry;
+pub mod visual;
 
 pub use setup::router_config;
-
