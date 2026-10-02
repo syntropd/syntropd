@@ -5,6 +5,11 @@ use std::path::Path;
 
 /// Detects whether current host is in a CPU-only hardware envelope (no discrete GPU VRAM).
 pub fn detect_cpu_only_envelope() -> bool {
+    detect_cpu_only_envelope_at(Path::new("/sys/class/drm"), Path::new("/dev"))
+}
+
+/// Detects envelope from specified sysfs and dev paths (allows test isolation).
+pub fn detect_cpu_only_envelope_at(drm_dir: &Path, dev_dir: &Path) -> bool {
     if let Ok(val) = std::env::var("SYNTROP_HARDWARE_ENVELOPE") {
         let v = val.trim().to_ascii_lowercase();
         if v == "cpu" || v == "cpu-only" {
@@ -14,18 +19,28 @@ pub fn detect_cpu_only_envelope() -> bool {
             return false;
         }
     }
-    if Path::new("/dev/nvidia0").exists() || Path::new("/dev/nvidiactl").exists() || Path::new("/dev/kfd").exists() {
+    if dev_dir.join("nvidia0").exists() || dev_dir.join("nvidiactl").exists() {
         return false;
     }
-    if let Ok(entries) = fs::read_dir("/sys/class/drm") {
+    if let Ok(entries) = fs::read_dir(drm_dir) {
         for entry in entries.flatten() {
             let name = entry.file_name();
             let name_str = name.to_string_lossy();
             if name_str.starts_with("card") && !name_str.contains('-') {
-                if let Ok(vendor) = fs::read_to_string(entry.path().join("device/vendor")) {
+                let dev_path = entry.path().join("device");
+                if let Ok(vendor) = fs::read_to_string(dev_path.join("vendor")) {
                     let v = vendor.trim().trim_start_matches("0x");
-                    if v.eq_ignore_ascii_case("10de") || v.eq_ignore_ascii_case("1002") {
+                    if v.eq_ignore_ascii_case("10de") {
                         return false;
+                    }
+                    if v.eq_ignore_ascii_case("1002") {
+                        if let Ok(vram) = fs::read_to_string(dev_path.join("mem_info_vram_total")) {
+                            if let Ok(bytes) = vram.trim().parse::<u64>() {
+                                if bytes >= 3 * 1024 * 1024 * 1024 {
+                                    return false; // Discrete AMD GPU (>= 3GB VRAM)
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -196,5 +211,25 @@ mod tests {
         let toml_gpu = generate_speculative_routerd_toml_envelope("qwen", false);
         assert!(toml_gpu.contains("default_model = \"qwen2.5:7b\""));
         assert!(toml_gpu.contains("default_model = \"qwen2.5:14b\""));
+    }
+
+    #[test]
+    fn test_detect_envelope_amd_apu_vs_dgpu() {
+        let temp = tempfile::tempdir().unwrap();
+        let drm_apu = temp.path().join("drm_apu");
+        let dev = temp.path().join("dev");
+        let apu_card = drm_apu.join("card0").join("device");
+        std::fs::create_dir_all(&apu_card).unwrap();
+        std::fs::create_dir_all(&dev).unwrap();
+        std::fs::write(apu_card.join("vendor"), "0x1002\n").unwrap();
+        std::fs::write(apu_card.join("mem_info_vram_total"), "536870912\n").unwrap();
+        assert!(detect_cpu_only_envelope_at(&drm_apu, &dev));
+
+        let drm_dgpu = temp.path().join("drm_dgpu");
+        let dgpu_card = drm_dgpu.join("card0").join("device");
+        std::fs::create_dir_all(&dgpu_card).unwrap();
+        std::fs::write(dgpu_card.join("vendor"), "0x1002\n").unwrap();
+        std::fs::write(dgpu_card.join("mem_info_vram_total"), "8589934592\n").unwrap();
+        assert!(!detect_cpu_only_envelope_at(&drm_dgpu, &dev));
     }
 }
