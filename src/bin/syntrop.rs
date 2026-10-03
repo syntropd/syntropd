@@ -71,8 +71,12 @@ fn print_overview() {
         "  {:<8} Generative short-form video synthesis (syntropctl video)",
         "video"
     );
+    println!(
+        "  {:<8} Generate shell completion scripts (syn completions)",
+        "completions"
+    );
     println!();
-    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|gemma] | syn pull <model> | syn admin <command> | syn companion <command> | syn telemetry [status|tune] | syn tune [-p <policy>] | syn visual [generate] [args...] | syn audio [generate] [args...] | syn video [generate] [args...]");
+    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|gemma] | syn pull <model> | syn admin <command> | syn companion <command> | syn telemetry [status|tune] | syn tune [-p <policy>] | syn visual [generate] [args...] | syn audio [generate] [args...] | syn video [generate] [args...] | syn completions [bash|zsh|fish]");
     println!("effort: -e, --effort <tier>  (none, low, med, high, max; defaults to 0 tokens on CPU / tight memory, 1,024 on GPU with healthy VRAM)");
     println!("examples:");
     println!("  syn say hello in one sentence");
@@ -82,6 +86,7 @@ fn print_overview() {
     println!("  syn video generate \"ocean waves crashing\" --frames 16");
     println!("  syn setup --family qwen");
     println!("  syn pull qwen2.5:0.5b");
+    println!("  syn completions bash");
     println!("  syn decide");
     println!("  syn audit");
     println!("  syn router models");
@@ -106,6 +111,11 @@ fn main() -> anyhow::Result<()> {
     if ns == "--version" || ns == "-V" {
         println!("syntrop {}", env!("CARGO_PKG_VERSION"));
         return Ok(());
+    }
+
+    // Intercept `syn completions [shell]`
+    if ns == "completions" || ns == "completion" {
+        return syntropd::cli::completions::handle_syn_completions(&cli.args);
     }
 
     // Intercept `syn setup <args...>` and dispatch to model autoloader setup.

@@ -2,6 +2,7 @@
 
 pub mod families;
 pub mod router_config;
+pub mod verify_access;
 use families::SetupFamily;
 use router_config::write_routerd_config;
 use clap::Parser;
@@ -57,6 +58,10 @@ pub fn handle_syn_setup(args: &[String]) -> anyhow::Result<()> {
         "=== Syntrop Setup: Family [{}] (Envelope: {}) ===",
         fam, parsed.envelope
     );
+
+    if !parsed.dry_run {
+        verify_access::check_config_writable(&parsed.config);
+    }
 
     // 1. Dispatch to modelctl bootstrap
     dispatch_modelctl_bootstrap(fam, parsed.dry_run)?;
@@ -117,7 +122,15 @@ fn dispatch_modelctl_bootstrap(family: &str, dry_run: bool) -> anyhow::Result<()
     println!("\n[1/3] Sizing hardware envelope and dispatching to modelctl bootstrap...");
     let bin = which_modelctl();
     let mut cmd = Command::new(bin);
-    cmd.arg("bootstrap").arg("--family").arg(family);
+    cmd.args([
+        "bootstrap",
+        "--family",
+        family,
+        "--inference-socket",
+        "/run/syntrop/io.syntrop.Inference1",
+        "--socket",
+        "/run/syntrop/io.syntrop.Model1",
+    ]);
     if dry_run {
         cmd.arg("--dry-run");
     }

@@ -1,11 +1,11 @@
 {
  "repo": "syntropd",
- "rev": "f5eeb3d",
+ "rev": "3f81a70",
  "dirty": false,
  "pages": [
   {
    "path": "./src/bin/syntrop.rs",
-   "lines": 214,
+   "lines": 224,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
@@ -25,15 +25,22 @@
    "reach": 1
   },
   {
+   "path": "./src/cli/completions.rs",
+   "lines": 247,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 2
+  },
+  {
    "path": "./src/cli/dispatch.rs",
-   "lines": 204,
+   "lines": 206,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 9
   },
   {
    "path": "./src/cli/mod.rs",
-   "lines": 23,
+   "lines": 24,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
@@ -89,7 +96,7 @@
   },
   {
    "path": "./src/cli/setup/mod.rs",
-   "lines": 236,
+   "lines": 249,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
@@ -100,6 +107,13 @@
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 2
+  },
+  {
+   "path": "./src/cli/setup/verify_access.rs",
+   "lines": 57,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 1
   },
   {
    "path": "./src/cli/telemetry.rs",
@@ -166,7 +180,7 @@
   },
   {
    "path": "./tests/syntrop_cli.rs",
-   "lines": 246,
+   "lines": 225,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0

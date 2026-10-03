@@ -50,6 +50,8 @@ fn bare_words_are_prompts_namespaces_are_not() {
     assert!(!is_bare_prompt("visual"));
     assert!(!is_bare_prompt("audio"));
     assert!(!is_bare_prompt("video"));
+    assert!(!is_bare_prompt("completions"));
+    assert!(!is_bare_prompt("completion"));
     assert!(!is_bare_prompt("router"));
     assert!(!is_bare_prompt("fleet"));
     assert!(!is_bare_prompt("--help"));
@@ -137,110 +139,87 @@ fn cli_parses_pull_command() {
 
 #[test]
 fn cli_parses_pull_command_with_flags() {
-    let cli =
-        Cli::try_parse_from(["syn", "pull", "org/repo", "--quant", "Q4_K_M", "--force"]).unwrap();
+    let cli = Cli::try_parse_from(["syn", "pull", "org/repo", "--quant", "Q4_K_M", "--force"]).unwrap();
     assert_eq!(cli.namespace.as_deref(), Some("pull"));
-    assert_eq!(
-        cli.args,
-        vec![
-            "org/repo".to_string(),
-            "--quant".to_string(),
-            "Q4_K_M".to_string(),
-            "--force".to_string()
-        ]
-    );
+    assert_eq!(cli.args, vec!["org/repo", "--quant", "Q4_K_M", "--force"]);
 }
 
 #[test]
 fn cli_parses_setup_command() {
     let cli = Cli::try_parse_from(["syn", "setup", "--family", "granite", "--dry-run"]).unwrap();
     assert_eq!(cli.namespace.as_deref(), Some("setup"));
-    assert_eq!(
-        cli.args,
-        vec![
-            "--family".to_string(),
-            "granite".to_string(),
-            "--dry-run".to_string()
-        ]
-    );
+    assert_eq!(cli.args, vec!["--family", "granite", "--dry-run"]);
 }
 
 #[test]
 fn cli_parses_admin_command() {
     let cli = Cli::try_parse_from(["syn", "admin", "remediate", "nginx.service", "--dry-run"]).unwrap();
     assert_eq!(cli.namespace.as_deref(), Some("admin"));
-    assert_eq!(
-        cli.args,
-        vec![
-            "remediate".to_string(),
-            "nginx.service".to_string(),
-            "--dry-run".to_string()
-        ]
-    );
+    assert_eq!(cli.args, vec!["remediate", "nginx.service", "--dry-run"]);
 }
 
 #[test]
 fn cli_parses_companion_command() {
     let cli = Cli::try_parse_from(["syn", "companion", "ask", "inspect desktop"]).unwrap();
     assert_eq!(cli.namespace.as_deref(), Some("companion"));
-    assert_eq!(
-        cli.args,
-        vec![
-            "ask".to_string(),
-            "inspect desktop".to_string(),
-        ]
-    );
+    assert_eq!(cli.args, vec!["ask", "inspect desktop"]);
 }
 
 #[test]
 fn cli_parses_telemetry_command() {
     let cli = Cli::try_parse_from(["syn", "telemetry", "status", "--json"]).unwrap();
     assert_eq!(cli.namespace.as_deref(), Some("telemetry"));
-    assert_eq!(
-        cli.args,
-        vec!["status".to_string(), "--json".to_string()]
-    );
+    assert_eq!(cli.args, vec!["status", "--json"]);
 }
 
 #[test]
 fn cli_parses_tune_command() {
     let cli = Cli::try_parse_from(["syn", "tune", "--policy", "balanced"]).unwrap();
     assert_eq!(cli.namespace.as_deref(), Some("tune"));
-    assert_eq!(
-        cli.args,
-        vec!["--policy".to_string(), "balanced".to_string()]
-    );
+    assert_eq!(cli.args, vec!["--policy", "balanced"]);
 }
 
 #[test]
 fn cli_parses_audio_command() {
     let cli = Cli::try_parse_from(["syn", "audio", "generate", "synthwave", "-d", "10"]).unwrap();
     assert_eq!(cli.namespace.as_deref(), Some("audio"));
-    assert_eq!(
-        cli.args,
-        vec![
-            "generate".to_string(),
-            "synthwave".to_string(),
-            "-d".to_string(),
-            "10".to_string()
-        ]
-    );
+    assert_eq!(cli.args, vec!["generate", "synthwave", "-d", "10"]);
 }
 
 #[test]
 fn cli_parses_video_command() {
     let cli = Cli::try_parse_from(["syn", "video", "generate", "waves", "-f", "16"]).unwrap();
     assert_eq!(cli.namespace.as_deref(), Some("video"));
-    assert_eq!(
-        cli.args,
-        vec![
-            "generate".to_string(),
-            "waves".to_string(),
-            "-f".to_string(),
-            "16".to_string()
-        ]
-    );
+    assert_eq!(cli.args, vec!["generate", "waves", "-f", "16"]);
 }
 
+#[test]
+fn cli_parses_completions_command() {
+    let cli = Cli::try_parse_from(["syn", "completions", "bash"]).unwrap();
+    assert_eq!(cli.namespace.as_deref(), Some("completions"));
+    assert_eq!(cli.args, vec!["bash".to_string()]);
+}
 
+#[test]
+fn completions_bash_zsh_fish() {
+    use syntropd::cli::completions::{generate_completion, handle_syn_completions};
+    let bash = generate_completion("bash").expect("bash completion");
+    assert!(bash.contains("complete -F _syn syn syntrop"));
+    assert!(bash.contains("router runtime store"));
+    assert!(bash.contains("none low med high max"));
+    assert!(bash.contains("--help -h --version -V -e --effort"));
 
+    let zsh = generate_completion("zsh").expect("zsh completion");
+    assert!(zsh.contains("#compdef syn syntrop"));
+    assert!(zsh.contains("router:Talk to LLMs"));
+    assert!(zsh.contains("none low med high max"));
+
+    let fish = generate_completion("fish").expect("fish completion");
+    assert!(fish.contains("complete -c syn"));
+    assert!(fish.contains("complete -c syntrop -w syn"));
+    assert!(fish.contains("none low med high max"));
+
+    assert!(handle_syn_completions(&["bash".to_string()]).is_ok());
+    assert!(handle_syn_completions(&["zsh".to_string()]).is_ok());
+    assert!(handle_syn_completions(&["fish".to_string()]).is_ok());
+}

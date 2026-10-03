@@ -169,7 +169,7 @@ pub fn write_routerd_config(path: &Path, content: &str, dry_run: bool) -> anyhow
         }
         Err(e) => {
             eprintln!(
-                "  [!] Notice: could not write to {} ({}). Try with sudo or SYNTROP_ROUTERD_CONFIG.",
+                "  [!] Notice: could not write to {} ({}). Please re-run with: sudo syn setup",
                 path.display(),
                 e
             );

@@ -137,6 +137,8 @@ pub fn is_bare_prompt(first: &str) -> bool {
         && first != "visual"
         && first != "audio"
         && first != "video"
+        && first != "completions"
+        && first != "completion"
         && resolve(first).is_none()
 }
 

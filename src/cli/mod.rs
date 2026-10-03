@@ -2,6 +2,7 @@
 
 pub mod admin;
 pub mod companion;
+pub mod completions;
 pub mod dispatch;
 pub mod multimedia;
 pub mod parse_cli;
