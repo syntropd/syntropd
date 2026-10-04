@@ -28,7 +28,7 @@ pub const SUITE_COMPONENTS: &[SuiteComponent] = &[
     SuiteComponent {
         name: "inferenced",
         package: "syntrop-inferenced",
-        version: "0.5.0",
+        version: "0.6.0",
         binaries: &["inferenced", "inferenctl"],
         role: "Hardware arbiter, demand paging, dynamic memory quotas & OpenAI-compatible gateway",
         primary_socket: Some("/run/syntrop/io.syntrop.Inference1"),
@@ -38,7 +38,7 @@ pub const SUITE_COMPONENTS: &[SuiteComponent] = &[
     SuiteComponent {
         name: "modeld",
         package: "syntrop-modeld",
-        version: "0.5.0",
+        version: "0.6.0",
         binaries: &["modeld", "modelctl"],
         role: "Content-addressable model store, zero-copy shared memory tensor sharing",
         primary_socket: Some("/run/syntrop/io.syntrop.Model1"),
@@ -48,7 +48,7 @@ pub const SUITE_COMPONENTS: &[SuiteComponent] = &[
     SuiteComponent {
         name: "contextd",
         package: "syntrop-contextd",
-        version: "0.5.0",
+        version: "0.6.0",
         binaries: &["contextd", "contextctl"],
         role: "Causal event graph, configuration drift detection & chronologies",
         primary_socket: Some("/run/syntrop/io.syntrop.Context1"),
@@ -58,7 +58,7 @@ pub const SUITE_COMPONENTS: &[SuiteComponent] = &[
     SuiteComponent {
         name: "toold",
         package: "syntrop-toold",
-        version: "0.5.0",
+        version: "0.6.0",
         binaries: &["toold", "toolctl"],
         role: "Sandboxed action & diagnostic execution with automated rollback",
         primary_socket: Some("/run/syntrop/io.syntrop.Tool1"),
@@ -68,7 +68,7 @@ pub const SUITE_COMPONENTS: &[SuiteComponent] = &[
     SuiteComponent {
         name: "runtimed",
         package: "syntrop-runtimed",
-        version: "0.5.0",
+        version: "0.6.0",
         binaries: &["runtimed", "runtimectl"],
         role: "Headless model execution, tensor generation & NPU acceleration",
         primary_socket: Some("/run/syntrop/io.syntrop.Runtime1"),
@@ -78,7 +78,7 @@ pub const SUITE_COMPONENTS: &[SuiteComponent] = &[
     SuiteComponent {
         name: "sentry",
         package: "syntrop-sentry",
-        version: "0.5.0",
+        version: "0.6.0",
         binaries: &["sentry", "systemd-sentry"],
         role: "Autonomous zero-trust systemd supervisor daemon and crash watchdog",
         primary_socket: Some("/run/systemd-sentry/sentry.sock"),
@@ -88,7 +88,7 @@ pub const SUITE_COMPONENTS: &[SuiteComponent] = &[
     SuiteComponent {
         name: "routerd",
         package: "syntrop-routerd",
-        version: "0.5.0",
+        version: "0.6.0",
         binaries: &["routerd", "routerctl"],
         role: "Multi-provider LLM reverse proxy, dynamic router & telemetry offload gateway",
         primary_socket: Some("/run/syntrop/io.syntrop.Router1"),
@@ -98,7 +98,7 @@ pub const SUITE_COMPONENTS: &[SuiteComponent] = &[
     SuiteComponent {
         name: "syntropctl",
         package: "syntropctl",
-        version: "0.5.0",
+        version: "0.6.0",
         binaries: &["syntropctl"],
         role: "Unified operator CLI for inspection, drift, models, and failure triage",
         primary_socket: None,
