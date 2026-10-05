@@ -11,7 +11,7 @@ _syn() {
         cword=$COMP_CWORD
     }
     local namespaces="router runtime store hardware context tools fleet system"
-    local subcommands="pull setup admin companion telemetry tune visual audio video decide audit prompt completions"
+    local subcommands="pull setup admin companion talk telemetry tune visual audio video decide audit prompt completions"
     local flags="--help -h --version -V -e --effort"
     local effort_tiers="none low med high max"
     local families="qwen granite gemma phi"
@@ -82,7 +82,7 @@ _syn() {
                     COMPREPLY=( $(compgen -W "--unit --limit -u -n" -- "$cur") )
                 fi
             fi ;;
-        companion) COMPREPLY=( $(compgen -W "status ask execute listen stop" -- "$cur") ) ;;
+        companion) COMPREPLY=( $(compgen -W "status ask execute listen stop talk" -- "$cur") ) ;;
         router) COMPREPLY=( $(compgen -W "ask setup models default test" -- "$cur") ) ;;
         runtime) COMPREPLY=( $(compgen -W "generate status models" -- "$cur") ) ;;
         store) COMPREPLY=( $(compgen -W "list import prune inspect" -- "$cur") ) ;;
@@ -124,6 +124,7 @@ _syn() {
         'decide:Syntrop decision engine'
         'audit:Security and system audit'
         'prompt:Sub-millisecond shell prompt hook'
+        'talk:Real-time voice companion loop'
         'completions:Generate shell completion scripts'
     )
     shells=('bash' 'zsh' 'fish')
@@ -149,7 +150,7 @@ _syn() {
                 setup) _arguments '--family[Model family]:family:(qwen granite gemma phi)' '--dry-run[Simulate setup]' ;;
                 tune) _arguments '(-p --policy)'{-p,--policy}'[Tuning policy]:policy:(balanced throughput low-latency)' 'status[Status]' ;;
                 admin) _values 'admin command' status remediate rollback audit lockout ;;
-                companion) _values 'companion command' status ask execute listen stop ;;
+                companion) _values 'companion command' status ask execute listen stop talk ;;
                 router) _values 'router command' ask setup models default test ;;
                 system) _values 'system command' units triage version status ;;
                 telemetry) _values 'telemetry command' status tune ;;
@@ -164,7 +165,7 @@ _syn "$@"
 pub const FISH_COMPLETION: &str = r#"# fish completion for syn / syntrop
 function __syn_no_subcommand
     for i in (commandline -opc)
-        if contains -- $i router runtime store hardware context tools fleet system pull setup admin companion telemetry tune visual audio video decide audit prompt completions
+        if contains -- $i router runtime store hardware context tools fleet system pull setup admin companion talk telemetry tune visual audio video decide audit prompt completions
             return 1
         end
     end
@@ -175,7 +176,7 @@ complete -c syn -n "__syn_no_subcommand" -s h -l help -d "Print help"
 complete -c syn -n "__syn_no_subcommand" -s V -l version -d "Print version"
 complete -c syn -n "__syn_no_subcommand" -s e -l effort -r -f -a "none low med high max" -d "Set reasoning effort tier"
 
-for ns in router runtime store hardware context tools fleet system pull setup admin companion telemetry tune visual audio video decide audit prompt completions
+for ns in router runtime store hardware context tools fleet system pull setup admin companion talk telemetry tune visual audio video decide audit prompt completions
     complete -c syn -n "__syn_no_subcommand" -a $ns
 end
 
@@ -184,7 +185,7 @@ complete -c syn -n "__fish_seen_subcommand_from setup" -l family -r -f -a "qwen 
 complete -c syn -n "__fish_seen_subcommand_from setup" -l dry-run
 complete -c syn -n "__fish_seen_subcommand_from tune" -s p -l policy -r -f -a "balanced throughput low-latency"
 complete -c syn -n "__fish_seen_subcommand_from admin" -a "status remediate rollback audit lockout"
-complete -c syn -n "__fish_seen_subcommand_from companion" -a "status ask execute listen stop"
+complete -c syn -n "__fish_seen_subcommand_from companion" -a "status ask execute listen stop talk"
 complete -c syn -n "__fish_seen_subcommand_from router" -a "ask setup models default test"
 complete -c syn -n "__fish_seen_subcommand_from system" -a "units triage version status"
 complete -c syn -n "__fish_seen_subcommand_from telemetry" -a "status tune"

@@ -1,11 +1,11 @@
 {
  "repo": "syntropd",
- "rev": "f06748d",
- "dirty": false,
+ "rev": "559bd94",
+ "dirty": true,
  "pages": [
   {
    "path": "./src/bin/syntrop.rs",
-   "lines": 224,
+   "lines": 241,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
@@ -19,28 +19,35 @@
   },
   {
    "path": "./src/cli/companion.rs",
-   "lines": 156,
+   "lines": 188,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
   },
   {
    "path": "./src/cli/completions.rs",
-   "lines": 247,
+   "lines": 248,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 2
   },
   {
+   "path": "./src/cli/decide.rs",
+   "lines": 217,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 1
+  },
+  {
    "path": "./src/cli/dispatch.rs",
-   "lines": 206,
+   "lines": 207,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 9
   },
   {
    "path": "./src/cli/mod.rs",
-   "lines": 24,
+   "lines": 26,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
@@ -81,15 +88,36 @@
    "reach": 1
   },
   {
-   "path": "./src/cli/render_report.rs",
-   "lines": 250,
+   "path": "./src/cli/prompt.rs",
+   "lines": 229,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
   },
   {
+   "path": "./src/cli/reporting/mod.rs",
+   "lines": 7,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 0
+  },
+  {
+   "path": "./src/cli/reporting/render_report.rs",
+   "lines": 250,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 2
+  },
+  {
+   "path": "./src/cli/reporting/telemetry.rs",
+   "lines": 146,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 2
+  },
+  {
    "path": "./src/cli/setup/families.rs",
-   "lines": 172,
+   "lines": 177,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
@@ -111,13 +139,6 @@
   {
    "path": "./src/cli/setup/verify_access.rs",
    "lines": 57,
-   "bin_bytes": null,
-   "heat_pct": null,
-   "reach": 1
-  },
-  {
-   "path": "./src/cli/telemetry.rs",
-   "lines": 146,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
@@ -180,7 +201,7 @@
   },
   {
    "path": "./tests/syntrop_cli.rs",
-   "lines": 225,
+   "lines": 244,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0

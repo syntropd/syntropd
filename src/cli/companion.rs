@@ -45,6 +45,10 @@ pub enum CompanionSubcommand {
         /// Validate and preview action plan without emitting hardware actuator events
         #[arg(long)]
         dry_run: bool,
+
+        /// Enable visual grounding for semantic UI targeting
+        #[arg(long, default_value_t = true)]
+        grounding: bool,
     },
 
     /// Daemonized session listening for voice triggers or hotkey chords
@@ -58,6 +62,21 @@ pub enum CompanionSubcommand {
         hotkey: Option<String>,
 
         /// Run a single listen cycle and exit
+        #[arg(long)]
+        once: bool,
+    },
+
+    /// Full-duplex conversational voice loop: PipeWire VAD -> Whisper STT -> LLM -> Kokoro TTS
+    Talk {
+        /// LLM reasoning model to route conversational queries to
+        #[arg(long)]
+        model: Option<String>,
+
+        /// Voice persona identifier for Kokoro TTS audio synthesis
+        #[arg(long)]
+        voice: Option<String>,
+
+        /// Run a single conversational exchange and exit
         #[arg(long)]
         once: bool,
     },
@@ -120,10 +139,12 @@ mod tests {
                 instruction,
                 display,
                 dry_run,
+                grounding,
             }) => {
                 assert_eq!(instruction, "click 0.5 0.5");
                 assert!(display.is_none());
                 assert!(dry_run);
+                assert!(grounding);
             }
             _ => panic!("Expected Execute subcommand"),
         }
@@ -151,6 +172,17 @@ mod tests {
                 assert!(once);
             }
             _ => panic!("Expected Listen subcommand"),
+        }
+    }
+
+    #[test]
+    fn test_companion_args_parse_talk() {
+        let args = CompanionArgs::try_parse_from(["syn companion", "talk", "--once"]).unwrap();
+        match args.command {
+            Some(CompanionSubcommand::Talk { once, .. }) => {
+                assert!(once);
+            }
+            _ => panic!("Expected Talk subcommand"),
         }
     }
 }

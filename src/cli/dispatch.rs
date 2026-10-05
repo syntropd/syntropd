@@ -132,6 +132,7 @@ pub fn is_bare_prompt(first: &str) -> bool {
         && first != "audit"
         && first != "admin"
         && first != "companion"
+        && first != "talk"
         && first != "telemetry"
         && first != "tune"
         && first != "visual"

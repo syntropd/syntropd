@@ -45,6 +45,7 @@ fn bare_words_are_prompts_namespaces_are_not() {
     assert!(!is_bare_prompt("audit"));
     assert!(!is_bare_prompt("admin"));
     assert!(!is_bare_prompt("companion"));
+    assert!(!is_bare_prompt("talk"));
     assert!(!is_bare_prompt("telemetry"));
     assert!(!is_bare_prompt("tune"));
     assert!(!is_bare_prompt("visual"));
@@ -222,4 +223,22 @@ fn completions_bash_zsh_fish() {
     assert!(handle_syn_completions(&["bash".to_string()]).is_ok());
     assert!(handle_syn_completions(&["zsh".to_string()]).is_ok());
     assert!(handle_syn_completions(&["fish".to_string()]).is_ok());
+}
+
+#[test]
+fn cli_parses_talk_command() {
+    let cli = Cli::try_parse_from(["syn", "talk", "--once"]).unwrap();
+    assert_eq!(cli.namespace.as_deref(), Some("talk"));
+    assert_eq!(cli.args, vec!["--once".to_string()]);
+}
+
+#[test]
+fn cli_parses_decide_and_prompt_commands() {
+    let cli = Cli::try_parse_from(["syn", "decide", "--yes"]).unwrap();
+    assert_eq!(cli.namespace.as_deref(), Some("decide"));
+    assert_eq!(cli.args, vec!["--yes".to_string()]);
+
+    let cli2 = Cli::try_parse_from(["syn", "prompt", "--raw"]).unwrap();
+    assert_eq!(cli2.namespace.as_deref(), Some("prompt"));
+    assert_eq!(cli2.args, vec!["--raw".to_string()]);
 }

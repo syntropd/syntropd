@@ -18,7 +18,7 @@ use std::process::Command;
     about = "Bootstrap model family and configure speculative router"
 )]
 pub struct SetupArgs {
-    /// Model family to bootstrap: qwen, granite, phi, or gemma.
+    /// Model family to bootstrap: qwen, granite, phi, gemma, or bitnet.
     #[arg(long, default_value = "qwen")]
     pub family: String,
 

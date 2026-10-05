@@ -13,6 +13,7 @@ pub enum SetupFamily {
     Granite,
     Phi,
     Gemma,
+    BitNet,
 }
 
 impl SetupFamily {
@@ -22,8 +23,9 @@ impl SetupFamily {
             "granite" | "granite-3.0" | "granite3" => Ok(Self::Granite),
             "phi" | "phi-3.5" | "phi4" => Ok(Self::Phi),
             "gemma" | "gemma2" | "gemma3" | "gemma4" => Ok(Self::Gemma),
+            "bitnet" | "bitnet-b1.58" | "ternary" => Ok(Self::BitNet),
             other => Err(anyhow!(
-                "Invalid model family '{other}'. Supported: qwen, granite, phi, gemma"
+                "Invalid model family '{other}'. Supported: qwen, granite, phi, gemma, bitnet"
             )),
         }
     }
@@ -34,6 +36,7 @@ impl SetupFamily {
             Self::Granite => "granite",
             Self::Phi => "phi",
             Self::Gemma => "gemma",
+            Self::BitNet => "bitnet",
         }
     }
 
@@ -44,6 +47,7 @@ impl SetupFamily {
             Self::Granite => ("granite-3.0:8b", "granite-3.0:1b", None),
             Self::Phi => ("phi-4:14b", "phi-3.5-mini:3.8b", Some("phi-4:14b")),
             Self::Gemma => ("gemma-2:9b", "gemma-2:2b", Some("gemma-2:27b")),
+            Self::BitNet => ("bitnet:2b", "bitnet:2b", None),
         }
     }
 
@@ -155,12 +159,13 @@ mod tests {
         assert_eq!(SetupFamily::parse("granite").unwrap(), SetupFamily::Granite);
         assert_eq!(SetupFamily::parse("phi").unwrap(), SetupFamily::Phi);
         assert_eq!(SetupFamily::parse("gemma").unwrap(), SetupFamily::Gemma);
+        assert_eq!(SetupFamily::parse("bitnet").unwrap(), SetupFamily::BitNet);
         assert!(SetupFamily::parse("unknown_fam").is_err());
     }
 
     #[test]
     fn test_render_routerd_toml_speculative_pairs() {
-        for fam in [SetupFamily::Qwen, SetupFamily::Granite, SetupFamily::Phi, SetupFamily::Gemma] {
+        for fam in [SetupFamily::Qwen, SetupFamily::Granite, SetupFamily::Phi, SetupFamily::Gemma, SetupFamily::BitNet] {
             let toml = fam.render_routerd_toml(false);
             assert!(toml.contains("[tiers.fast]"));
             assert!(toml.contains("[tiers.hard]"));

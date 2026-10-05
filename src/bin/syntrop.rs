@@ -172,15 +172,32 @@ fn main() -> anyhow::Result<()> {
         return Err(anyhow::anyhow!("failed to exec 'modelctl': {}", err));
     }
 
-    // Intercept `syn decide`, `syn prompt`, `syn audit` and dispatch to `syntropctl <cmd> <args...>`.
-    if ns == "decide" || ns == "prompt" || ns == "audit" {
+    // Intercept `syn talk <args...>` and dispatch to `syn companion talk <args...>`.
+    if ns == "talk" {
+        let mut talk_args = vec!["talk".to_string()];
+        talk_args.extend_from_slice(&cli.args);
+        return syntropd::cli::companion::handle_syn_companion(&talk_args);
+    }
+
+    // Intercept `syn prompt <args...>` and dispatch to incident decorator.
+    if ns == "prompt" {
+        return syntropd::cli::prompt::handle_syn_prompt(&cli.args);
+    }
+
+    // Intercept `syn decide <args...>` and dispatch to triage approval.
+    if ns == "decide" {
+        return syntropd::cli::decide::handle_syn_decide(&cli.args);
+    }
+
+    // Intercept `syn audit <args...>` and dispatch to `syntropctl audit <args...>`.
+    if ns == "audit" {
         if !find_in_path("syntropctl") {
             eprintln!(
-                "command '{ns}' needs 'syntropctl', which is not installed. reinstall: curl -fsSL https://syntropd.github.io/install.sh | sudo bash"
+                "command 'audit' needs 'syntropctl', which is not installed. reinstall: curl -fsSL https://syntropd.github.io/install.sh | sudo bash"
             );
             std::process::exit(127);
         }
-        let mut cmd_args = vec![ns.to_string()];
+        let mut cmd_args = vec!["audit".to_string()];
         cmd_args.extend_from_slice(&cli.args);
         let err = Command::new("syntropctl").args(&cmd_args).exec();
         return Err(anyhow::anyhow!("failed to exec 'syntropctl': {}", err));
