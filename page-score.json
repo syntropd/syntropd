@@ -1,7 +1,7 @@
 {
  "repo": "syntropd",
- "rev": "3f81a70",
- "dirty": false,
+ "rev": "3f069cd",
+ "dirty": true,
  "pages": [
   {
    "path": "./src/bin/syntrop.rs",
