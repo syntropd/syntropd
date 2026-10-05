@@ -1,6 +1,7 @@
 //! Automated model family setup and routerd configuration generator.
 
 pub mod families;
+pub mod hf_prompt;
 pub mod router_config;
 pub mod verify_access;
 use families::SetupFamily;
@@ -33,6 +34,10 @@ pub struct SetupArgs {
     /// Target routerd configuration file path.
     #[arg(long, default_value = "/etc/syntrop/routerd.toml")]
     pub config: PathBuf,
+
+    /// Hugging Face User Access Token (optional, prompted interactively if omitted).
+    #[arg(long)]
+    pub hf_token: Option<String>,
 }
 
 /// Dispatches `syn setup` workflow: modelctl bootstrap, routerd.toml, service reload.
@@ -62,6 +67,9 @@ pub fn handle_syn_setup(args: &[String]) -> anyhow::Result<()> {
     if !parsed.dry_run {
         verify_access::check_config_writable(&parsed.config);
     }
+
+    // 0. Ensure Hugging Face credentials are configured or prompted
+    let _ = hf_prompt::ensure_hf_token(parsed.hf_token.as_deref(), parsed.dry_run)?;
 
     // 1. Dispatch to modelctl bootstrap
     dispatch_modelctl_bootstrap(fam, parsed.dry_run)?;
@@ -207,13 +215,8 @@ mod tests {
     fn test_handle_syn_setup_dry_run() {
         let dir = tempdir().unwrap();
         let cfg = dir.path().join("routerd.toml");
-        let args = vec![
-            "--family".to_string(),
-            "qwen".to_string(),
-            "--dry-run".to_string(),
-            "--config".to_string(),
-            cfg.to_str().unwrap().to_string(),
-        ];
+        let args: Vec<String> = vec!["--family", "qwen", "--dry-run", "--config", cfg.to_str().unwrap()]
+            .into_iter().map(String::from).collect();
         assert!(handle_syn_setup(&args).is_ok());
     }
 
@@ -221,29 +224,19 @@ mod tests {
     fn test_handle_syn_setup_dry_run_phi() {
         let dir = tempdir().unwrap();
         let cfg = dir.path().join("routerd.toml");
-        let args = vec![
-            "--family".to_string(),
-            "phi".to_string(),
-            "--dry-run".to_string(),
-            "--config".to_string(),
-            cfg.to_str().unwrap().to_string(),
-        ];
+        let args: Vec<String> = vec!["--family", "phi", "--dry-run", "--config", cfg.to_str().unwrap()]
+            .into_iter().map(String::from).collect();
         assert!(handle_syn_setup(&args).is_ok());
     }
 
     #[test]
     fn test_handle_syn_setup_invalid_family() {
-        let args = vec![
-            "--family".to_string(),
-            "invalid-fam".to_string(),
-            "--dry-run".to_string(),
-        ];
+        let args: Vec<String> = vec!["--family", "invalid-fam", "--dry-run"].into_iter().map(String::from).collect();
         assert!(handle_syn_setup(&args).is_err());
     }
 
     #[test]
     fn test_handle_syn_setup_help() {
-        let args = vec!["--help".to_string()];
-        assert!(handle_syn_setup(&args).is_ok());
+        assert!(handle_syn_setup(&["--help".to_string()]).is_ok());
     }
 }
