@@ -144,6 +144,25 @@ pub fn handle_syn_decide(args: &[String]) -> anyhow::Result<()> {
         if cli.json { println!("{}", serde_json::json!({ "pending": 0 })); } else { println!("No pending incidents for decision."); }
         return Ok(());
     }
+    if let Some(ref target) = cli.approve {
+        let matching: Vec<_> = incidents.iter().filter(|i| i.id == *target || i.unit == *target).collect();
+        if matching.is_empty() { anyhow::bail!("No incident found matching '{target}'"); }
+        for inc in matching {
+            println!("Approving remediation for {} ({})...", inc.unit, inc.id);
+            execute_remediation(&inc.unit, &inc.proposed_recipe, cli.dry_run)?;
+            if let Some(ref p) = inc.file_path { let _ = fs::remove_file(p); }
+        }
+        return Ok(());
+    }
+    if let Some(ref target) = cli.reject {
+        let matching: Vec<_> = incidents.iter().filter(|i| i.id == *target || i.unit == *target).collect();
+        if matching.is_empty() { anyhow::bail!("No incident found matching '{target}'"); }
+        for inc in matching {
+            println!("Rejecting remediation for {} ({})...", inc.unit, inc.id);
+            if let Some(ref p) = inc.file_path { let _ = fs::remove_file(p); }
+        }
+        return Ok(());
+    }
     for inc in &incidents {
         if cli.json {
             println!("{}", serde_json::json!({ "incident_id": inc.id, "unit": inc.unit, "recipe": inc.proposed_recipe, "risk": inc.risk_rating }));
@@ -201,6 +220,10 @@ mod tests {
     fn test_decide_args_parsing() {
         let args = DecideArgs::try_parse_from(["syn decide", "--yes", "--dry-run"]).unwrap();
         assert!(args.yes && args.dry_run && !args.json);
+        let a = DecideArgs::try_parse_from(["syn decide", "--approve", "inc-01"]).unwrap();
+        assert_eq!(a.approve.as_deref(), Some("inc-01"));
+        let r = DecideArgs::try_parse_from(["syn decide", "--reject", "inc-02"]).unwrap();
+        assert_eq!(r.reject.as_deref(), Some("inc-02"));
     }
 
     #[test]

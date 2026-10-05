@@ -1,7 +1,7 @@
 {
  "repo": "syntropd",
- "rev": "ac9990e",
- "dirty": false,
+ "rev": "60fd711",
+ "dirty": true,
  "pages": [
   {
    "path": "./src/bin/syntrop.rs",
@@ -33,7 +33,7 @@
   },
   {
    "path": "./src/cli/decide.rs",
-   "lines": 217,
+   "lines": 240,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 1
