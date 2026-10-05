@@ -1,6 +1,6 @@
 {
  "repo": "syntropd",
- "rev": "7a77b9b",
+ "rev": "5544393",
  "dirty": false,
  "pages": [
   {
@@ -123,8 +123,15 @@
    "reach": 1
   },
   {
+   "path": "./src/cli/setup/hf_prompt.rs",
+   "lines": 107,
+   "bin_bytes": null,
+   "heat_pct": null,
+   "reach": 1
+  },
+  {
    "path": "./src/cli/setup/mod.rs",
-   "lines": 249,
+   "lines": 242,
    "bin_bytes": null,
    "heat_pct": null,
    "reach": 0
