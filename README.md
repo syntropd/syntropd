@@ -125,6 +125,11 @@ The easiest way to install `syntropd` across any Linux distribution:
 curl -fsSL https://syntropd.github.io/install.sh | sudo bash
 ```
 
+To supply a Hugging Face token directly for unthrottled downloads of gated models (e.g. Gemma):
+```bash
+curl -fsSL https://syntropd.github.io/install.sh | sudo bash -s -- --hf-token <TOKEN>
+```
+
 To run pre-flight compatibility checks without modifying your system:
 ```bash
 curl -fsSL https://syntropd.github.io/install.sh | bash -s -- --dry-run

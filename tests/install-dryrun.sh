@@ -19,6 +19,13 @@ pass "--help documents model flags"
 "${INSTALL}" --help | grep -q -- "--verbose" || { echo "FAIL: --help hides --verbose"; exit 1; }
 pass "--help documents verbosity flags"
 
+"${INSTALL}" --help | grep -q -- "--hf-token" || { echo "FAIL: --help hides --hf-token"; exit 1; }
+pass "--help documents --hf-token"
+
+out="$(HF_TOKEN="" "${INSTALL}" --dry-run --hf-token custom_test_token 2>&1)"
+echo "${out}" | grep -q "Hugging Face credentials" || { echo "FAIL: dry-run ignores --hf-token"; exit 1; }
+pass "dry-run accepts --hf-token"
+
 out="$("${INSTALL}" --dry-run 2>&1)"
 echo "${out}" | grep -q "gemma-4-E2B-it-Q4_K_M.gguf\|Qwen starter brain instead" \
   || { echo "FAIL: default dry-run picks no brain"; exit 1; }
