@@ -9,12 +9,67 @@
 [![Documentation](https://img.shields.io/badge/docs-syntropd.github.io-green.svg)](https://syntropd.github.io)
 [![crates.io](https://img.shields.io/crates/v/syntropd.svg)](https://crates.io/crates/syntropd)
 
+## Installation
+
+Choose your preferred installation method:
+
+### 1. Universal Web Installer (Recommended)
+Installs all 17 precompiled, portable glibc binaries, systemd units, declarative sysusers/tmpfiles, and configures immediate unprivileged access:
 ```bash
-# Install the complete native AI subsystem across any Linux distribution
 curl -fsSL https://syntropd.github.io/install.sh | sudo bash
 ```
+> **With Hugging Face credentials:**
+> ```bash
+> curl -fsSL https://syntropd.github.io/install.sh | sudo bash -s -- --hf-token <YOUR_HF_TOKEN>
+> ```
 
-> **Single-command cargo alternative:** `cargo install syntropd`
+---
+
+### 2. Arch Linux & Omarchy (PKGBUILD / Pacman)
+Build and install natively via `makepkg` or your AUR helper:
+```bash
+# Build from source checkout:
+cd packaging/arch && makepkg -si
+
+# Or install from AUR:
+yay -S syntropd syntropctl
+```
+
+---
+
+### 3. Fedora, RHEL & CentOS Stream (DNF / RPM)
+Install via Copr or build directly from the RPM specification:
+```bash
+# Enable repository and install:
+sudo dnf copr enable syntropd/release
+sudo dnf install syntropd syntropctl
+
+# Or build local RPM:
+rpmbuild -ba packaging/rpm/syntropd.spec
+```
+
+---
+
+### 4. Debian, Ubuntu & Pop!_OS (APT / DEB)
+Install via the official APT repository or build a `.deb` package:
+```bash
+# Add APT repository:
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://syntropd.github.io/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/syntropd.gpg
+echo "deb [signed-by=/etc/apt/keyrings/syntropd.gpg] https://syntropd.github.io/deb stable main" | sudo tee /etc/apt/sources.list.d/syntropd.list
+sudo apt-get update && sudo apt-get install -y syntropd syntropctl
+
+# Or build local deb package:
+dpkg-buildpackage -us -uc -b
+```
+
+---
+
+### 5. Rust Cargo / crates.io
+Compile directly from source via `cargo`:
+```bash
+cargo install syntropd
+```
 
 ---
 

@@ -1,0 +1,44 @@
+post_install() {
+    # 1. Create system users and groups declaratively
+    systemd-sysusers syntrop.conf 2>/dev/null || true
+
+    # 2. Provision directories and runtime sockets
+    systemd-tmpfiles --create syntrop.conf 2>/dev/null || true
+
+    # 3. Reload systemd daemon
+    systemctl daemon-reload 2>/dev/null || true
+    systemctl --global daemon-reload 2>/dev/null || true
+
+    # 4. Enroll active interactive user into syntrop and syntropd groups
+    target_user="${SUDO_USER:-}"
+    if [[ -z "$target_user" && -n "$PKGBUILD_USER" ]]; then
+        target_user="$PKGBUILD_USER"
+    fi
+    if [[ -z "$target_user" ]] && command -v loginctl >/dev/null 2>&1; then
+        target_user="$(loginctl list-users --no-legend 2>/dev/null | awk '$2 != "root" {print $2; exit}')"
+    fi
+    if [[ -z "$target_user" ]]; then
+        target_user="$(awk -F: '$3 >= 1000 && $3 < 60000 && $1 != "nobody" {print $1; exit}' /etc/passwd)"
+    fi
+
+    if [[ -n "$target_user" && "$target_user" != "root" ]]; then
+        usermod -aG syntrop "$target_user" 2>/dev/null || true
+        usermod -aG syntropd "$target_user" 2>/dev/null || true
+        if command -v setfacl >/dev/null 2>&1; then
+            setfacl -m "u:${target_user}:rwx" /run/syntrop /var/lib/models /etc/syntrop /var/lib/syntrop 2>/dev/null || true
+            setfacl -d -m "u:${target_user}:rwx" /var/lib/models /etc/syntrop 2>/dev/null || true
+        fi
+        echo "==> Enrolled user '$target_user' in 'syntrop' group with immediate filesystem ACLs."
+        echo "==> To activate group membership in existing subshells, run: newgrp syntrop"
+    fi
+
+    echo "==> To bootstrap model family and start syntropd: syn setup --family qwen"
+}
+
+post_upgrade() {
+    post_install
+}
+
+pre_remove() {
+    systemctl disable --now syntrop-sockets.target 2>/dev/null || true
+}

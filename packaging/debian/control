@@ -9,7 +9,7 @@ Rules-Requires-Root: no
 
 Package: syntropd
 Architecture: amd64 arm64
-Depends: ${shlibs:Depends}, ${misc:Depends}, systemd (>= 252)
+Depends: ${shlibs:Depends}, ${misc:Depends}, systemd (>= 252), acl
 Description: Native AI Subsystem for systemd
  syntropd brings autonomous AI acceleration, memory throttling, and failure
  triage directly into systemd as native OS primitives, keeping PID 1 inviolable.

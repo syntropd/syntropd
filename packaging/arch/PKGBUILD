@@ -1,14 +1,15 @@
 # Maintainer: Syntropd Team <syntropd@users.noreply.github.com>
 pkgname=syntropd
-pkgver=0.3.28
+pkgver=0.6.2
 pkgrel=1
-pkgdesc="Native AI Subsystem for systemd — Umbrella Meta-Package"
+pkgdesc="Native AI Subsystem for systemd — Universal Meta-Package & Supervisor"
 arch=('x86_64' 'aarch64')
 url="https://syntropd.github.io"
 license=('Apache-2.0')
-depends=('systemd' 'glibc')
+depends=('systemd' 'glibc' 'acl')
 makedepends=('cargo' 'git')
-backup=('etc/syntrop/config.toml')
+install=syntropd.install
+backup=('etc/syntrop/routerd.toml')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/syntropd/syntropd/archive/v$pkgver.tar.gz")
 sha256sums=('SKIP')
 
@@ -24,14 +25,31 @@ check() {
 
 package() {
     cd "$pkgname-$pkgver"
+    # Binaries & CLI links
     install -Dm755 target/release/syntropd "$pkgdir/usr/bin/syntropd"
     install -Dm755 target/release/syntrop "$pkgdir/usr/bin/syntrop"
     ln -sf syntrop "$pkgdir/usr/bin/syn"
+
+    # Systemd System Units
     install -Dm644 units/syntrop-sockets.target "$pkgdir/usr/lib/systemd/system/syntrop-sockets.target"
     install -Dm644 units/syntrop-triage@.service "$pkgdir/usr/lib/systemd/system/syntrop-triage@.service"
+    install -Dm644 units/syntrop-admin@.service "$pkgdir/usr/lib/systemd/system/syntrop-admin@.service"
+    install -Dm644 units/syntrop-tuning.service "$pkgdir/usr/lib/systemd/system/syntrop-tuning.service"
+    install -Dm644 units/runtimed.service "$pkgdir/usr/lib/systemd/system/runtimed.service"
+
+    # Systemd User Unit
+    install -Dm644 units/syntrop-companion.service "$pkgdir/usr/lib/systemd/user/syntrop-companion.service"
+
+    # Declarative tmpfiles, sysusers, and udev rules
     install -Dm644 tmpfiles.d/syntrop.conf "$pkgdir/usr/lib/tmpfiles.d/syntrop.conf"
+    install -Dm644 sysusers.d/syntrop.conf "$pkgdir/usr/lib/sysusers.d/syntrop.conf"
     install -Dm644 packaging/udev/70-syntrop-uinput.rules "$pkgdir/usr/lib/udev/rules.d/70-syntrop-uinput.rules"
-    install -d -m0755 "$pkgdir/etc/syntrop"
+
+    # Default directories
+    install -d -m0775 "$pkgdir/etc/syntrop"
     install -d -m0775 "$pkgdir/var/lib/models"
+    install -d -m0775 "$pkgdir/var/lib/syntrop"
+
+    # Documentation
     install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
 }

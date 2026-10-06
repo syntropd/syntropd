@@ -1,3 +1,9 @@
+syntropd (0.6.2-1) unstable; urgency=medium
+
+  * Release v0.6.2: Multi-core CPU Candle/Rayon auto-threading, cgroup CPU quota clamping, declarative sysusers/tmpfiles provisioning, POSIX ACL immediate unprivileged access, BitNet ternary quantization, and multimodal inference suite.
+
+ -- Syntropd Team <syntropd@users.noreply.github.com>  Tue, 06 Oct 2026 08:00:00 +0000
+
 syntropd (0.3.28-1) unstable; urgency=medium
 
   * Model Family Cooperative Inference: Heterogeneous CPU AVX-512 draft session, Leviathan exact rejection sampler, shared VocabTrie pool, and decode_loop_managed KV layer cache spilling in runtimed (0.5.14); cascaded System 1/System 2 routing and elastic VRAM pressure downgrading in routerd (0.3.12); on-demand binary build target detection in inferenced-qa (0.3.10).
@@ -9,82 +15,3 @@ syntropd (0.3.27-1) unstable; urgency=medium
   * Dynamic Memory & Elasticity production hardening: Production generate routed via decode_loop_managed with zero-budget short-circuit and empty sequence guard in runtimed (0.5.13); GetDrmWatermark and ResizeLease Varlink specs synchronized with device parameter examples and CLI profile path resolution in inferenced (0.3.9); resolved systemd socket activation ordering cycle by removing redundant network.target dependency from syntrop-sockets.target.
 
  -- Syntropd Team <syntropd@users.noreply.github.com>  Thu, 01 Oct 2026 04:45:00 +0000
-
-syntropd (0.3.26-1) unstable; urgency=medium
-
-  * Dynamic Memory & Elasticity wiring: AmbientCapabilities (CAP_SYS_PTRACE) and caller lease ownership in inferenced (0.3.7), JIT layer prefetch pipeline integration and sample VRAM watermark decode loop in runtimed (0.5.11).
-
- -- Syntropd Team <syntropd@users.noreply.github.com>  Thu, 01 Oct 2026 03:15:00 +0000
-
-syntropd (0.3.25-1) unstable; urgency=medium
-
-  * Dynamic Memory & Host OS Elasticity: DRM sysfs telemetry and cgroup v2 slice priority preemption in inferenced (0.3.5), dual-watermark hysteresis controller and JIT layer prefetcher in runtimed (0.5.9).
-
- -- Syntropd Team <syntropd@users.noreply.github.com>  Thu, 01 Oct 2026 01:30:00 +0000
-
-syntropd (0.3.24-1) unstable; urgency=medium
-
-  * Multimedia enhancements in runtimed (0.5.7) including async non-blocking audio streaming, atomic visual file output, soft token image cache wiring, and neural weights integration.
-
- -- Syntropd Team <syntropd@users.noreply.github.com>  Wed, 30 Sep 2026 22:40:00 +0000
-
-syntropd (0.3.23-1) unstable; urgency=medium
-
-  * Multimedia Memory & Pipeline enhancements in runtimed (0.5.6) including vectorized patch pooling, ephemeral vision lifecycle, visual prefix cache, Kokoro TTS, and SD-Turbo generative output.
-
- -- Syntropd Team <syntropd@users.noreply.github.com>  Wed, 30 Sep 2026 21:30:00 +0000
-
-syntropd (0.3.22-1) unstable; urgency=medium
-
-  * End-to-end multimedia support with vision base64 pass-through in routerd and updated suite component synchronization.
-
- -- Syntropd Team <syntropd@users.noreply.github.com>  Wed, 30 Sep 2026 18:20:00 +0000
-
-syntropd (0.3.21-1) unstable; urgency=medium
-
-  * Unified front door syntrop and syn CLI, unprivileged daemon units, idle unload.
-
- -- Syntropd Team <syntropd@users.noreply.github.com>  Wed, 30 Sep 2026 16:50:00 +0000
-
-syntropd (0.3.5-1) unstable; urgency=medium
-
-  * Setup verifies every provider live before enabling; dead entries switch off.
-
- -- Syntropd Team <syntropd@users.noreply.github.com>  Fri, 25 Sep 2026 19:47:10 +0000
-
-syntropd (0.3.4-1) unstable; urgency=medium
-
-  * Installer ships per-daemon ctl tools alongside the daemons.
-
- -- Syntropd Team <syntropd@users.noreply.github.com>  Fri, 25 Sep 2026 19:13:34 +0000
-
-syntropd (0.3.3-1) unstable; urgency=medium
-
-  * Installer finishes non-interactively and points at routerctl setup next step.
-
- -- Syntropd Team <syntropd@users.noreply.github.com>  Fri, 25 Sep 2026 19:06:43 +0000
-
-syntropd (0.3.2-1) unstable; urgency=medium
-
-  * Release builds use thin link-time optimization with stripped symbols.
-
- -- Syntropd Team <syntropd@users.noreply.github.com>  Fri, 25 Sep 2026 15:37:51 +0000
-
-syntropd (0.3.1-1) unstable; urgency=medium
-
-  * Installer compiles missing binaries from local source; triage names the failed unit.
-
- -- Syntropd Team <syntropd@users.noreply.github.com>  Fri, 25 Sep 2026 15:23:30 +0000
-
-syntropd (0.3.0-1) unstable; urgency=medium
-
-  * Update umbrella release for routerd integration and tmpfiles.d runtime configuration.
-
- -- Syntropd Team <syntropd@users.noreply.github.com>  Fri, 25 Sep 2026 10:10:00 +0000
-
-syntropd (0.1.0-1) unstable; urgency=medium
-
-  * Initial release for Debian and Ubuntu.
-
- -- Syntropd Team <syntropd@users.noreply.github.com>  Wed, 24 Sep 2026 20:40:00 +0000
-

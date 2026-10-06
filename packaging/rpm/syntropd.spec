@@ -1,7 +1,7 @@
 Name:           syntropd
-Version:        0.3.28
+Version:        0.6.2
 Release:        1%{?dist}
-Summary:        Native AI Subsystem for systemd
+Summary:        Native AI Subsystem for systemd — Universal Meta-Package & Supervisor
 
 License:        Apache-2.0
 URL:            https://syntropd.github.io
@@ -14,6 +14,7 @@ BuildRequires:  gcc
 
 Requires:       systemd >= 252
 Requires:       glibc >= 2.34
+Requires:       acl
 Recommends:     syntropctl
 
 %description
@@ -32,17 +33,25 @@ cargo build --release --locked
 install -D -p -m 0755 target/release/syntropd %{buildroot}%{_bindir}/syntropd
 install -D -p -m 0755 target/release/syntrop %{buildroot}%{_bindir}/syntrop
 ln -sf syntrop %{buildroot}%{_bindir}/syn
+
 install -D -p -m 0644 units/syntrop-sockets.target %{buildroot}%{_unitdir}/syntrop-sockets.target
 install -D -p -m 0644 units/syntrop-triage@.service %{buildroot}%{_unitdir}/syntrop-triage@.service
+install -D -p -m 0644 units/syntrop-admin@.service %{buildroot}%{_unitdir}/syntrop-admin@.service
+install -D -p -m 0644 units/syntrop-tuning.service %{buildroot}%{_unitdir}/syntrop-tuning.service
+install -D -p -m 0644 units/runtimed.service %{buildroot}%{_unitdir}/runtimed.service
+install -D -p -m 0644 units/syntrop-companion.service %{buildroot}%{_userunitdir}/syntrop-companion.service
+
 install -D -p -m 0644 tmpfiles.d/syntrop.conf %{buildroot}%{_tmpfilesdir}/syntrop.conf
+install -D -p -m 0644 sysusers.d/syntrop.conf %{buildroot}%{_sysusersdir}/syntrop.conf
 install -D -p -m 0644 packaging/udev/70-syntrop-uinput.rules %{buildroot}/usr/lib/udev/rules.d/70-syntrop-uinput.rules
 
-install -d -m 0755 %{buildroot}%{_sysconfdir}/syntrop
-install -d -m 0750 %{buildroot}%{_sharedstatedir}/syntrop
+install -d -m 0775 %{buildroot}%{_sysconfdir}/syntrop
+install -d -m 0775 %{buildroot}%{_sharedstatedir}/syntrop
 install -d -m 0775 %{buildroot}%{_sharedstatedir}/models
 
 %post
 %systemd_post syntrop-sockets.target
+%sysusers_create_package syntropd %{_sysusersdir}/syntrop.conf
 %tmpfiles_create_package syntropd %{_tmpfilesdir}/syntrop.conf
 
 %preun
@@ -59,41 +68,21 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/models
 %{_bindir}/syn
 %{_unitdir}/syntrop-sockets.target
 %{_unitdir}/syntrop-triage@.service
+%{_unitdir}/syntrop-admin@.service
+%{_unitdir}/syntrop-tuning.service
+%{_unitdir}/runtimed.service
+%{_userunitdir}/syntrop-companion.service
 %{_tmpfilesdir}/syntrop.conf
+%{_sysusersdir}/syntrop.conf
 /usr/lib/udev/rules.d/70-syntrop-uinput.rules
-%dir %{_sysconfdir}/syntrop
-%dir %{_sharedstatedir}/syntrop
-%dir %{_sharedstatedir}/models
+%dir %attr(0775, root, syntrop) %{_sysconfdir}/syntrop
+%dir %attr(0775, syntrop, syntrop) %{_sharedstatedir}/syntrop
+%dir %attr(0775, root, syntrop) %{_sharedstatedir}/models
 
 %changelog
+* Tue Oct 06 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.6.2-1
+- Release v0.6.2: Multi-core CPU Candle/Rayon auto-threading, cgroup CPU quota clamping, declarative sysusers/tmpfiles provisioning, POSIX ACL immediate unprivileged access, BitNet ternary quantization, and multimodal inference suite.
 * Thu Oct 01 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.28-1
 - Model Family Cooperative Inference: Heterogeneous CPU AVX-512 draft session, Leviathan exact rejection sampler, shared VocabTrie pool, and decode_loop_managed KV layer cache spilling in runtimed (0.5.14); cascaded System 1/System 2 routing and elastic VRAM pressure downgrading in routerd (0.3.12); on-demand binary build target detection in inferenced-qa (0.3.10).
 * Thu Oct 01 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.27-1
 - Dynamic Memory & Elasticity production hardening: Production generate routed via decode_loop_managed with zero-budget short-circuit and empty sequence guard in runtimed (0.5.13); GetDrmWatermark and ResizeLease Varlink specs synchronized with device parameter examples and CLI profile path resolution in inferenced (0.3.9); resolved systemd socket activation ordering cycle by removing redundant network.target dependency from syntrop-sockets.target.
-* Thu Oct 01 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.26-1
-- Dynamic Memory & Elasticity wiring: AmbientCapabilities (CAP_SYS_PTRACE) and caller lease ownership in inferenced (0.3.7), JIT layer prefetch pipeline integration and sample VRAM watermark decode loop in runtimed (0.5.11).
-* Thu Oct 01 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.25-1
-- Dynamic Memory & Host OS Elasticity: DRM sysfs telemetry and cgroup v2 slice priority preemption in inferenced (0.3.5), dual-watermark hysteresis controller and JIT layer prefetcher in runtimed (0.5.9).
-* Wed Sep 30 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.24-1
-- Multimedia enhancements in runtimed (0.5.7) including async non-blocking audio streaming, atomic visual file output, soft token image cache wiring, and neural weights integration.
-* Wed Sep 30 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.23-1
-- Multimedia Memory & Pipeline enhancements in runtimed (0.5.6) including vectorized patch pooling, ephemeral vision lifecycle, visual prefix cache, Kokoro TTS, and SD-Turbo generative output.
-* Wed Sep 30 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.22-1
-- End-to-end multimedia support with vision base64 pass-through in routerd and updated suite component synchronization.
-* Wed Sep 30 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.21-1
-- Unified front door syntrop and syn CLI, unprivileged daemon units, idle unload.
-* Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.5-1
-- Setup verifies every provider live before enabling; dead entries switch off.
-* Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.4-1
-- Installer ships per-daemon ctl tools alongside the daemons.
-* Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.3-1
-- Installer finishes non-interactively and points at routerctl setup as the required next step.
-* Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.2-1
-- Release builds use thin link-time optimization with stripped symbols.
-* Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.1-1
-- Installer compiles missing binaries from local source checkouts.
-- Triage names the failed unit in unknown-failure recommendations.
-* Fri Sep 25 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.3.0-1
-- Update umbrella release for routerd integration and tmpfiles.d runtime configuration.
-* Wed Sep 24 2026 Syntropd Authors <syntropd@users.noreply.github.com> - 0.1.0-1
-- Initial umbrella release for Fedora and RHEL.

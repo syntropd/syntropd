@@ -2,5 +2,10 @@ target/release/syntropd usr/bin/
 target/release/syntrop usr/bin/
 units/syntrop-sockets.target lib/systemd/system/
 units/syntrop-triage@.service lib/systemd/system/
+units/syntrop-admin@.service lib/systemd/system/
+units/syntrop-tuning.service lib/systemd/system/
+units/runtimed.service lib/systemd/system/
+units/syntrop-companion.service usr/lib/systemd/user/
 tmpfiles.d/syntrop.conf usr/lib/tmpfiles.d/
+sysusers.d/syntrop.conf usr/lib/sysusers.d/
 packaging/udev/70-syntrop-uinput.rules lib/udev/rules.d/

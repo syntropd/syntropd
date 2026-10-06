@@ -2,13 +2,27 @@
 set -e
 
 if [ "$1" = "configure" ]; then
-    if ! getent group syntrop >/dev/null 2>&1; then
-        groupadd -r syntrop
+    systemd-sysusers /usr/lib/sysusers.d/syntrop.conf 2>/dev/null || true
+    systemd-tmpfiles --create /usr/lib/tmpfiles.d/syntrop.conf 2>/dev/null || true
+    systemctl --system daemon-reload >/dev/null 2>&1 || true
+    systemctl --global daemon-reload >/dev/null 2>&1 || true
+
+    # Enroll active user into syntrop group
+    target_user="${SUDO_USER:-}"
+    if [ -z "$target_user" ] && command -v loginctl >/dev/null 2>&1; then
+        target_user="$(loginctl list-users --no-legend 2>/dev/null | awk '$2 != "root" {print $2; exit}')"
     fi
-    mkdir -p /run/syntrop /var/lib/models /etc/syntrop
-    chown root:syntrop /var/lib/models
-    chmod 0775 /var/lib/models
-    systemctl --system daemon-reload >/dev/null || true
+    if [ -z "$target_user" ]; then
+        target_user="$(awk -F: '$3 >= 1000 && $3 < 60000 && $1 != "nobody" {print $1; exit}' /etc/passwd)"
+    fi
+    if [ -n "$target_user" ] && [ "$target_user" != "root" ]; then
+        usermod -aG syntrop "$target_user" 2>/dev/null || true
+        usermod -aG syntropd "$target_user" 2>/dev/null || true
+        if command -v setfacl >/dev/null 2>&1; then
+            setfacl -m "u:${target_user}:rwx" /run/syntrop /var/lib/models /etc/syntrop /var/lib/syntrop 2>/dev/null || true
+            setfacl -d -m "u:${target_user}:rwx" /var/lib/models /etc/syntrop 2>/dev/null || true
+        fi
+    fi
 fi
 
 #DEBHELPER#
