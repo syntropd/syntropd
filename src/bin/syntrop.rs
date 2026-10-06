@@ -76,7 +76,7 @@ fn print_overview() {
         "completions"
     );
     println!();
-    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|gemma] | syn pull <model> | syn admin <command> | syn companion <command> | syn telemetry [status|tune] | syn tune [-p <policy>] | syn visual [generate] [args...] | syn audio [generate] [args...] | syn video [generate] [args...] | syn completions [bash|zsh|fish]");
+    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|phi|gemma|bitnet] | syn pull <model> | syn admin <command> | syn companion <command> | syn telemetry [status|tune] | syn tune [-p <policy>] | syn visual [generate] [args...] | syn audio [generate] [args...] | syn video [generate] [args...] | syn completions [bash|zsh|fish]");
     println!("effort: -e, --effort <tier>  (none, low, med, high, max; defaults to 0 tokens on CPU / tight memory, 1,024 on GPU with healthy VRAM)");
     println!("examples:");
     println!("  syn say hello in one sentence");
