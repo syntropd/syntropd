@@ -145,6 +145,21 @@ tier = "hard"
             }
         }
 
+        if *self == Self::Gemma {
+            toml.push_str(
+                r#"
+[[providers.models]]
+name = "embeddinggemma:270m"
+max_context_tokens = 8192
+cost_per_input_token = 0.0
+cost_per_output_token = 0.0
+avg_latency_ms = 15.0
+tokens_per_second = 500.0
+tier = "fast"
+"#,
+            );
+        }
+
         toml
     }
 }

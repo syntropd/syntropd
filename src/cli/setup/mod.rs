@@ -19,8 +19,8 @@ use std::process::Command;
     about = "Bootstrap model family and configure speculative router"
 )]
 pub struct SetupArgs {
-    /// Model family to bootstrap: qwen, granite, phi, gemma, or bitnet.
-    #[arg(long, default_value = "qwen")]
+    /// Model family to bootstrap: gemma (default), qwen, granite, phi, or bitnet.
+    #[arg(long, default_value = "gemma")]
     pub family: String,
 
     /// Hardware envelope profile (default: auto).
@@ -233,6 +233,14 @@ mod tests {
     fn test_handle_syn_setup_invalid_family() {
         let args: Vec<String> = vec!["--family", "invalid-fam", "--dry-run"].into_iter().map(String::from).collect();
         assert!(handle_syn_setup(&args).is_err());
+    }
+
+    #[test]
+    fn test_handle_syn_setup_default_gemma() {
+        let dir = tempdir().unwrap();
+        let cfg = dir.path().join("routerd.toml");
+        let args: Vec<String> = vec!["--dry-run".into(), "--config".into(), cfg.to_str().unwrap().into()];
+        assert!(handle_syn_setup(&args).is_ok());
     }
 
     #[test]

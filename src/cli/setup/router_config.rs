@@ -59,8 +59,8 @@ pub fn generate_speculative_routerd_toml(family: &str) -> String {
 pub fn generate_speculative_routerd_toml_envelope(family: &str, cpu_only: bool) -> String {
     let (primary, draft, reasoner) = match family {
         "granite" => ("granite-3.0:8b", "granite-3.0:1b", None),
-        "gemma" => ("gemma:9b", "gemma:2b", Some("gemma:27b")),
-        _ => ("qwen2.5:7b", "qwen2.5:0.5b", Some("qwen2.5:14b")),
+        "qwen" => ("qwen2.5:7b", "qwen2.5:0.5b", Some("qwen2.5:14b")),
+        _ => ("gemma-2:9b", "gemma-2:2b", Some("gemma-2:27b")),
     };
 
     let fast_default = if cpu_only { draft } else { primary };
@@ -200,8 +200,8 @@ mod tests {
     #[test]
     fn test_generate_speculative_routerd_toml_gemma() {
         let toml = generate_speculative_routerd_toml("gemma");
-        assert!(toml.contains("name = \"gemma:9b\""));
-        assert!(toml.contains("draft_model = \"gemma:2b\""));
+        assert!(toml.contains("name = \"gemma-2:9b\""));
+        assert!(toml.contains("draft_model = \"gemma-2:2b\""));
     }
 
     #[test]
