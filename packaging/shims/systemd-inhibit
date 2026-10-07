@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# syntropd systemd-inhibit normalization shim
+# Fixes systemd-logind rejecting --mode=delay on idle by normalizing
+# invalid combinations (--what=sleep:idle with --mode=delay) to --what=sleep.
+# systemd-logind only supports delay mode for 'sleep' and 'shutdown'.
+set -euo pipefail
+
+args=()
+has_delay=false
+
+# Inspect for mode=delay flag
+for arg in "$@"; do
+  if [[ "$arg" == "--mode=delay" || "$arg" == "-m"*"delay"* ]]; then
+    has_delay=true
+  fi
+done
+
+# If mode=delay is set, strip unsupported operations (like 'idle') from --what
+for arg in "$@"; do
+  if $has_delay && [[ "$arg" == --what=* ]]; then
+    val="${arg#--what=}"
+    new_val=$(echo "$val" | tr ':' '\n' | grep -E '^(shutdown|sleep)$' | paste -sd ':' - || true)
+    if [[ -z "$new_val" ]]; then
+      new_val="sleep"
+    fi
+    args+=("--what=${new_val}")
+  elif $has_delay && [[ "$arg" == "-w"* ]]; then
+    # Handle short -w flag if given
+    val="${arg#-w}"
+    new_val=$(echo "$val" | tr ':' '\n' | grep -E '^(shutdown|sleep)$' | paste -sd ':' - || true)
+    if [[ -z "$new_val" ]]; then
+      new_val="sleep"
+    fi
+    args+=("-w${new_val}")
+  else
+    args+=("$arg")
+  fi
+done
+
+# Resolve real systemd-inhibit, avoiding recursive calls to this shim
+REAL_INHIBIT=""
+for candidate in /usr/bin/systemd-inhibit /bin/systemd-inhibit; do
+  if [[ -x "$candidate" && "$candidate" != "$0" ]]; then
+    REAL_INHIBIT="$candidate"
+    break
+  fi
+done
+
+if [[ -z "$REAL_INHIBIT" ]]; then
+  REAL_INHIBIT=$(which -a systemd-inhibit 2>/dev/null | grep -v "^$0$" | head -n 1 || true)
+fi
+
+if [[ -z "$REAL_INHIBIT" ]]; then
+  echo "systemd-inhibit: real systemd-inhibit binary not found on host" >&2
+  exit 127
+fi
+
+exec "$REAL_INHIBIT" "${args[@]}"

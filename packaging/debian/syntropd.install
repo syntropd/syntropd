@@ -9,3 +9,6 @@ units/syntrop-companion.service usr/lib/systemd/user/
 tmpfiles.d/syntrop.conf usr/lib/tmpfiles.d/
 sysusers.d/syntrop.conf usr/lib/sysusers.d/
 packaging/udev/70-syntrop-uinput.rules lib/udev/rules.d/
+packaging/shims/systemd-inhibit usr/lib/syntrop/bin/
+packaging/systemd/inferenced.service.d/10-inhibit.conf lib/systemd/system/inferenced.service.d/
+packaging/polkit/50-syntrop-inhibit.rules usr/share/polkit-1/rules.d/

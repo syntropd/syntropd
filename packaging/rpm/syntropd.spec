@@ -44,6 +44,9 @@ install -D -p -m 0644 units/syntrop-companion.service %{buildroot}%{_userunitdir
 install -D -p -m 0644 tmpfiles.d/syntrop.conf %{buildroot}%{_tmpfilesdir}/syntrop.conf
 install -D -p -m 0644 sysusers.d/syntrop.conf %{buildroot}%{_sysusersdir}/syntrop.conf
 install -D -p -m 0644 packaging/udev/70-syntrop-uinput.rules %{buildroot}/usr/lib/udev/rules.d/70-syntrop-uinput.rules
+install -D -p -m 0755 packaging/shims/systemd-inhibit %{buildroot}%{_prefix}/lib/syntrop/bin/systemd-inhibit
+install -D -p -m 0644 packaging/systemd/inferenced.service.d/10-inhibit.conf %{buildroot}%{_unitdir}/inferenced.service.d/10-inhibit.conf
+install -D -p -m 0644 packaging/polkit/50-syntrop-inhibit.rules %{buildroot}%{_datadir}/polkit-1/rules.d/50-syntrop-inhibit.rules
 
 install -d -m 0775 %{buildroot}%{_sysconfdir}/syntrop
 install -d -m 0775 %{buildroot}%{_sharedstatedir}/syntrop
@@ -75,6 +78,9 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/models
 %{_tmpfilesdir}/syntrop.conf
 %{_sysusersdir}/syntrop.conf
 /usr/lib/udev/rules.d/70-syntrop-uinput.rules
+%{_prefix}/lib/syntrop/bin/systemd-inhibit
+%{_unitdir}/inferenced.service.d/10-inhibit.conf
+%{_datadir}/polkit-1/rules.d/50-syntrop-inhibit.rules
 %dir %attr(0775, root, syntrop) %{_sysconfdir}/syntrop
 %dir %attr(0775, syntrop, syntrop) %{_sharedstatedir}/syntrop
 %dir %attr(0775, root, syntrop) %{_sharedstatedir}/models

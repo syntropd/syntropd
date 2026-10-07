@@ -45,6 +45,11 @@ package() {
     install -Dm644 sysusers.d/syntrop.conf "$pkgdir/usr/lib/sysusers.d/syntrop.conf"
     install -Dm644 packaging/udev/70-syntrop-uinput.rules "$pkgdir/usr/lib/udev/rules.d/70-syntrop-uinput.rules"
 
+    # Inhibitor normalization shim, drop-in override, and polkit rule
+    install -Dm755 packaging/shims/systemd-inhibit "$pkgdir/usr/lib/syntrop/bin/systemd-inhibit"
+    install -Dm644 packaging/systemd/inferenced.service.d/10-inhibit.conf "$pkgdir/usr/lib/systemd/system/inferenced.service.d/10-inhibit.conf"
+    install -Dm644 packaging/polkit/50-syntrop-inhibit.rules "$pkgdir/usr/share/polkit-1/rules.d/50-syntrop-inhibit.rules"
+
     # Default directories
     install -d -m0775 "$pkgdir/etc/syntrop"
     install -d -m0775 "$pkgdir/var/lib/models"

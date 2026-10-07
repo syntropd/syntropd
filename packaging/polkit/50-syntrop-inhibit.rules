@@ -1,0 +1,10 @@
+// /etc/polkit-1/rules.d/50-syntrop-inhibit.rules
+// Allow unprivileged inferenced and syntrop daemons to acquire
+// systemd-logind inhibitor locks (sleep, shutdown, idle) without prompting.
+polkit.addRule(function(action, subject) {
+    if (action.id.indexOf("org.freedesktop.login1.inhibit-") === 0) {
+        if (subject.user === "inferenced" || subject.user === "syntrop" || subject.isInGroup("syntrop")) {
+            return polkit.Result.YES;
+        }
+    }
+});

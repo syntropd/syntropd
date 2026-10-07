@@ -88,6 +88,18 @@ grep -q 'polkit-1/rules.d/49-syntrop-tool.rules' "${INSTALL}" \
   || { echo "FAIL: installer ships no toold polkit rule"; exit 1; }
 pass "installer ships toold polkit rule"
 
+grep -q 'polkit-1/rules.d/50-syntrop-inhibit.rules' "${INSTALL}" \
+  || { echo "FAIL: installer ships no inhibitor polkit rule"; exit 1; }
+pass "installer ships inhibitor polkit rule"
+
+grep -q '/usr/lib/syntrop/bin/systemd-inhibit' "${INSTALL}" \
+  || { echo "FAIL: installer ships no systemd-inhibit shim"; exit 1; }
+pass "installer ships systemd-inhibit shim"
+
+awk "/UNIT_DIR}\/inferenced.service\"/,/^EOF\$/" "${INSTALL}" | grep -q 'Environment="PATH=/usr/lib/syntrop/bin' \
+  || { echo "FAIL: generated inferenced.service lacks inhibitor shim PATH"; exit 1; }
+pass "generated inferenced.service contains inhibitor shim PATH"
+
 if [[ -f "${SITE_COPY}" ]]; then
   cmp -s "${INSTALL}" "${SITE_COPY}" || { echo "FAIL: site install.sh out of sync"; exit 1; }
   pass "site copy identical"
