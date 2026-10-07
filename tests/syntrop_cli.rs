@@ -53,6 +53,7 @@ fn bare_words_are_prompts_namespaces_are_not() {
     assert!(!is_bare_prompt("video"));
     assert!(!is_bare_prompt("completions"));
     assert!(!is_bare_prompt("completion"));
+    assert!(!is_bare_prompt("uninstall"));
     assert!(!is_bare_prompt("router"));
     assert!(!is_bare_prompt("fleet"));
     assert!(!is_bare_prompt("--help"));

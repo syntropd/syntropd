@@ -31,52 +31,26 @@ fn exec_prompt(first: &str, rest: &[String]) -> anyhow::Result<()> {
 }
 
 fn print_overview() {
-    println!(
-        "syntrop {} — front door to the suite",
-        env!("CARGO_PKG_VERSION")
-    );
-    println!();
+    println!("syntrop {} — front door to the suite\n", env!("CARGO_PKG_VERSION"));
     for (ns, bin, desc) in NAMESPACES {
         println!("  {:<8} {} ({})", ns, desc, bin);
     }
-    println!(
-        "  {:<8} Pull and register a model directly (modelctl)",
-        "pull"
-    );
-    println!(
-        "  {:<8} Bootstrap model family and speculative router (modelctl/routerd)",
-        "setup"
-    );
-    println!(
-        "  {:<8} Autonomous OS self-healing & administration (syntropctl admin)",
-        "admin"
-    );
-    println!(
-        "  {:<8} Linux Cognitive Desktop Companion (syntropctl companion)",
-        "companion"
-    );
-    println!(
-        "  {:<8} Dynamic kernel telemetry & closed-loop PSI tuning (syntropctl)",
-        "telemetry"
-    );
-    println!(
-        "  {:<8} Generative visual image synthesis (syntropctl visual)",
-        "visual"
-    );
-    println!(
-        "  {:<8} Generative music & acoustic atmosphere (syntropctl audio)",
-        "audio"
-    );
-    println!(
-        "  {:<8} Generative short-form video synthesis (syntropctl video)",
-        "video"
-    );
-    println!(
-        "  {:<8} Generate shell completion scripts (syn completions)",
-        "completions"
-    );
-    println!();
-    println!("usage: syn <question> | syn <namespace> <command> [args...] | syn setup --family [qwen|granite|phi|gemma|bitnet] | syn pull <model> | syn admin <command> | syn companion <command> | syn telemetry [status|tune] | syn tune [-p <policy>] | syn visual [generate] [args...] | syn audio [generate] [args...] | syn video [generate] [args...] | syn completions [bash|zsh|fish]");
+    const EXTRA: &[(&str, &str)] = &[
+        ("pull", "Pull and register a model directly (modelctl)"),
+        ("setup", "Bootstrap model family and speculative router (modelctl/routerd)"),
+        ("admin", "Autonomous OS self-healing & administration (syntropctl admin)"),
+        ("companion", "Linux Cognitive Desktop Companion (syntropctl companion)"),
+        ("telemetry", "Dynamic kernel telemetry & closed-loop PSI tuning (syntropctl)"),
+        ("visual", "Generative visual image synthesis (syntropctl visual)"),
+        ("audio", "Generative music & acoustic atmosphere (syntropctl audio)"),
+        ("video", "Generative short-form video synthesis (syntropctl video)"),
+        ("completions", "Generate shell completion scripts (syn completions)"),
+        ("uninstall", "Safely remove or purge syntropd and daemons (syntrop-uninstall)"),
+    ];
+    for (cmd, desc) in EXTRA {
+        println!("  {:<8} {}", cmd, desc);
+    }
+    println!("\nusage: syn <question> | syn <namespace> <cmd> [args...] | syn setup --family [qwen|granite|phi|gemma|bitnet] | syn pull <model> | syn admin <cmd> | syn companion <cmd> | syn telemetry [status|tune] | syn visual|audio|video generate | syn completions [bash|zsh|fish] | syn uninstall [--purge]");
     println!("effort: -e, --effort <tier>  (none, low, med, high, max; defaults to 0 tokens on CPU / tight memory, 1,024 on GPU with healthy VRAM)");
     println!("examples:");
     println!("  syn say hello in one sentence");
@@ -87,11 +61,7 @@ fn print_overview() {
     println!("  syn setup --family qwen");
     println!("  syn pull qwen2.5:0.5b");
     println!("  syn completions bash");
-    println!("  syn decide");
-    println!("  syn audit");
-    println!("  syn router models");
-    println!("  syn fleet status");
-    println!("  syn system units");
+    println!("  syn uninstall --dry-run");
     println!("help:  syn <namespace> --help");
 }
 
@@ -156,6 +126,31 @@ fn main() -> anyhow::Result<()> {
     // Intercept `syn video <args...>` and dispatch to `syntropctl video <args...>`.
     if ns == "video" {
         return syntropd::cli::multimedia::handle_syn_video(&cli.args);
+    }
+
+    // Intercept `syn uninstall <args...>` and dispatch to syntrop-uninstall.
+    if ns == "uninstall" {
+        let uninstaller = if find_in_path("syntrop-uninstall") {
+            "syntrop-uninstall".to_string()
+        } else if std::path::Path::new("/usr/local/bin/syntrop-uninstall").exists() {
+            "/usr/local/bin/syntrop-uninstall".to_string()
+        } else if std::path::Path::new("/usr/bin/syntrop-uninstall").exists() {
+            "/usr/bin/syntrop-uninstall".to_string()
+        } else {
+            eprintln!("syntrop uninstaller not found. Run: curl -fsSL https://syntropd.github.io/uninstall.sh | sudo bash");
+            std::process::exit(1);
+        };
+        let is_root = rustix::process::geteuid().is_root();
+        let mut cmd = if is_root {
+            Command::new(&uninstaller)
+        } else {
+            let mut c = Command::new("sudo");
+            c.arg(&uninstaller);
+            c
+        };
+        cmd.args(&cli.args);
+        let err = cmd.exec();
+        return Err(anyhow::anyhow!("failed to exec '{}': {}", uninstaller, err));
     }
 
     // Intercept `syn pull <args...>` and dispatch to `modelctl pull <args...>`.

@@ -1,5 +1,6 @@
 target/release/syntropd usr/bin/
 target/release/syntrop usr/bin/
+uninstall.sh usr/bin/syntrop-uninstall
 units/syntrop-sockets.target lib/systemd/system/
 units/syntrop-triage@.service lib/systemd/system/
 units/syntrop-admin@.service lib/systemd/system/

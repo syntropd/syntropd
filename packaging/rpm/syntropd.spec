@@ -33,6 +33,8 @@ cargo build --release --locked
 install -D -p -m 0755 target/release/syntropd %{buildroot}%{_bindir}/syntropd
 install -D -p -m 0755 target/release/syntrop %{buildroot}%{_bindir}/syntrop
 ln -sf syntrop %{buildroot}%{_bindir}/syn
+install -D -p -m 0755 uninstall.sh %{buildroot}%{_bindir}/syntrop-uninstall
+ln -sf syntrop-uninstall %{buildroot}%{_bindir}/syn-uninstall
 
 install -D -p -m 0644 units/syntrop-sockets.target %{buildroot}%{_unitdir}/syntrop-sockets.target
 install -D -p -m 0644 units/syntrop-triage@.service %{buildroot}%{_unitdir}/syntrop-triage@.service
@@ -69,6 +71,8 @@ install -d -m 0775 %{buildroot}%{_sharedstatedir}/models
 %{_bindir}/syntropd
 %{_bindir}/syntrop
 %{_bindir}/syn
+%{_bindir}/syntrop-uninstall
+%{_bindir}/syn-uninstall
 %{_unitdir}/syntrop-sockets.target
 %{_unitdir}/syntrop-triage@.service
 %{_unitdir}/syntrop-admin@.service

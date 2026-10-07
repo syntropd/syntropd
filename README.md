@@ -73,6 +73,22 @@ cargo install syntropd
 
 ---
 
+### 6. Uninstallation & Purge
+To cleanly uninstall `syntropd`, stop all services/sockets, and remove system policies:
+```bash
+# Clean uninstallation (preserves downloaded model weights and configs):
+syn uninstall
+# Or invoke uninstaller directly:
+sudo syntrop-uninstall
+
+# Full purge (removes models, configurations, and system accounts):
+syn uninstall --purge
+# Or invoke via curl:
+curl -fsSL https://syntropd.github.io/uninstall.sh | sudo bash -s -- --purge
+```
+
+---
+
 ## 1. System Architecture
 
 `syntropd` integrates autonomous intelligence directly into Linux system management. Rather than introducing complex user-space stacks or external orchestration layers, `syntropd` leverages standard Linux kernel facilities (`cgroups v2`, Pressure Stall Information, Landlock, seccomp, DRM/KMS render nodes) and `systemd` primitives (socket activation, `sd_notify`, file descriptor passing, `OnFailure=` event triggers).

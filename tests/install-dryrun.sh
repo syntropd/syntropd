@@ -100,6 +100,34 @@ awk "/UNIT_DIR}\/inferenced.service\"/,/^EOF\$/" "${INSTALL}" | grep -q 'Environ
   || { echo "FAIL: generated inferenced.service lacks inhibitor shim PATH"; exit 1; }
 pass "generated inferenced.service contains inhibitor shim PATH"
 
+grep -q 'syntrop-uninstall' "${INSTALL}" \
+  || { echo "FAIL: installer does not install syntrop-uninstall"; exit 1; }
+pass "installer provisions syntrop-uninstall"
+
+UNINSTALL="${REPO_DIR}/uninstall.sh"
+SITE_UNINSTALL="/home/ubermetroid/Projects/syntropd.github.io/uninstall.sh"
+
+bash -n "${UNINSTALL}"
+pass "uninstall.sh syntax"
+
+"${UNINSTALL}" --help | grep -q -- "--purge" || { echo "FAIL: uninstaller hides --purge"; exit 1; }
+"${UNINSTALL}" --help | grep -q -- "--dry-run" || { echo "FAIL: uninstaller hides --dry-run"; exit 1; }
+pass "uninstaller documents flags"
+
+out_un="$("${UNINSTALL}" --dry-run 2>&1)"
+echo "${out_un}" | grep -q "Uninstallation dry-run complete" || { echo "FAIL: dry-run uninstall failed"; exit 1; }
+echo "${out_un}" | grep -q "Preserved Assets" || { echo "FAIL: dry-run default does not preserve models"; exit 1; }
+pass "uninstaller default preserves assets"
+
+out_purge="$("${UNINSTALL}" --dry-run --purge 2>&1)"
+echo "${out_purge}" | grep -q "Purging Data and Accounts" || { echo "FAIL: dry-run purge failed"; exit 1; }
+pass "uninstaller purge targets data and accounts"
+
+if [[ -f "${SITE_UNINSTALL}" ]]; then
+  cmp -s "${UNINSTALL}" "${SITE_UNINSTALL}" || { echo "FAIL: site uninstall.sh out of sync"; exit 1; }
+  pass "site uninstall.sh identical"
+fi
+
 if [[ -f "${SITE_COPY}" ]]; then
   cmp -s "${INSTALL}" "${SITE_COPY}" || { echo "FAIL: site install.sh out of sync"; exit 1; }
   pass "site copy identical"

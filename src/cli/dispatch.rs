@@ -140,6 +140,7 @@ pub fn is_bare_prompt(first: &str) -> bool {
         && first != "video"
         && first != "completions"
         && first != "completion"
+        && first != "uninstall"
         && resolve(first).is_none()
 }
 

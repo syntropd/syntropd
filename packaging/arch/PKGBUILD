@@ -29,6 +29,8 @@ package() {
     install -Dm755 target/release/syntropd "$pkgdir/usr/bin/syntropd"
     install -Dm755 target/release/syntrop "$pkgdir/usr/bin/syntrop"
     ln -sf syntrop "$pkgdir/usr/bin/syn"
+    install -Dm755 uninstall.sh "$pkgdir/usr/bin/syntrop-uninstall"
+    ln -sf syntrop-uninstall "$pkgdir/usr/bin/syn-uninstall"
 
     # Systemd System Units
     install -Dm644 units/syntrop-sockets.target "$pkgdir/usr/lib/systemd/system/syntrop-sockets.target"
